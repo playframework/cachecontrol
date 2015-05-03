@@ -5,11 +5,11 @@ import com.typesafe.sbt.SbtScalariform._
 
 name := "cachecontrol"
 
-organization := "com.typesafe"
+organization := "com.typesafe.play"
 
 scalaVersion := "2.11.6"
 
-version := "1.0-SNAPSHOT"
+version := "1.0.0-SNAPSHOT"
 
 crossScalaVersions := Seq("2.10.5", "2.11.6")
 
@@ -40,11 +40,5 @@ libraryDependencies := {
 }
 
 libraryDependencies ++= scalaTest ++ jodaTime ++ slf4j
-
-ScalariformKeys.preferences := FormattingPreferences()
-  .setPreference(AlignParameters, true)
-  .setPreference(AlignSingleLineCaseStatements, true)
-  .setPreference(AlignSingleLineCaseStatements.MaxArrowIndent, 100)
-  .setPreference(DoubleIndentClassDeclaration, true)
 
 scalariformSettings
