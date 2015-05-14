@@ -87,7 +87,8 @@ case class StoredResponse(
     status: Int,
     headers: Map[HeaderName, Seq[String]],
     requestMethod: String,
-    nominatedHeaders: Map[HeaderName, Seq[String]]) extends CacheResponse {
+    nominatedHeaders: Map[HeaderName, Seq[String]]
+) extends CacheResponse {
   import HeaderNames._
 
   lazy val directives: collection.immutable.Seq[CacheDirective] = CacheDirectiveParser.parse(headers.getOrElse(`Cache-Control`, Nil))
