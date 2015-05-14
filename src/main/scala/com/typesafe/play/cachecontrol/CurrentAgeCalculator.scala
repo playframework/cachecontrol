@@ -23,7 +23,8 @@ class CurrentAgeCalculator {
     headers: Map[HeaderName, Seq[String]],
     now: DateTime,
     requestTime: DateTime,
-    responseTime: DateTime): Seconds = {
+    responseTime: DateTime
+  ): Seconds = {
     if (logger.isTraceEnabled) {
       logger.trace(s"calculateCurrentAge(headers: $headers, now: $now, requestTime: $requestTime, responseTime: $responseTime)")
     }
