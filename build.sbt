@@ -7,17 +7,23 @@ name := "cachecontrol"
 
 organization := "com.typesafe.play"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.8"
 
-version := "1.0.0-SNAPSHOT"
+version := "1.0.0"
 
 crossScalaVersions := Seq("2.10.5", "2.11.6")
 
-val typesafeIvyReleases = Resolver.url("typesafe-ivy-private-releases", new URL("http://private-repo.typesafe.com/typesafe/ivy-releases/"))(Resolver.ivyStylePatterns)
+publishMavenStyle := true
 
-publishTo := Some(typesafeIvyReleases)
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+}
 
-publishMavenStyle := false
+pomIncludeRepository := { _ => false }
 
 // Good practice options
 scalacOptions ++= Seq(
@@ -28,6 +34,7 @@ scalacOptions ++= Seq(
   "-Ywarn-numeric-widen",
   "-Xfatal-warnings"
 )
+
 
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
