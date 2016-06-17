@@ -7,17 +7,44 @@ name := "cachecontrol"
 
 organization := "com.typesafe.play"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.8"
 
 version := "1.0.0-SNAPSHOT"
 
 crossScalaVersions := Seq("2.10.5", "2.11.6")
 
-val typesafeIvyReleases = Resolver.url("typesafe-ivy-private-releases", new URL("http://private-repo.typesafe.com/typesafe/ivy-releases/"))(Resolver.ivyStylePatterns)
+publishMavenStyle := true
 
-publishTo := Some(typesafeIvyReleases)
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+}
 
-publishMavenStyle := false
+pomIncludeRepository := { _ => false }
+
+pomExtra :=
+  <url>http://github.com/playframework/cachecontrol</url>
+    <licenses>
+      <license>
+        <name>Apache License, Version 2.0</name>
+        <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <distribution>repo</distribution>
+      </license>
+    </licenses>
+    <scm>
+      <url>git@github.com:playframework/cachecontrol.git</url>
+      <connection>scm:git:git@github.com:playframework/cachecontrol.git</connection>
+    </scm>
+    <developers>
+      <developer>
+        <id>Play Team</id>
+        <name>Play Team</name>
+        <url>http://playframework.com</url>
+      </developer>
+    </developers>
 
 // Good practice options
 scalacOptions ++= Seq(
@@ -28,6 +55,7 @@ scalacOptions ++= Seq(
   "-Ywarn-numeric-widen",
   "-Xfatal-warnings"
 )
+
 
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
