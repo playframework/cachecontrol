@@ -1,3 +1,4 @@
+sonatypeProfileName := "com.typesafe"
 
 pomExtra :=
   <url>https://github.com/playframework/cachecontrol</url>
