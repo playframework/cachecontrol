@@ -9,18 +9,20 @@ organization := "com.typesafe.play"
 
 scalaVersion := "2.11.8"
 
-version := "1.0.0"
+version := "1.1.0-SNAPSHOT"
 
 crossScalaVersions := Seq("2.10.5", "2.11.6")
 
 publishMavenStyle := true
 
+// Set "set isSnapshot := false" when releasing a new version to production.
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
-  if (isSnapshot.value)
+  if (isSnapshot.value) {
     Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+  } else {
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  }
 }
 
 pomIncludeRepository := { _ => false }
