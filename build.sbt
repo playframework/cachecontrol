@@ -34,5 +34,5 @@ libraryDependencies := {
   }
 }
 
-libraryDependencies ++= scalaTest ++ jodaTime ++ slf4j
+libraryDependencies ++= scalaTest ++ slf4j
 

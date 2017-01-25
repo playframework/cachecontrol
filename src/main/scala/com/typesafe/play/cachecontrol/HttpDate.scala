@@ -3,8 +3,9 @@
  */
 package com.typesafe.play.cachecontrol
 
-import org.joda.time._
-import org.joda.time.format.DateTimeFormat
+import java.time.format.DateTimeFormatter
+import java.time.temporal.{ Temporal, TemporalAccessor, TemporalQuery }
+import java.time.{ Duration, ZoneId, ZonedDateTime }
 
 import scala.util.Try
 
@@ -16,45 +17,43 @@ object HttpDate {
   /**
    * The GMT time zone.
    */
-  val zone: DateTimeZone = DateTimeZone.forID("GMT")
+  val zoneId: ZoneId = ZoneId.of("GMT")
+  def zone: java.util.TimeZone = java.util.TimeZone.getTimeZone(zoneId)
 
   // IMF-fixdate
-  private val imfFixDateFormat = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-    .withLocale(java.util.Locale.ENGLISH)
-    .withZone(DateTimeZone.forID("GMT"))
+  private val imfFixDateFormat: DateTimeFormatter = {
+    // RFC 7231
+    DateTimeFormatter.RFC_1123_DATE_TIME
+  }
 
   // RFC 850 / 1036 format.
-  private val rfc850Format = DateTimeFormat.forPattern("EEEE, dd-MMM-yy HH:mm:ss 'GMT'")
-    .withLocale(java.util.Locale.ENGLISH)
-    .withZone(DateTimeZone.forID("GMT"))
+  private def rfc850Format: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE, dd-MMM-yy HH:mm:ss 'GMT'").withLocale(java.util.Locale.ENGLISH).withZone(zoneId)
 
   // asctime format.
-  private val asctimeFormat = DateTimeFormat.forPattern("EEE MMM d HH:mm:ss yyyy")
-    .withLocale(java.util.Locale.ENGLISH)
-    .withZone(DateTimeZone.forID("GMT"))
+  private def asctimeFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss yyyy").withLocale(java.util.Locale.ENGLISH).withZone(zoneId)
 
-  def format(dateTime: DateTime): String = {
+  def format(dateTime: TemporalAccessor): String = {
     // When a sender generates a header field that contains one or more timestamps defined as
     // HTTP-date, the sender MUST generate those timestamps in the IMF-fixdate format.
-    imfFixDateFormat.print(dateTime)
+    imfFixDateFormat.format(dateTime)
   }
 
   /**
-   * Returns the number of seconds between two dates.
+   * Returns the duration between two dates.
    */
-  def diff(start: DateTime, end: DateTime): Seconds = {
-    Seconds.secondsBetween(start, end)
+  def diff(start: Temporal, end: Temporal): Duration = {
+    Duration.between(start, end)
   }
 
   /**
    * Returns the current time, in the correct GMT time zone.
    */
-  def now: DateTime = DateTime.now(zone)
+  def now: ZonedDateTime = ZonedDateTime.now(zoneId)
 
   /**
    * Parses an HTTP date according to http://tools.ietf.org/html/rfc7231#section-7.1.1.1
    */
-  def parse(dateString: String): DateTime = {
+  def parse(dateString: String): ZonedDateTime = {
     // A recipient that parses a timestamp value in an HTTP header field
     // MUST accept all three HTTP-date formats.
     Try {
@@ -70,21 +69,23 @@ object HttpDate {
    * Produces a DateTime object, given the time since epoch IN SECONDS.  Note that most
    * Java methods return TSE in milliseconds, so be careful.
    */
-  def fromEpochSeconds(timeSinceEpochInSeconds: Int): DateTime = {
-    new DateTime(timeSinceEpochInSeconds.toLong * 1000).withZone(HttpDate.zone)
+  def fromEpochSeconds(timeSinceEpochInSeconds: Int): ZonedDateTime = {
+    new ZonedDateTime(timeSinceEpochInSeconds.toLong * 1000).withZoneSameLocal(zoneId)
   }
 
-  private def parseIMF(dateString: String): DateTime = {
-    imfFixDateFormat.parseDateTime(dateString)
+  private def parseIMF(dateString: String): ZonedDateTime = {
+    val query: TemporalQuery[ZonedDateTime] = ZonedDateTime.from _
+    imfFixDateFormat.parse(dateString, query)
   }
 
-  private def parseAscTime(dateString: String): DateTime = {
+  private def parseAscTime(dateString: String): ZonedDateTime = {
     // Sun Nov  6 08:49:37 1994         ; ANSI C's asctime() format
-    asctimeFormat.parseDateTime(dateString)
+    val query: TemporalQuery[ZonedDateTime] = ZonedDateTime.from _
+    asctimeFormat.parse(dateString, query)
   }
 
   // http://tools.ietf.org/html/rfc850#section-2.1.4
-  private def parseRFC850(dateString: String): DateTime = {
+  private def parseRFC850(dateString: String): ZonedDateTime = {
     // Sunday, 06-Nov-94 08:49:37 GMT   ; obsolete RFC 850 format
 
     // Recipients of a timestamp value in rfc850-date format, which uses a
@@ -94,7 +95,8 @@ object HttpDate {
     // -- it turns out that Joda Time handles this automatically, because it can
     // determine
 
-    rfc850Format.parseDateTime(dateString)
+    val query: TemporalQuery[ZonedDateTime] = ZonedDateTime.from _
+    rfc850Format.parse(dateString, query)
   }
 
 }
