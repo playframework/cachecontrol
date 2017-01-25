@@ -6,8 +6,6 @@ organization := "com.typesafe.play"
 
 scalaVersion := "2.12.1"
 
-version := "1.1.0-SNAPSHOT"
-
 crossScalaVersions := Seq("2.12.1", "2.11.6", "2.10.6")
 
 libraryDependencies := {
