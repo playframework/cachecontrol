@@ -1,3 +1,11 @@
+<!--
+  ~ Copyright (C) 2015-2017 Lightbend, Inc. All rights reserved.
+  -->
+
+<!--
+  ~ Copyright (C) 2015-2017 Lightbend, Inc. All rights reserved.
+  -->
+
 <scalastyle>
  <name>Scalastyle Typesafe configuration</name>
  <check level="warning" class="org.scalastyle.file.FileTabChecker" enabled="true"></check>
@@ -9,7 +17,7 @@
  <check level="warning" class="org.scalastyle.file.HeaderMatchesChecker" enabled="true">
   <parameters>
    <parameter name="header"><![CDATA[/*
- * Copyright (C) 2015 Typesafe Inc. <http://www.typesafe.com>
+ * Copyright (C) 2015-2017 Lightbend, Inc. All rights reserved.
  */]]></parameter>
   </parameters>
  </check>

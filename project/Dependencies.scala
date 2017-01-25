@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
+ * Copyright (C) 2015-2017 Lightbend, Inc. All rights reserved.
  */
 import sbt._
 
@@ -11,12 +11,12 @@ object Dependencies {
     "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
   )
 
-  val parserCombinatorVersion = "1.0.3"
+  val parserCombinatorVersion = "1.0.5"
   val parserCombinators = Seq(
     "org.scala-lang.modules" %% "scala-parser-combinators" % parserCombinatorVersion
   )
 
-  val slf4jVersion = "1.7.10"
+  val slf4jVersion = "1.7.22"
   val slf4j = Seq(
     "org.slf4j" % "slf4j-api" % slf4jVersion,
     "org.slf4j" % "slf4j-nop" % slf4jVersion

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
+ * Copyright (C) 2015-2017 Lightbend, Inc. All rights reserved.
  */
 package com.typesafe.play.cachecontrol
 
