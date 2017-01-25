@@ -1,8 +1,5 @@
 import Dependencies._
 
-import scalariform.formatter.preferences._
-import com.typesafe.sbt.SbtScalariform._
-
 name := "cachecontrol"
 
 organization := "com.typesafe.play"
@@ -27,17 +24,6 @@ publishTo := {
 
 pomIncludeRepository := { _ => false }
 
-// Good practice options
-scalacOptions ++= Seq(
-  "-encoding", "UTF-8",
-  "-Xlint",
-  "-deprecation",
-  "-Yno-adapted-args",
-  "-Ywarn-numeric-widen",
-  "-Xfatal-warnings"
-)
-
-
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
     case Some((2, scalaMajor)) if scalaMajor >= 11 =>
@@ -50,4 +36,3 @@ libraryDependencies := {
 
 libraryDependencies ++= scalaTest ++ jodaTime ++ slf4j
 
-scalariformSettings

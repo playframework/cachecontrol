@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>
+ * Copyright (C) 2015-2017 Lightbend, Inc. All rights reserved.
  */
 package com.typesafe.play.cachecontrol
 
@@ -23,7 +23,8 @@ class CurrentAgeCalculator {
     headers: Map[HeaderName, Seq[String]],
     now: DateTime,
     requestTime: DateTime,
-    responseTime: DateTime): Seconds = {
+    responseTime: DateTime
+  ): Seconds = {
     if (logger.isTraceEnabled) {
       logger.trace(s"calculateCurrentAge(headers: $headers, now: $now, requestTime: $requestTime, responseTime: $responseTime)")
     }
