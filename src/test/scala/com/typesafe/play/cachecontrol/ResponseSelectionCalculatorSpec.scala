@@ -186,7 +186,7 @@ class ResponseSelectionCalculatorSpec extends WordSpec {
         action should be(ForwardToOrigin("Valid response not found for request"))
       }
 
-      "return GatewayTimeout if request specifies only-if-cached" should {
+      "return GatewayTimeout if request specifies only-if-cached" in {
         val policy = new ResponseSelectionCalculator(cache)
 
         val uri = new java.net.URI("http://localhost/cache")

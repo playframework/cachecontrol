@@ -4,11 +4,11 @@ name := "cachecontrol"
 
 organization := "com.typesafe.play"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.1"
 
 version := "1.1.0-SNAPSHOT"
 
-crossScalaVersions := Seq("2.10.5", "2.11.6")
+crossScalaVersions := Seq("2.12.1", "2.11.6", "2.10.6")
 
 publishMavenStyle := true
 
