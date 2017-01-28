@@ -1,3 +1,5 @@
+// https://github.com/xerial/sbt-sonatype
+
 sonatypeProfileName := "com.typesafe"
 
 pomExtra :=
