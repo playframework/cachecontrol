@@ -2,8 +2,9 @@
 
 [![Build Status](https://travis-ci.org/playframework/cachecontrol.svg?branch=master)](https://travis-ci.org/playframework/cachecontrol)
  
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/playframework/cachecontrol/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/playframework/cachecontrol)
 
-This is a minimal library that provides a set of utility calculators that abstract away much of the fiddly complexities involved in adhering to the HTTP caching model, aka RFC 7234.
+This is a minimal library that provides a set of utility calculators that abstract away much of the fiddly complexities involved in adhering to the HTTP caching model, aka [RFC 7234](https://tools.ietf.org/html/rfc7234).
 
 It does not implement caching itself, and there are some aspects of RFC 7234 which must be implemented directly, such as stripping headers, invalidating unsafe methods, and implementing the Vary header functionality correctly.
 
@@ -12,7 +13,7 @@ It does not implement caching itself, and there are some aspects of RFC 7234 whi
 To add this project to SBT, use:
 
 ```
-libraryDependencies += "com.typesafe.play" %% "cachecontrol" % "1.1.0"
+libraryDependencies += "com.typesafe.play" %% "cachecontrol" % "1.1.1"
 ```
 
 ## License 

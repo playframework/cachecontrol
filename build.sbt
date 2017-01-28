@@ -25,6 +25,8 @@ libraryDependencies ++= scalaTest ++ jodaTime ++ slf4j
 //---------------------------------------------------------------
 import ReleaseTransformations._
 
+releaseCrossBuild := true
+
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
