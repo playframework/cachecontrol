@@ -1,6 +1,6 @@
 # CacheControl
 
-[![Build Status](https://travis-ci.org/playframework/cachecontrol.svg?branch=master)](https://travis-ci.org/playframework/cachecontrol) [<img src="https://img.shields.io/travis/playframework/cachecontrol.svg"/>](https://travis-ci.org/playframework/cachecontrol) [![Maven](https://img.shields.io/maven-central/v/com.typesafe.play/cachecontrol_2.12.svg)](http://mvnrepository.com/artifact/com.typesafe.play/cachecontrol_2.12)
+[![Build Status](https://travis-ci.org/playframework/cachecontrol.svg?branch=master)](https://travis-ci.org/playframework/cachecontrol) [![Maven](https://img.shields.io/maven-central/v/com.typesafe.play/cachecontrol_2.12.svg)](http://mvnrepository.com/artifact/com.typesafe.play/cachecontrol_2.12)
 
 This is a minimal library that provides a set of utility calculators that abstract away much of the fiddly complexities involved in adhering to the HTTP caching model, aka [RFC 7234](https://tools.ietf.org/html/rfc7234).
 
