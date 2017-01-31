@@ -18,8 +18,7 @@ object Dependencies {
 
   val slf4jVersion = "1.7.22"
   val slf4j = Seq(
-    "org.slf4j" % "slf4j-api" % slf4jVersion,
-    "org.slf4j" % "slf4j-nop" % slf4jVersion
+    "org.slf4j" % "slf4j-api" % slf4jVersion
   )
 
   val jodaTime = Seq(

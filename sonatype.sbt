@@ -2,7 +2,7 @@
 
 sonatypeProfileName := "com.typesafe"
 
-pomExtra :=
+pomExtra in Global :=
   <url>https://github.com/playframework/cachecontrol</url>
     <licenses>
       <license>
