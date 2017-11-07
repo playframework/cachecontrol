@@ -4,9 +4,9 @@ name := "cachecontrol"
 
 organization := "com.typesafe.play"
 
-scalaVersion := "2.12.1"
+scalaVersion := "2.12.3"
 
-crossScalaVersions := Seq("2.12.1", "2.11.6", "2.10.6")
+crossScalaVersions := Seq("2.12.3", "2.11.11", "2.10.6", "2.13.0-M2")
 
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
