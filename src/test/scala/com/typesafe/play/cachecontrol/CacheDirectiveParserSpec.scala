@@ -154,8 +154,7 @@ class CacheDirectiveParserSpec extends WordSpec {
         CacheDirectiveExtension("i", None),
         CacheDirectiveExtension("have", None),
         CacheDirectiveExtension("no", Some("idea")),
-        CacheDirectiveExtension("what", Some("I'm, doing"))
-      )
+        CacheDirectiveExtension("what", Some("I'm, doing")))
 
       directives should contain theSameElementsAs badSequence
     }

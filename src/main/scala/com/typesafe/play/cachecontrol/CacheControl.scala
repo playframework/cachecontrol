@@ -83,12 +83,11 @@ case class OriginResponse(uri: URI, status: Int, headers: Map[HeaderName, Seq[St
  * @param nominatedHeaders the request headers that were nominated by the response's Vary header.
  */
 case class StoredResponse(
-    uri: URI,
-    status: Int,
-    headers: Map[HeaderName, Seq[String]],
-    requestMethod: String,
-    nominatedHeaders: Map[HeaderName, Seq[String]]
-) extends CacheResponse {
+  uri: URI,
+  status: Int,
+  headers: Map[HeaderName, Seq[String]],
+  requestMethod: String,
+  nominatedHeaders: Map[HeaderName, Seq[String]]) extends CacheResponse {
   import HeaderNames._
 
   lazy val directives: collection.immutable.Seq[CacheDirective] = CacheDirectiveParser.parse(headers.getOrElse(`Cache-Control`, Nil))

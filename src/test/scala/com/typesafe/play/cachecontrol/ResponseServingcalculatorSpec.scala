@@ -26,8 +26,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
     val age = Seconds.seconds(60)
     val headers = Map(
       `Date` -> Seq(HttpDate.format(now)),
-      `Age` -> Seq(age.getSeconds.toString)
-    )
+      `Age` -> Seq(age.getSeconds.toString))
     val nominatedHeaders = Map[HeaderName, Seq[String]]()
     StoredResponse(uri, status, headers, requestMethod, nominatedHeaders)
   }

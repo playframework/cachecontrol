@@ -19,8 +19,7 @@ class ResponseCachingCalculatorSpec extends WordSpec {
 
   def defaultHeaders = {
     Map(
-      `Date` -> Seq(HttpDate.format(HttpDate.now))
-    )
+      `Date` -> Seq(HttpDate.format(HttpDate.now)))
   }
 
   def defaultRequest = {
@@ -71,8 +70,7 @@ class ResponseCachingCalculatorSpec extends WordSpec {
     "with Authorized Header in request" should {
 
       val authHeader = Map(
-        HeaderNames.`Authorization` -> Seq("*")
-      )
+        HeaderNames.`Authorization` -> Seq("*"))
 
       "return DoNotCacheResponse if a shared cache" in {
         val policy = new ResponseCachingCalculator(sharedCache)
@@ -216,8 +214,7 @@ class ResponseCachingCalculatorSpec extends WordSpec {
       "return DoCacheResponse" in {
         val policy = new ResponseCachingCalculator(privateCache)
         val expiresHeader = Map(
-          HeaderNames.`Expires` -> Seq(HttpDate.format(HttpDate.now))
-        )
+          HeaderNames.`Expires` -> Seq(HttpDate.format(HttpDate.now)))
         val request: CacheRequest = defaultRequest
         val response: OriginResponse = defaultResponse.copy(headers = defaultHeaders ++ expiresHeader)
         val result = policy.isCacheable(request, response)

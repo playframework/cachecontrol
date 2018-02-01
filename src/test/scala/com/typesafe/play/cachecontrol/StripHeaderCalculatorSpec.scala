@@ -19,8 +19,7 @@ class StripHeaderCalculatorSpec extends WordSpec {
 
   def defaultHeaders = {
     Map(
-      `Date` -> Seq(HttpDate.format(HttpDate.now))
-    )
+      `Date` -> Seq(HttpDate.format(HttpDate.now)))
   }
 
   def defaultRequest = {

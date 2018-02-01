@@ -24,8 +24,7 @@ class ResponseSelectionCalculatorSpec extends WordSpec {
     val date = HttpDate.now.minus(age)
     val headers = Map(
       `Date` -> Seq(HttpDate.format(date)),
-      `Age` -> Seq(age.getSeconds.toString)
-    )
+      `Age` -> Seq(age.getSeconds.toString))
     headers
   }
 
