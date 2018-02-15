@@ -23,8 +23,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
     val ageSeconds = Seconds.seconds(60)
     val headers = Map(
       `Date` -> Seq(HttpDate.format(now)),
-      `Age` -> Seq(ageSeconds.getSeconds.toString)
-    )
+      `Age` -> Seq(ageSeconds.getSeconds.toString))
     StoredResponse(uri, status, headers, requestMethod, Map())
   }
 
@@ -35,8 +34,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
       val ageSeconds = Seconds.seconds(60)
       val headers = Map(
         `Date` -> Seq(HttpDate.format(now)),
-        `Age` -> Seq(ageSeconds.getSeconds.toString)
-      )
+        `Age` -> Seq(ageSeconds.getSeconds.toString))
 
       val seconds = ageCalculator.calculateAgeValue(headers)
       seconds should be(ageSeconds)
@@ -45,8 +43,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
     "calculate age as 0 if Age header is missing" in {
       val now = HttpDate.now
       val headers = Map(
-        `Date` -> Seq(HttpDate.format(now))
-      )
+        `Date` -> Seq(HttpDate.format(now)))
       val seconds = ageCalculator.calculateAgeValue(headers)
       seconds should be(Seconds.seconds(0))
     }
@@ -58,8 +55,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
       val ageSeconds = Seconds.seconds(60)
       val date = HttpDate.now.minus(ageSeconds.toStandardDuration)
       val headers = Map(
-        `Date` -> Seq(HttpDate.format(date))
-      )
+        `Date` -> Seq(HttpDate.format(date)))
 
       val calculatedDate = ageCalculator.calculateDateValue(headers)
       HttpDate.diff(calculatedDate, date) should be(zeroSeconds)
@@ -67,8 +63,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
 
     "throw exception if Date header is missing" in {
       val headers = Map(
-        `Age` -> Seq("60")
-      )
+        `Age` -> Seq("60"))
       a[CacheControlException] should be thrownBy { ageCalculator.calculateDateValue(headers) }
     }
   }
@@ -84,8 +79,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
       val responseTime = now
 
       val headers = Map(
-        `Date` -> Seq(HttpDate.format(originDate))
-      )
+        `Date` -> Seq(HttpDate.format(originDate)))
       val seconds = ageCalculator.calculateCurrentAge(headers, now, requestTime, responseTime)
       seconds should be(Seconds.seconds(60))
     }
@@ -100,8 +94,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
       val responseTime = now
 
       val headers = Map(
-        `Date` -> Seq(HttpDate.format(originDate))
-      )
+        `Date` -> Seq(HttpDate.format(originDate)))
       // Because there's no age header, it comes back with
       // apparent_age = responseTime (now) - dateValue (now - 60) = 60 seconds
       // corrected_age_value = age_value (0) + response_delay (2 seconds) = 2 seconds
@@ -123,8 +116,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
 
       val headers = Map(
         `Age` -> Seq(originAge.getSeconds.toString),
-        `Date` -> Seq(HttpDate.format(originDate))
-      )
+        `Date` -> Seq(HttpDate.format(originDate)))
       val seconds = ageCalculator.calculateCurrentAge(headers, now, requestTime, responseTime)
       seconds should be(Seconds.seconds(60))
     }
@@ -141,8 +133,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
 
       val headers = Map(
         `Age` -> Seq(originAge.getSeconds.toString),
-        `Date` -> Seq(HttpDate.format(originDate))
-      )
+        `Date` -> Seq(HttpDate.format(originDate)))
       val seconds = ageCalculator.calculateCurrentAge(headers, now, requestTime, responseTime)
       // The final content should be 62 seconds.
       seconds should be(Seconds.seconds(62))

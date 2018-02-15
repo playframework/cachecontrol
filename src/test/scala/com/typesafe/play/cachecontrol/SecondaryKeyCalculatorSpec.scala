@@ -16,16 +16,14 @@ class SecondaryKeyCalculatorSpec extends WordSpec {
     val headers = Map(
       `Date` -> Seq(HttpDate.format(now)),
       `Age` -> Seq(age.getSeconds.toString),
-      HeaderName("Content-Encoding") -> Seq("gzip")
-    )
+      HeaderName("Content-Encoding") -> Seq("gzip"))
     headers
   }
 
   def defaultRequest = {
     val uri = new java.net.URI("http://example.com/data")
     val headers = Map(
-      HeaderName("Accept-Encoding") -> Seq("gzip")
-    )
+      HeaderName("Accept-Encoding") -> Seq("gzip"))
     CacheRequest(uri, "GET", headers)
   }
 

@@ -16,8 +16,7 @@ class FreshnessCalculatorSpec extends WordSpec {
 
   def defaultHeaders = {
     Map(
-      `Date` -> Seq(HttpDate.format(HttpDate.now))
-    )
+      `Date` -> Seq(HttpDate.format(HttpDate.now)))
   }
 
   def defaultRequest = {
@@ -46,8 +45,7 @@ class FreshnessCalculatorSpec extends WordSpec {
       val request = defaultRequest
       val headers = defaultHeaders ++ Map(HeaderName("Expires") -> Seq(
         HttpDate.format(HttpDate.now.plusSeconds(134)),
-        HttpDate.format(HttpDate.now.plusSeconds(11))
-      ))
+        HttpDate.format(HttpDate.now.plusSeconds(11))))
       val response: OriginResponse = defaultResponse.copy(headers = headers)
 
       val seconds = calculator.calculateFreshnessLifetime(request, response)
@@ -85,8 +83,7 @@ class FreshnessCalculatorSpec extends WordSpec {
       val request = defaultRequest
       val headers = defaultHeaders ++ Map(
         HeaderName("Expires") -> Seq(HttpDate.format(HttpDate.now.plusSeconds(134))),
-        HeaderName("Cache-Control") -> Seq("max-age=113")
-      )
+        HeaderName("Cache-Control") -> Seq("max-age=113"))
       val response: OriginResponse = defaultResponse.copy(headers = headers)
 
       val seconds = calculator.calculateFreshnessLifetime(request, response)
@@ -107,8 +104,7 @@ class FreshnessCalculatorSpec extends WordSpec {
       // (Section 5.2.2.9), a shared cache recipient MUST ignore the Expires field.
       val request = defaultRequest
       val headers = defaultHeaders ++ Map(
-        HeaderName("Cache-Control") -> Seq("s-maxage=113")
-      )
+        HeaderName("Cache-Control") -> Seq("s-maxage=113"))
       val response: OriginResponse = defaultResponse.copy(headers = headers)
 
       val seconds = calculator.calculateFreshnessLifetime(request, response)
@@ -124,8 +120,7 @@ class FreshnessCalculatorSpec extends WordSpec {
       val request = defaultRequest
       val headers = defaultHeaders ++ Map(
         HeaderName("Expires") -> Seq(HttpDate.format(HttpDate.now.plusSeconds(134))),
-        HeaderName("Cache-Control") -> Seq("s-maxage=113")
-      )
+        HeaderName("Cache-Control") -> Seq("s-maxage=113"))
       val response: OriginResponse = defaultResponse.copy(headers = headers)
 
       val seconds = calculator.calculateFreshnessLifetime(request, response)
@@ -139,8 +134,7 @@ class FreshnessCalculatorSpec extends WordSpec {
       val request = defaultRequest
       val headers = defaultHeaders ++ Map(
         HeaderName("Expires") -> Seq(HttpDate.format(HttpDate.now.plusSeconds(134))),
-        HeaderName("Cache-Control") -> Seq("s-maxage=113,max-age=311")
-      )
+        HeaderName("Cache-Control") -> Seq("s-maxage=113,max-age=311"))
       val response: OriginResponse = defaultResponse.copy(headers = headers)
 
       val seconds = calculator.calculateFreshnessLifetime(request, response)
@@ -154,8 +148,7 @@ class FreshnessCalculatorSpec extends WordSpec {
       val request = defaultRequest
       val headers = defaultHeaders ++ Map(
         HeaderName("Expires") -> Seq(HttpDate.format(HttpDate.now.plusSeconds(134))),
-        HeaderName("Cache-Control") -> Seq("s-maxage=113,max-age=311")
-      )
+        HeaderName("Cache-Control") -> Seq("s-maxage=113,max-age=311"))
       val response: OriginResponse = defaultResponse.copy(headers = headers)
 
       val seconds = calculator.calculateFreshnessLifetime(request, response)
