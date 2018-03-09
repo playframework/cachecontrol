@@ -29,6 +29,10 @@ import ReleaseTransformations._
 
 releaseCrossBuild := true
 
+// This automatically selects the snapshots or staging repository
+// according to the version value.
+publishTo in ThisBuild := Some(sonatypeDefaultResolver.value)
+
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
