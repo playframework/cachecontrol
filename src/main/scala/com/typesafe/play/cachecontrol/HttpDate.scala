@@ -3,8 +3,9 @@
  */
 package com.typesafe.play.cachecontrol
 
-import org.joda.time._
-import org.joda.time.format.DateTimeFormat
+import java.time.format.{ DateTimeFormatter, DateTimeFormatterBuilder, ResolverStyle, TextStyle }
+import java.time.temporal.ChronoField
+import java.time._
 
 import scala.util.Try
 
@@ -16,45 +17,66 @@ object HttpDate {
   /**
    * The GMT time zone.
    */
-  val zone: DateTimeZone = DateTimeZone.forID("GMT")
+  val zone: ZoneId = ZoneId.of("GMT")
+
+  private val EMPTY = ' '
 
   // IMF-fixdate
-  private val imfFixDateFormat = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+  private val imfFixDateFormat = DateTimeFormatter
+    .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
     .withLocale(java.util.Locale.ENGLISH)
-    .withZone(DateTimeZone.forID("GMT"))
+    .withZone(zone)
 
   // RFC 850 / 1036 format.
-  private val rfc850Format = DateTimeFormat.forPattern("EEEE, dd-MMM-yy HH:mm:ss 'GMT'")
-    .withLocale(java.util.Locale.ENGLISH)
-    .withZone(DateTimeZone.forID("GMT"))
+  private def rfc850Format(pattern: String) = {
+    new DateTimeFormatterBuilder()
+      .appendPattern(pattern)
+      .appendLiteral(',')
+      .appendLiteral(EMPTY)
+      .appendPattern("dd-MMM-")
+      // Pivot Year:
+      // https://github.com/JodaOrg/joda-time/blob/master/src/main/java/org/joda/time/format/DateTimeFormat.java#L455
+      .appendValueReduced(ChronoField.YEAR, 2, 2, Year.now().getValue - 30)
+      .appendLiteral(EMPTY)
+      .appendPattern("HH:mm:ss")
+      .appendLiteral(EMPTY)
+      .appendLiteral("GMT")
+      .parseLenient()
+      .toFormatter(java.util.Locale.ENGLISH)
+      .withZone(zone)
+      .withResolverStyle(ResolverStyle.LENIENT)
+  }
 
   // asctime format.
-  private val asctimeFormat = DateTimeFormat.forPattern("EEE MMM d HH:mm:ss yyyy")
+  private val asctimeFormat = DateTimeFormatter
+    .ofPattern("EEE MMM d HH:mm:ss yyyy")
     .withLocale(java.util.Locale.ENGLISH)
-    .withZone(DateTimeZone.forID("GMT"))
+    .withZone(zone)
 
-  def format(dateTime: DateTime): String = {
+  def format(dateTime: ZonedDateTime): String = {
     // When a sender generates a header field that contains one or more timestamps defined as
     // HTTP-date, the sender MUST generate those timestamps in the IMF-fixdate format.
-    imfFixDateFormat.print(dateTime)
+    imfFixDateFormat.format(dateTime)
   }
 
   /**
    * Returns the number of seconds between two dates.
    */
-  def diff(start: DateTime, end: DateTime): Seconds = {
-    Seconds.secondsBetween(start, end)
+  def diff(start: ZonedDateTime, end: ZonedDateTime): Seconds = {
+    // we only need the diff of the seconds, so we actually use between
+    // and then remove the seconds part
+    Seconds.between(start, end)
   }
 
   /**
    * Returns the current time, in the correct GMT time zone.
    */
-  def now: DateTime = DateTime.now(zone)
+  def now: ZonedDateTime = ZonedDateTime.now(zone)
 
   /**
    * Parses an HTTP date according to http://tools.ietf.org/html/rfc7231#section-7.1.1.1
    */
-  def parse(dateString: String): DateTime = {
+  def parse(dateString: String): ZonedDateTime = {
     // A recipient that parses a timestamp value in an HTTP header field
     // MUST accept all three HTTP-date formats.
     Try {
@@ -65,36 +87,40 @@ object HttpDate {
       case _ => parseAscTime(dateString)
     }.get
   }
-
-  /**
-   * Produces a DateTime object, given the time since epoch IN SECONDS.  Note that most
-   * Java methods return TSE in milliseconds, so be careful.
-   */
-  def fromEpochSeconds(timeSinceEpochInSeconds: Int): DateTime = {
-    new DateTime(timeSinceEpochInSeconds.toLong * 1000).withZone(HttpDate.zone)
+  private def parseIMF(dateString: String): ZonedDateTime = {
+    ZonedDateTime.parse(dateString, imfFixDateFormat)
   }
-
-  private def parseIMF(dateString: String): DateTime = {
-    imfFixDateFormat.parseDateTime(dateString)
+  private def parseAscTime(dateString: String): ZonedDateTime = {
+    // Sun Nov 6 08:49:37 1994         ; ANSI C's asctime() format
+    ZonedDateTime.parse(dateString, asctimeFormat)
   }
-
-  private def parseAscTime(dateString: String): DateTime = {
-    // Sun Nov  6 08:49:37 1994         ; ANSI C's asctime() format
-    asctimeFormat.parseDateTime(dateString)
-  }
-
   // http://tools.ietf.org/html/rfc850#section-2.1.4
-  private def parseRFC850(dateString: String): DateTime = {
+  private def parseRFC850(dateString: String): ZonedDateTime = {
     // Sunday, 06-Nov-94 08:49:37 GMT   ; obsolete RFC 850 format
 
     // Recipients of a timestamp value in rfc850-date format, which uses a
     // two-digit year, MUST interpret a timestamp that appears to be more
     // than 50 years in the future as representing the most recent year in
     // the past that had the same last two digits.
-    // -- it turns out that Joda Time handles this automatically, because it can
-    // determine
+    // -- java.time needs to handle 'Sunday' and 'Sun' with different date formatters and
+    // we need to provide a pivot year like yoda does:
+    // https://github.com/JodaOrg/joda-time/blob/master/src/main/java/org/joda/time/format/DateTimeFormat.java#L455
 
-    rfc850Format.parseDateTime(dateString)
+    Try {
+      ZonedDateTime.parse(dateString, rfc850Format("EEE"))
+    }.recover {
+      case _ => ZonedDateTime.parse(dateString, rfc850Format("EEEE"))
+    }.get
+  }
+
+  /**
+   * Produces a DateTime object, given the time since epoch IN SECONDS.  Note that most
+   * Java methods return TSE in milliseconds, so be careful.
+   */
+  def fromEpochSeconds(timeSinceEpochInSeconds: Int): ZonedDateTime = {
+    ZonedDateTime.ofInstant(
+      Instant.ofEpochSecond(timeSinceEpochInSeconds),
+      HttpDate.zone)
   }
 
 }

@@ -5,7 +5,6 @@
 package com.typesafe.play.cachecontrol
 
 import CacheDirectives.CacheDirectiveExtension
-import org.joda.time.Seconds
 
 /**
  * This trait defines methods that are used through the library where core business logic

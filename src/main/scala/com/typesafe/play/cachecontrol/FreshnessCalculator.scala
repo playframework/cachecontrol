@@ -4,7 +4,6 @@
 package com.typesafe.play.cachecontrol
 
 import CacheDirectives.SMaxAge
-import org.joda.time.Seconds
 import org.slf4j.LoggerFactory
 
 /**
@@ -62,7 +61,7 @@ class FreshnessCalculator(cache: Cache) {
     }
 
     val result = maybeResult.getOrElse {
-      Seconds.seconds(0)
+      Seconds.ZERO
     }
     logger.debug(s"calculateFreshnessLifetime: result = $result")
     result

@@ -3,8 +3,6 @@
  */
 package com.typesafe.play.cachecontrol
 
-import org.joda.time.Seconds
-
 /**
  * A trait that marks the cache directives generated
  * from parsing a cache-control header.
@@ -18,7 +16,7 @@ object CacheDirectives {
   // https://tools.ietf.org/html/rfc7234#section-5.2.2.8
   // https://tools.ietf.org/html/rfc7234#section-5.2.1.1
   case class MaxAge(delta: Seconds) extends CacheDirective {
-    override def toString: String = s"max-age=${delta.getSeconds}"
+    override def toString: String = s"max-age=${delta.seconds}"
   }
 
   /**
@@ -52,7 +50,7 @@ object CacheDirectives {
     override def toString: String = {
       delta match {
         case Some(d) =>
-          s"max-stale=${d.getSeconds}"
+          s"max-stale=${d.seconds}"
         case None =>
           "max-stale"
       }
@@ -70,7 +68,7 @@ object CacheDirectives {
 
   // https://tools.ietf.org/html/rfc7234#section-5.2.1.3
   case class MinFresh(delta: Seconds) extends CacheDirective {
-    override def toString: String = s"min-fresh=${delta.getSeconds}"
+    override def toString: String = s"min-fresh=${delta.seconds}"
   }
 
   def minFresh(directives: scala.collection.immutable.Seq[CacheDirective]): Option[MinFresh] = {
@@ -184,7 +182,7 @@ object CacheDirectives {
 
   // https://tools.ietf.org/html/rfc7234#section-5.2.2.9
   case class SMaxAge(delta: Seconds) extends CacheDirective {
-    override def toString: String = s"s-maxage=${delta.getSeconds}"
+    override def toString: String = s"s-maxage=${delta.seconds}"
   }
 
   def sMaxAge(directives: scala.collection.immutable.Seq[CacheDirective]): Option[SMaxAge] = {
@@ -198,7 +196,7 @@ object CacheDirectives {
 
   // https://tools.ietf.org/html/rfc5861#section-3
   case class StaleWhileRevalidate(delta: Seconds) extends CacheDirective {
-    override def toString: String = s"stale-while-revalidate=${delta.getSeconds}"
+    override def toString: String = s"stale-while-revalidate=${delta.seconds}"
   }
 
   def staleWhileRevalidate(directives: scala.collection.immutable.Seq[CacheDirective]): Option[StaleWhileRevalidate] = {
@@ -212,7 +210,7 @@ object CacheDirectives {
 
   // https://tools.ietf.org/html/rfc5861#section-4
   case class StaleIfError(delta: Seconds) extends CacheDirective {
-    override def toString: String = s"stale-if-error=${delta.getSeconds}"
+    override def toString: String = s"stale-if-error=${delta.seconds}"
   }
 
   def staleIfError(directives: scala.collection.immutable.Seq[CacheDirective]): Option[StaleIfError] = {

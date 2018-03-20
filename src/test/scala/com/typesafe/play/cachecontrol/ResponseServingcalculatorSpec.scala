@@ -4,9 +4,9 @@
 package com.typesafe.play.cachecontrol
 
 import java.net.URI
+import java.time.Duration
 
 import HeaderNames._
-import org.joda.time.Seconds
 import org.scalactic.ConversionCheckedTripleEquals
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
@@ -23,7 +23,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
     val status = 200
     val requestMethod = "GET"
     val now = HttpDate.now
-    val age = Seconds.seconds(60)
+    val age = Duration.ofSeconds(60)
     val headers = Map(
       `Date` -> Seq(HttpDate.format(now)),
       `Age` -> Seq(age.getSeconds.toString))
@@ -51,7 +51,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-cache")))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("max-age=60")))
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(5))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(5))
         val msg = "Fresh response: lifetime = PT60S, PT55S seconds left"
         action should be(ServeFresh(msg))
       }
@@ -62,7 +62,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-cache")))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("max-age=60")))
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(65))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(65))
         val msg = "Response is stale, and stale response is not allowed"
         action should be(Validate(msg))
       }
@@ -77,7 +77,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-store")))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("publish,max-age=60")))
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(5))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(5))
         val msg = "Fresh response: lifetime = PT60S, PT55S seconds left"
         action should be(ServeFresh(msg))
       }
@@ -88,7 +88,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-store")))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("publish,max-age=60")))
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         val msg = "Response is stale, and stale response is not allowed"
         action should be(Validate(msg))
       }
@@ -105,7 +105,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=10"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(5))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(5))
         action should be(ServeFresh("Fresh response: lifetime = PT10S, PT5S seconds left"))
       }
 
@@ -118,7 +118,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=10"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(500))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(500))
         action should be(ServeStale(s"Request contains no-args max-stale directive"))
       }
 
@@ -131,7 +131,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=10"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(30))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(30))
         action should be(ServeStale(s"Request contains max-stale=60, current age = 30 which is inside range"))
       }
 
@@ -144,7 +144,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=10"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(120))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(120))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }
     }
@@ -160,7 +160,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }
 
@@ -173,7 +173,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(ServeFresh(s"Fresh response: lifetime = PT120S, PT60S seconds left"))
       }
 
@@ -186,7 +186,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(120))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(120))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }
 
@@ -203,7 +203,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(ServeFresh(s"Fresh response: minFresh = PT60S, freshnessLifetime = PT120S, currentAge = PT60S"))
       }
 
@@ -216,7 +216,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(120))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(120))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }
 
@@ -229,7 +229,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }
     }
@@ -243,7 +243,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=10,stale-if-error=30"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(20))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(20))
         action should be(Validate(s"Response is stale, and stale response is not allowed", staleIfError = true))
       }
 
@@ -254,7 +254,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=10,stale-if-error=30"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(Validate(s"Response is stale, and stale response is not allowed", staleIfError = false))
       }
     }
@@ -272,7 +272,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val request = defaultRequest
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ headers)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(Validate("Response is stale, and stale response is not allowed"))
       }
 
@@ -287,7 +287,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val request = defaultRequest
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ headers)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(ServeFresh("Fresh response: lifetime = PT600S, PT540S seconds left"))
       }
 
@@ -303,7 +303,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val request = defaultRequest
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ headers)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(Validate("Response is stale, and stale response is not allowed"))
       }
 
@@ -319,7 +319,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120, must-revalidate"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(ServeFresh("Fresh response: lifetime = PT120S, PT60S seconds left"))
       }
 
@@ -331,7 +331,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120, must-revalidate"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(300))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(300))
         action should be(ValidateOrTimeout(s"Response is stale, response contains must-revalidate directive"))
       }
 
@@ -350,7 +350,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=120"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(ServeFresh("Fresh response: lifetime = PT120S, PT60S seconds left"))
       }
 
@@ -362,7 +362,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=120"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(300))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(300))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }
 
@@ -374,7 +374,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=0"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(0))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(0))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }
     }
@@ -391,7 +391,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
           val responseHeaders = Map(`Cache-Control` -> Seq("max-age=300,s-maxage=0"))
           val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-          val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(0))
+          val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(0))
           action should be(ServeFresh(s"Fresh response: lifetime = PT300S, PT300S seconds left"))
         }
 
@@ -403,7 +403,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
           val responseHeaders = Map(`Cache-Control` -> Seq("max-age=0,s-maxage=120"))
           val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-          val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+          val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
           action should be(Validate(s"Response is stale, and stale response is not allowed"))
         }
 
@@ -424,7 +424,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
           val responseHeaders = Map(`Cache-Control` -> Seq("max-age=0,s-maxage=120"))
           val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-          val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+          val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
           action should be(ServeFresh("Fresh response: lifetime = PT120S, PT60S seconds left"))
         }
 
@@ -438,7 +438,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
           val responseHeaders = Map(`Cache-Control` -> Seq("max-age=600, s-maxage=120"))
           val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-          val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(300))
+          val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(300))
           action should be(ValidateOrTimeout(s"Response is stale, response contains s-maxage directive and cache is shared"))
         }
 
@@ -458,7 +458,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
           val responseHeaders = Map(`Cache-Control` -> Seq("s-maxage=0"))
           val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-          val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(0))
+          val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(0))
           action should be(ValidateOrTimeout(s"Response is stale, response contains s-maxage directive and cache is shared"))
         }
       }
@@ -478,7 +478,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120, proxy-revalidate"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(60))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
         action should be(ServeFresh("Fresh response: lifetime = PT120S, PT60S seconds left"))
       }
 
@@ -493,7 +493,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         //The "must-revalidate" response directive indicates that once it has
         //become stale, a cache MUST NOT use the response to satisfy subsequent
         //requests without successful validation on the origin server.
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(300))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(300))
         action should be(ValidateOrTimeout(s"Response is stale, response contains proxy-revalidate directive and cache is shared"))
       }
 
@@ -508,7 +508,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         //The "must-revalidate" response directive indicates that once it has
         //become stale, a cache MUST NOT use the response to satisfy subsequent
         //requests without successful validation on the origin server.
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(300))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(300))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }
     }
@@ -523,7 +523,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=120, stale-while-revalidate=30"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(30))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(30))
         action should be(ServeFresh(s"Fresh response: lifetime = PT120S, PT90S seconds left"))
       }
 
@@ -535,7 +535,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=120, stale-while-revalidate=30"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(130))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(130))
         action should be(ServeStaleAndValidate(s"Response contains stale-while-revalidate and is within delta range PT30S"))
       }
 
@@ -547,7 +547,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=120, stale-while-revalidate=30"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(300))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(300))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }
 
@@ -558,7 +558,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=120, stale-while-revalidate=30, stale-if-error=600"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(300))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(300))
         action should be(Validate(s"Response is stale, and stale response is not allowed", staleIfError = true))
       }
     }
@@ -573,7 +573,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=120, stale-if-error=30"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(30))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(30))
         action should be(ServeFresh(s"Fresh response: lifetime = PT120S, PT90S seconds left"))
       }
 
@@ -585,7 +585,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=120, stale-if-error=30"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(130))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(130))
         action should be(Validate(s"Response is stale, and stale response is not allowed", staleIfError = true))
       }
 
@@ -598,7 +598,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val responseHeaders = Map(`Cache-Control` -> Seq("max-age=120, stale-if-error=30"))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        val action: ResponseServeAction = policy.serveResponse(request, response, Seconds.seconds(200))
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(200))
         action should be(Validate(s"Response is stale, and stale response is not allowed", staleIfError = false))
       }
 

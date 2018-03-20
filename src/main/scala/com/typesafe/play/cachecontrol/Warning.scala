@@ -3,12 +3,12 @@
  */
 package com.typesafe.play.cachecontrol
 
-import org.joda.time.DateTime
+import java.time.ZonedDateTime
 
 /**
  * A parsed warning.
  */
-case class Warning(code: Int, agent: String, text: String, date: Option[DateTime] = None) {
+case class Warning(code: Int, agent: String, text: String, date: Option[ZonedDateTime] = None) {
   override def toString: String = {
     date.map { d =>
       val httpDate = HttpDate.format(d)

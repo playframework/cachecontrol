@@ -3,7 +3,8 @@
  */
 package com.typesafe.play.cachecontrol
 
-import org.joda.time._
+import java.time.ZonedDateTime
+
 import org.slf4j.LoggerFactory
 
 /**
@@ -15,15 +16,15 @@ class CurrentAgeCalculator {
   import HeaderNames._
   import CurrentAgeCalculator._
 
-  def calculateCurrentAge(request: CacheRequest, response: StoredResponse, requestTime: DateTime, responseTime: DateTime): Seconds = {
+  def calculateCurrentAge(request: CacheRequest, response: StoredResponse, requestTime: ZonedDateTime, responseTime: ZonedDateTime): Seconds = {
     calculateCurrentAge(response.headers, HttpDate.now, requestTime, responseTime)
   }
 
   def calculateCurrentAge(
     headers: Map[HeaderName, Seq[String]],
-    now: DateTime,
-    requestTime: DateTime,
-    responseTime: DateTime): Seconds = {
+    now: ZonedDateTime,
+    requestTime: ZonedDateTime,
+    responseTime: ZonedDateTime): Seconds = {
     if (logger.isTraceEnabled) {
       logger.trace(s"calculateCurrentAge(headers: $headers, now: $now, requestTime: $requestTime, responseTime: $responseTime)")
     }
@@ -33,25 +34,25 @@ class CurrentAgeCalculator {
     //  apparent_age = max(0, response_time - date_value);
     val apparentAge = {
       if (responseTime.isAfter(dateValue)) {
-        Seconds.secondsBetween(dateValue, responseTime)
+        Seconds.between(dateValue, responseTime)
       } else {
-        Seconds.seconds(0)
+        Seconds.ZERO
       }
     }
     // response_delay = response_time - request_time;
-    val responseDelay = Seconds.secondsBetween(requestTime, responseTime)
+    val responseDelay = Seconds.between(requestTime, responseTime)
 
     //  corrected_age_value = age_value + response_delay;
     val correctedAgeValue = ageValue.plus(responseDelay)
 
     // corrected_initial_age = max(apparent_age, corrected_age_value);
     val correctedInitialAge = {
-      val a = Math.max(apparentAge.getSeconds, correctedAgeValue.getSeconds)
+      val a = Math.max(apparentAge.seconds, correctedAgeValue.seconds)
       Seconds.seconds(a)
     }
 
     // resident_time = now - response_time;
-    val residentTime = Seconds.secondsBetween(responseTime, now)
+    val residentTime = Seconds.between(responseTime, now)
 
     // current_age = corrected_initial_age + resident_time;
     val currentAge = correctedInitialAge.plus(residentTime)
@@ -66,13 +67,13 @@ class CurrentAgeCalculator {
     // https://tools.ietf.org/html/rfc7234#section-5.1
     // Age is delta-seconds since generated or last validated.
     headers.get(`Age`).flatMap(_.headOption).map { age =>
-      Seconds.seconds(age.toInt)
+      Seconds.seconds(age.toLong)
     }.getOrElse {
-      Seconds.seconds(0)
+      Seconds.ZERO
     }
   }
 
-  def calculateDateValue(headers: Map[HeaderName, Seq[String]]): DateTime = {
+  def calculateDateValue(headers: Map[HeaderName, Seq[String]]): ZonedDateTime = {
     val result = for {
       dateValues <- headers.get(`Date`)
       firstDateValue <- dateValues.headOption

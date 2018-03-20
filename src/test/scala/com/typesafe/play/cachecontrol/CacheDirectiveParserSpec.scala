@@ -3,7 +3,6 @@
  */
 package com.typesafe.play.cachecontrol
 
-import org.joda.time.Seconds
 import org.scalatest.WordSpec
 import org.scalatest.Matchers._
 

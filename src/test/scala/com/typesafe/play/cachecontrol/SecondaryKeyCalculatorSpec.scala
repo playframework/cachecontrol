@@ -3,8 +3,9 @@
  */
 package com.typesafe.play.cachecontrol
 
+import java.time.Duration
+
 import HeaderNames._
-import org.joda.time.Seconds
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 
@@ -12,7 +13,7 @@ class SecondaryKeyCalculatorSpec extends WordSpec {
 
   def responseHeaders = {
     val now = HttpDate.now
-    val age = Seconds.seconds(60)
+    val age = Duration.ofSeconds(60)
     val headers = Map(
       `Date` -> Seq(HttpDate.format(now)),
       `Age` -> Seq(age.getSeconds.toString),

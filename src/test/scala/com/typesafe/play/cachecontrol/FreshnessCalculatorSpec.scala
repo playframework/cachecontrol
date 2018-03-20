@@ -6,7 +6,6 @@ package com.typesafe.play.cachecontrol
 import java.net.URI
 
 import HeaderNames._
-import org.joda.time.Seconds
 import org.scalatest.Matchers._
 import org.scalatest._
 
