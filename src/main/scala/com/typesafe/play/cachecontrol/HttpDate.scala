@@ -36,7 +36,7 @@ object HttpDate {
       .appendPattern("dd-MMM-")
       // Pivot Year:
       // https://github.com/JodaOrg/joda-time/blob/master/src/main/java/org/joda/time/format/DateTimeFormat.java#L455
-      .appendValueReduced(ChronoField.YEAR, 2, 2, Year.now().getValue - 30)
+      .appendValueReduced(ChronoField.YEAR, 2, 2, 1970)
       .appendLiteral(EMPTY)
       .appendPattern("HH:mm:ss")
       .appendLiteral(EMPTY)
