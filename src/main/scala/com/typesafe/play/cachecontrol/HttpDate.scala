@@ -35,7 +35,7 @@ object HttpDate {
       .appendLiteral(EMPTY)
       .appendPattern("dd-MMM-")
       // Pivot Year:
-      // https://github.com/JodaOrg/joda-time/blob/master/src/main/java/org/joda/time/format/DateTimeFormat.java#L455
+      // https://tools.ietf.org/html/rfc6265#section-5.1.1
       .appendValueReduced(ChronoField.YEAR, 2, 2, 1970)
       .appendLiteral(EMPTY)
       .appendPattern("HH:mm:ss")
@@ -103,8 +103,8 @@ object HttpDate {
     // than 50 years in the future as representing the most recent year in
     // the past that had the same last two digits.
     // -- java.time needs to handle 'Sunday' and 'Sun' with different date formatters and
-    // we need to provide a pivot year like yoda does:
-    // https://github.com/JodaOrg/joda-time/blob/master/src/main/java/org/joda/time/format/DateTimeFormat.java#L455
+    // we need to provide a pivot year like explained in the following RFC:
+    // https://tools.ietf.org/html/rfc6265#section-5.1.1
 
     Try {
       ZonedDateTime.parse(dateString, rfc850Format("EEE"))
