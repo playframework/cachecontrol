@@ -8,6 +8,7 @@ import java.time.temporal.ChronoField
 import java.time._
 
 import scala.util.Try
+import scala.util.control.NonFatal
 
 /**
  * Defines methods for parsing and formatting HTTP dates.
@@ -106,11 +107,11 @@ object HttpDate {
     // we need to provide a pivot year like explained in the following RFC:
     // https://tools.ietf.org/html/rfc6265#section-5.1.1
 
-    Try {
+    try {
       ZonedDateTime.parse(dateString, rfc850Format("EEE"))
-    }.recover {
-      case _ => ZonedDateTime.parse(dateString, rfc850Format("EEEE"))
-    }.get
+    } catch {
+      case NonFatal(_) => ZonedDateTime.parse(dateString, rfc850Format("EEEE"))
+    }
   }
 
   /**
