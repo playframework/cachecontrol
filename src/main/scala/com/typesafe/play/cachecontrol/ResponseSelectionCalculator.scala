@@ -3,9 +3,10 @@
  */
 package com.typesafe.play.cachecontrol
 
+import java.time.ZonedDateTime
+
 import CacheDirectives.OnlyIfCached
 import HeaderNames._
-import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 
 sealed trait ResponseSelectionAction
@@ -87,7 +88,7 @@ class ResponseSelectionCalculator(cache: Cache) {
     }
   }
 
-  def toDate(r: StoredResponse): DateTime = {
+  def toDate(r: StoredResponse): ZonedDateTime = {
     HttpDate.parse(r.headers(`Date`).head)
   }
 

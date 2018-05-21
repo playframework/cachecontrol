@@ -3,7 +3,6 @@
  */
 package com.typesafe.play.cachecontrol
 
-import org.joda.time.Seconds
 import org.slf4j.LoggerFactory
 
 import scala.collection.immutable.BitSet
@@ -86,7 +85,7 @@ object CacheDirectiveParser {
 
     def seconds(n: String): Seconds = {
       val unquoted = s"PT${n}S"
-      Seconds.parseSeconds(unquoted)
+      Seconds.parse(unquoted)
     }
 
     //   cache-directive = token [ "=" ( token / quoted-string ) ]

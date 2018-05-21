@@ -5,7 +5,6 @@ package com.typesafe.play.cachecontrol
 
 import java.net.URI
 
-import org.joda.time._
 import org.scalatest.WordSpec
 import org.scalatest.Matchers._
 import HeaderNames._
@@ -13,7 +12,7 @@ import HeaderNames._
 class CurrentAgeCalculatorSpec extends WordSpec {
 
   val ageCalculator = new CurrentAgeCalculator()
-  val zeroSeconds = org.joda.time.Seconds.seconds(0)
+  val zeroSeconds = Seconds.seconds(0)
 
   def defaultResponse(age: Int) = {
     val uri = new URI("http://example.com/data")
@@ -23,7 +22,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
     val ageSeconds = Seconds.seconds(60)
     val headers = Map(
       `Date` -> Seq(HttpDate.format(now)),
-      `Age` -> Seq(ageSeconds.getSeconds.toString))
+      `Age` -> Seq(ageSeconds.seconds.toString))
     StoredResponse(uri, status, headers, requestMethod, Map())
   }
 
@@ -34,7 +33,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
       val ageSeconds = Seconds.seconds(60)
       val headers = Map(
         `Date` -> Seq(HttpDate.format(now)),
-        `Age` -> Seq(ageSeconds.getSeconds.toString))
+        `Age` -> Seq(ageSeconds.seconds.toString))
 
       val seconds = ageCalculator.calculateAgeValue(headers)
       seconds should be(ageSeconds)
@@ -53,7 +52,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
 
     "calculate age from Date header" in {
       val ageSeconds = Seconds.seconds(60)
-      val date = HttpDate.now.minus(ageSeconds.toStandardDuration)
+      val date = HttpDate.now.minus(ageSeconds)
       val headers = Map(
         `Date` -> Seq(HttpDate.format(date)))
 
@@ -115,7 +114,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
       val responseTime = now
 
       val headers = Map(
-        `Age` -> Seq(originAge.getSeconds.toString),
+        `Age` -> Seq(originAge.seconds.toString),
         `Date` -> Seq(HttpDate.format(originDate)))
       val seconds = ageCalculator.calculateCurrentAge(headers, now, requestTime, responseTime)
       seconds should be(Seconds.seconds(60))
@@ -132,7 +131,7 @@ class CurrentAgeCalculatorSpec extends WordSpec {
       val responseTime = now
 
       val headers = Map(
-        `Age` -> Seq(originAge.getSeconds.toString),
+        `Age` -> Seq(originAge.seconds.toString),
         `Date` -> Seq(HttpDate.format(originDate)))
       val seconds = ageCalculator.calculateCurrentAge(headers, now, requestTime, responseTime)
       // The final content should be 62 seconds.

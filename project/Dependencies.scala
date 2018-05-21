@@ -21,9 +21,4 @@ object Dependencies {
     "org.slf4j" % "slf4j-api" % slf4jVersion
   )
 
-  val jodaTime = Seq(
-    "joda-time" % "joda-time" % "2.9.9",
-    "org.joda" % "joda-convert" % "1.9.2"
-  )
-
 }

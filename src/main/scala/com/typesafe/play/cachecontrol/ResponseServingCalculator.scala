@@ -4,7 +4,6 @@
 package com.typesafe.play.cachecontrol
 
 import CacheDirectives._
-import org.joda.time.Seconds
 import org.slf4j.LoggerFactory
 
 sealed trait ResponseServeAction
@@ -78,7 +77,7 @@ class ResponseServingCalculator(cache: Cache) {
   private val freshnessCalculator: FreshnessCalculator = new FreshnessCalculator(cache)
 
   def serveResponse(request: CacheRequest, response: StoredResponse, currentAge: Seconds): ResponseServeAction = {
-    logger.debug(s"serveResponse: response found for '${request.method} ${request.uri}', age = $currentAge")
+    logger.debug(s"serveResponse: response found for '${request.method} ${request.uri}', age = ${currentAge.seconds}")
 
     implicit val req = request
     implicit val res = response
@@ -129,6 +128,7 @@ class ResponseServingCalculator(cache: Cache) {
       //response is more stale than the indicated amount, the cached response
       //SHOULD NOT be used to satisfy the request, absent other information.
       // https://tools.ietf.org/html/rfc5861#section-4
+
       val serveStale = age.isLessThan(freshnessLifetime.plus(delta))
       logger.debug(s"allowStaleIfError: delta = ${delta}, staleIfError = $serveStale")
 
@@ -241,7 +241,7 @@ class ResponseServingCalculator(cache: Cache) {
     }
 
     val freshnessLifetime = freshnessCalculator.calculateFreshnessLifetime(request, response)
-    logger.debug(s"isCachedResponseFresh: freshnessLifetime = $freshnessLifetime, currentAge = $currentAge")
+    logger.debug(s"""isCachedResponseFresh: freshnessLifetime = $freshnessLifetime, currentAge = $currentAge""")
 
     // The "max-age" request directive indicates that the client is
     // unwilling to accept a response whose age is greater than the
@@ -306,7 +306,7 @@ class ResponseServingCalculator(cache: Cache) {
 
           if (totalLifetime.isGreaterThan(currentAge)) {
             logger.debug(s"isStaleResponseAllowed: ($freshnessLifetime + $maxStaleDelta) > = $currentAge, allowing serve stale")
-            val msg = s"Request contains ${maxStale}, current age = ${currentAge.getSeconds} which is inside range"
+            val msg = s"Request contains ${maxStale}, current age = ${currentAge.seconds} which is inside range"
             Some(ServeStale(msg))
           } else {
             logger.debug(s"isStaleResponseAllowed: stale response outside of max-stale $maxStale")
