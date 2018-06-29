@@ -5,13 +5,17 @@ import sbt._
 
 object Dependencies {
 
-  val scalaTestVersion = "3.0.5-M1"
+  val scalaTestVersion = "3.0.6-SNAP1"
+
+  val scalaCollectionCompat = Seq(
+    "org.scala-lang.modules" %% "scala-collection-compat" % "0.1.1"
+  )
 
   val scalaTest = Seq(
     "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
   )
 
-  val parserCombinatorVersion = "1.1.0"
+  val parserCombinatorVersion = "1.1.1"
   val parserCombinators = Seq(
     "org.scala-lang.modules" %% "scala-parser-combinators" % parserCombinatorVersion
   )

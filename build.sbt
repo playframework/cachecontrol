@@ -6,7 +6,7 @@ organization := "com.typesafe.play"
 
 scalaVersion := "2.12.4"
 
-crossScalaVersions := Seq("2.12.4", "2.11.12", "2.10.7", "2.13.0-M3")
+crossScalaVersions := Seq("2.12.4", "2.11.12", "2.13.0-M4")
 
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
@@ -18,7 +18,7 @@ libraryDependencies := {
   }
 }
 
-libraryDependencies ++= scalaTest ++ slf4j
+libraryDependencies ++= scalaTest ++ slf4j ++ scalaCollectionCompat
 
 libraryDependencies += "org.slf4j" % "slf4j-simple" % slf4jVersion % Test
 
