@@ -37,9 +37,9 @@ trait CacheDefaults extends Cache {
   }
 
   /**
-   * Defines cacheable methods.
+   * Returns true if the method is cacheable, true for GET and HEAD by default.
    */
-  override def isCacheableMethod(requestMethod: String) = {
+  override def isCacheableMethod(requestMethod: String): Boolean = {
     //    In general, safe methods that
     //    do not depend on a current or authoritative response are defined as
     //    cacheable; this specification defines GET, HEAD, and POST as
@@ -47,10 +47,16 @@ trait CacheDefaults extends Cache {
     //      implementations only support GET and HEAD.
     //
     // https://tools.ietf.org/html/rfc7231#section-4.2.3
+
+    // In this case, we only specify "GET" and "HEAD as "POST" is a
+    // cacheable method only if the request contains explicit freshness
+    // headers, and even then it's not terribly useful.
+    // https://www.mnot.net/blog/2012/09/24/caching_POST
+    // https://tools.ietf.org/html/draft-ietf-httpbis-p2-semantics-20#section-2.3.4
     requestMethod match {
-      case "GET" | "HEAD" | "POST" =>
+      case "GET" | "HEAD" =>
         true
-      case other =>
+      case _ =>
         false
     }
   }
