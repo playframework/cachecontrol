@@ -5,10 +5,10 @@ import sbt._
 
 object Dependencies {
 
-  val scalaTestVersion = "3.0.6-SNAP1"
+  val scalaTestVersion = "3.0.6-SNAP5"
 
   val scalaCollectionCompat = Seq(
-    "org.scala-lang.modules" %% "scala-collection-compat" % "0.1.1"
+    "org.scala-lang.modules" %% "scala-collection-compat" % "0.2.1"
   )
 
   val scalaTest = Seq(
