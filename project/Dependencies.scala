@@ -5,15 +5,7 @@ import sbt._
 
 object Dependencies {
 
-  val scalaTestVersion = "3.0.6-SNAP5"
-
-  val scalaCollectionCompat = Seq(
-    "org.scala-lang.modules" %% "scala-collection-compat" % "0.2.1"
-  )
-
-  val scalaTest = Seq(
-    "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
-  )
+  def scalaTest = Seq("org.scalatest" %% "scalatest" % "3.0.6-SNAP5" % "test")
 
   val parserCombinatorVersion = "1.1.1"
   val parserCombinators = Seq(
