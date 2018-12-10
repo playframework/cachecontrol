@@ -87,13 +87,13 @@ class ResponseServingCalculator(cache: Cache) {
     //  (Section 5.4), nor the no-cache cache directive (Section 5.2.1),
     //  unless the stored response is successfully validated
     //  (Section 4.3), and
+    val explicitValidate: Option[Validate] = noCacheFound.map { v =>
+      allowStaleIfError(Some(v), currentAge)
+    }
+
     // o  the stored response does not contain the no-cache cache directive
     //  (Section 5.2.2.2), unless it is successfully validated
     //  (Section 4.3), and
-    val explicitValidate: Option[Validate] = noCacheFound.map { v =>
-      allowStaleIfError(currentAge)
-    }
-
     explicitValidate.orElse {
       //o  the stored response is either:
       //
@@ -114,13 +114,13 @@ class ResponseServingCalculator(cache: Cache) {
       serveStaleAndRevalidate
     }.getOrElse {
       // "is successfully validated" -- which means validate but serve stale on disconnect.
-      val defaultValidation: Validate = allowStaleIfError(currentAge)
+      val defaultValidation: Validate = allowStaleIfError(None, currentAge)
       defaultValidation
     }
   }
 
-  protected def allowStaleIfError(age: Seconds)(implicit request: CacheRequest, response: StoredResponse): Validate = {
-    val v = Validate("Response is stale, and stale response is not allowed")
+  protected def allowStaleIfError(validate: Option[Validate], age: Seconds)(implicit request: CacheRequest, response: StoredResponse): Validate = {
+    val v = validate.getOrElse(Validate("Response is stale, and stale response is not allowed"))
 
     val freshnessLifetime = freshnessCalculator.calculateFreshnessLifetime(request, response)
     CacheDirectives.staleIfError(response.directives).map { staleIfError =>
@@ -148,30 +148,30 @@ class ResponseServingCalculator(cache: Cache) {
     //  unless the stored response is successfully validated
     //  (Section 4.3), and
     val requestContainsNoCache: Option[Validate] = {
-      if (request.directives.contains(NoCache)) {
-        //    The "no-cache" request directive indicates that a cache MUST NOT use
-        //      a stored response to satisfy the request without successful
-        //    validation on the origin server.
-        // https://tools.ietf.org/html/rfc7234#section-5.2.1.4
-
-        val msg = "Request contains no-cache directive, validation required"
-        Some(Validate(msg))
-      } else {
-        // When the Cache-Control header field is not present in a request,
-        // caches MUST consider the no-cache request pragma-directive as having
-        // the same effect as if "Cache-Control: no-cache" were present (see
-        // Section 5.2.1).
-        // https://tools.ietf.org/html/rfc7234#section-5.4
-        if (request.directives.isEmpty) {
-          if (containsPragmaNoCache) {
-            val msg = "Request does not contain Cache-Control header found, but does contains no-cache Pragma header, validation required"
-            Some(Validate(msg))
+      CacheDirectives.noCache(request.directives) match {
+        case Some(_) =>
+          //    The "no-cache" request directive indicates that a cache MUST NOT use
+          //      a stored response to satisfy the request without successful
+          //    validation on the origin server.
+          // https://tools.ietf.org/html/rfc7234#section-5.2.1.4
+          val msg = "Request contains no-cache directive, validation required"
+          Some(Validate(msg))
+        case None =>
+          // When the Cache-Control header field is not present in a request,
+          // caches MUST consider the no-cache request pragma-directive as having
+          // the same effect as if "Cache-Control: no-cache" were present (see
+          // Section 5.2.1).
+          // https://tools.ietf.org/html/rfc7234#section-5.4
+          if (request.directives.isEmpty) {
+            if (containsPragmaNoCache) {
+              val msg = "Request does not contain Cache-Control header found, but does contains no-cache Pragma header, validation required"
+              Some(Validate(msg))
+            } else {
+              None
+            }
           } else {
             None
           }
-        } else {
-          None
-        }
       }
     }
 
