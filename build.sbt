@@ -22,6 +22,8 @@ libraryDependencies ++= scalaTest ++ jodaTime ++ slf4j
 
 libraryDependencies += "org.slf4j" % "slf4j-simple" % slf4jVersion % Test
 
+mimaPreviousArtifacts := Set("com.typesafe.play" %% "cachecontrol" % "1.1.5")
+
 //---------------------------------------------------------------
 // Release
 //---------------------------------------------------------------
