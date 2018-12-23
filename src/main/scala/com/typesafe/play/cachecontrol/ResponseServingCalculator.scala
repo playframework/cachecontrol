@@ -89,9 +89,7 @@ class ResponseServingCalculator(cache: Cache) {
     // o  the stored response does not contain the no-cache cache directive
     //  (Section 5.2.2.2), unless it is successfully validated
     //  (Section 4.3), and
-    val explicitValidate: Option[Validate] = noCacheFound.map { v =>
-      allowStaleIfError(currentAge)
-    }
+    val explicitValidate: Option[Validate] = noCacheFound
 
     explicitValidate.orElse {
       //o  the stored response is either:
@@ -147,12 +145,12 @@ class ResponseServingCalculator(cache: Cache) {
     //  unless the stored response is successfully validated
     //  (Section 4.3), and
     val requestContainsNoCache: Option[Validate] = {
-      if (request.directives.contains(NoCache)) {
+      if (request.directives.exists(_.isInstanceOf[NoCache])) {
         //    The "no-cache" request directive indicates that a cache MUST NOT use
         //      a stored response to satisfy the request without successful
         //    validation on the origin server.
         // https://tools.ietf.org/html/rfc7234#section-5.2.1.4
-
+        logger.trace(s"noCacheFound: no-cache directive found!")
         val msg = "Request contains no-cache directive, validation required"
         Some(Validate(msg))
       } else {
