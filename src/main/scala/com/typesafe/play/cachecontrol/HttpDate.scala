@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2015-2017 Lightbend, Inc. All rights reserved.
+ * Copyright (C) 2009-2019 Lightbend Inc. <https://www.lightbend.com>
  */
+
 package com.typesafe.play.cachecontrol
 
 import java.time.format.{ DateTimeFormatter, DateTimeFormatterBuilder, ResolverStyle, TextStyle }

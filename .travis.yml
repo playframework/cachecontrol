@@ -29,7 +29,7 @@ scala:
   - 2.13.0-M5
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION scalastyle test
+  - sbt ++$TRAVIS_SCALA_VERSION scalastyle test validateCode
 
 cache:
   directories:
