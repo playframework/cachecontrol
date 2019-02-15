@@ -46,28 +46,30 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
 
     "no-cache request directive" should {
 
-      "return ServeFresh when fresh" in {
+      "return Validate" in {
         val policy = new ResponseServingCalculator(privateCache)
 
         val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-cache")))
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("max-age=60")))
 
         val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(5))
-        val msg = "Fresh response: lifetime = PT60S, PT55S seconds left"
-        action should be(ServeFresh(msg))
-      }
-
-      "return Validate when stale" in {
-        val policy = new ResponseServingCalculator(privateCache)
-
-        val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-cache")))
-        val response = defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("max-age=60")))
-
-        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(65))
-        val msg = "Response is stale, and stale response is not allowed"
+        val msg = "Request contains no-cache directive, validation required"
         action should be(Validate(msg))
       }
 
+    }
+
+    "no-cache pragma" should {
+      "return Validate" in {
+        val policy = new ResponseServingCalculator(privateCache)
+
+        val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Pragma` -> Seq("no-cache")))
+        val response = defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("max-age=60")))
+
+        val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(5))
+        val msg = "Request does not contain Cache-Control header found, but does contains no-cache Pragma header, validation required"
+        action should be(Validate(msg))
+      }
     }
 
     "no-store request directive" should {
@@ -274,7 +276,7 @@ class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripl
         val response = defaultResponse.copy(headers = defaultResponse.headers ++ headers)
 
         val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(60))
-        action should be(Validate("Response is stale, and stale response is not allowed"))
+        action should be(Validate("Response contains no-args no-cache directive"))
       }
 
     }
