@@ -1,6 +1,5 @@
 # These settings are synced to GitHub by https://probot.github.io/apps/settings/
 repository:
-  homepage: "https://www.playframework.com/documentation/latest/JavaWS"
   topics: playframework, cachecontrol, cache-control, http-cache, caching, scala
   private: false
   has_issues: true
