@@ -1,7 +1,7 @@
 # These settings are synced to GitHub by https://probot.github.io/apps/settings/
 repository:
   homepage: "https://www.playframework.com/documentation/latest/JavaWS"
-  topics: playframework, asynchttpclient, scala, http-client, java, asynchronous, reactive, reactive-streams
+  topics: playframework, cachecontrol, cache-control, http-cache, caching, scala
   private: false
   has_issues: true
   has_projects: true
