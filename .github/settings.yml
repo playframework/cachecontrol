@@ -27,6 +27,7 @@ branches:
         require_code_owner_reviews: true
       # Require status checks to pass before merging
       required_status_checks:
+        # Required field. Defines if the branch needs to be updated before merging.
         strict: false
         # The list of status checks to require in order to merge into this branch
         contexts: ["Travis CI - Pull Request", "typesafe-cla-validator"]
