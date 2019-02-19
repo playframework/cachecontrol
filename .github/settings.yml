@@ -29,7 +29,7 @@ branches:
         # Blocks merge until code owners have reviewed.
         require_code_owner_reviews: true
         # Specify which users and teams can dismiss pull request reviews.
-        dismissal_restrictions: null
+        dismissal_restrictions: {} # needs to be an empty object to disable.
       required_status_checks:
         # Required. Defines if the branch needs to be updated before merging.
         strict: false
