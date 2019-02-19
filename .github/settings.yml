@@ -3,7 +3,7 @@ repository:
   topics: playframework, cachecontrol, cache-control, http-cache, caching, scala
   private: false
   has_issues: true
-  has_projects: true
+  has_projects: false
   # We don't need wiki since the documentation lives in playframework.com
   has_wiki: false
   has_downloads: true
@@ -24,10 +24,16 @@ branches:
       required_pull_request_reviews:
         required_approving_review_count: 1
         dismiss_stale_reviews: true
+        require_code_owner_reviews: true
       # Require status checks to pass before merging
       required_status_checks:
+        # Required field. Defines if the branch needs to be updated before merging.
+        strict: false
         # The list of status checks to require in order to merge into this branch
         contexts: ["Travis CI - Pull Request", "typesafe-cla-validator"]
+      enforce_admins: false
+      # This is a required field, this is why we are setting it even if the value is null
+      restrictions: null
 
 labels:
   - color: f9d0c4
