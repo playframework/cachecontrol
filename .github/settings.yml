@@ -19,7 +19,7 @@ teams:
     permission: write
 
 branches:
-  - name: master
+  - name: "*"
     protection:
       required_pull_request_reviews:
         # The number of approvals required
