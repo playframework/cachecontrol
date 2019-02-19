@@ -22,15 +22,20 @@ branches:
   - name: "*"
     protection:
       required_pull_request_reviews:
+        # The number of approvals required
         required_approving_review_count: 1
+        # Dismiss approved reviews automatically when a new commit is pushed.
         dismiss_stale_reviews: true
+        # Blocks merge until code owners have reviewed.
         require_code_owner_reviews: true
-      # Require status checks to pass before merging
+        # Specify which users and teams can dismiss pull request reviews. Pass an empty dismissal_restrictions object to disable. User and team dismissal_restrictions are only available for organization-owned repositories. Omit this parameter for personal repositories.
+        dismissal_restrictions: null
       required_status_checks:
         # Required field. Defines if the branch needs to be updated before merging.
         strict: false
         # The list of status checks to require in order to merge into this branch
         contexts: ["Travis CI - Pull Request", "typesafe-cla-validator"]
+      # Required.
       enforce_admins: false
       # This is a required field, this is why we are setting it even if the value is null
       restrictions: null
