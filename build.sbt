@@ -6,11 +6,13 @@ organization := "com.typesafe.play"
 
 scalaVersion := "2.12.8"
 
-crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-M5")
+crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC1")
 
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, scalaMajor)) if scalaMajor >= 11 =>
+    case Some((2, 11)) =>
+      libraryDependencies.value ++ parserCombinators211
+    case Some((2, scalaMajor)) if scalaMajor >= 12 =>
       libraryDependencies.value ++ parserCombinators
     case _ =>
       // Earlier than 2.11, and parser combinators are included automatically.
@@ -22,7 +24,10 @@ libraryDependencies ++= scalaTest ++ jodaTime ++ slf4j
 
 libraryDependencies += "org.slf4j" % "slf4j-simple" % slf4jVersion % Test
 
-mimaPreviousArtifacts := Set("com.typesafe.play" %% "cachecontrol" % "1.1.5")
+mimaPreviousArtifacts := {
+  if (scalaVersion.value.equals("2.13.0-RC1")) Set.empty
+  else Set("com.typesafe.play" %% "cachecontrol" % "1.1.5")
+}
 
 //---------------------------------------------------------------
 // Release
