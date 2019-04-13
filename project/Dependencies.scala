@@ -5,11 +5,14 @@ import sbt._
 
 object Dependencies {
 
-  def scalaTest = Seq("org.scalatest" %% "scalatest" % "3.0.6-SNAP5" % "test")
+  def scalaTest = Seq("org.scalatest" %% "scalatest" % "3.0.8-RC2" % "test")
 
-  val parserCombinatorVersion = "1.1.1"
   val parserCombinators = Seq(
-    "org.scala-lang.modules" %% "scala-parser-combinators" % parserCombinatorVersion
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.2"
+  )
+
+  val parserCombinators211 = Seq(
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1"
   )
 
   val slf4jVersion = "1.7.26"
