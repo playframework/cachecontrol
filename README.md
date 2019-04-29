@@ -8,10 +8,10 @@ It does not implement caching itself, and there are some aspects of RFC 7234 whi
 
 ## Deployment
 
-To add this project to SBT, use:
+To add this project to sbt, use:
 
 ```
-libraryDependencies += "com.typesafe.play" %% "cachecontrol" % "1.1.1"
+libraryDependencies += "com.typesafe.play" %% "cachecontrol" % "1.1.6"
 ```
 
 ## License 
