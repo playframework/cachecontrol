@@ -18,7 +18,7 @@ unmanagedSourceDirectories in Compile += {
 
 libraryDependencies ++= parserCombinators
 
-fork in Test := scalaVersion.value.startsWith("2.11.")
+fork in Test := scalaVersion.value.startsWith("2.11.") // https://github.com/sbt/sbt/issues/4609
 
 libraryDependencies ++= scalaTest ++ slf4j
 
