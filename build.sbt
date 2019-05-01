@@ -16,17 +16,9 @@ unmanagedSourceDirectories in Compile += {
   }
 }
 
-libraryDependencies := {
-  CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, 11)) =>
-      libraryDependencies.value ++ parserCombinators211
-    case Some((2, scalaMajor)) if scalaMajor >= 12 =>
-      libraryDependencies.value ++ parserCombinators
-    case _ =>
-      // Earlier than 2.11, and parser combinators are included automatically.
-      libraryDependencies.value
-  }
-}
+libraryDependencies ++= parserCombinators
+
+fork in Test := scalaVersion.value.startsWith("2.11.")
 
 libraryDependencies ++= scalaTest ++ slf4j
 
