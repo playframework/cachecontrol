@@ -6,6 +6,6 @@ package com.typesafe.play.cachecontrol
 
 object CacheDirectiveParserCompat {
   def toImmutableSeq[T](seq: Seq[T]): scala.collection.immutable.Seq[T] = {
-    seq.to[scala.collection.immutable.Seq]
+    seq.to(scala.collection.immutable.Seq)
   }
 }
