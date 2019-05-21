@@ -7,11 +7,10 @@ import java.net.URI
 
 import HeaderNames._
 import org.joda.time.Seconds
-import org.scalactic.ConversionCheckedTripleEquals
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 
-class ResponseServingCalculatorSpec extends WordSpec with ConversionCheckedTripleEquals {
+class ResponseServingCalculatorSpec extends WordSpec {
   import ResponseServeActions._
 
   val privateCache = new StubCache(shared = false)
