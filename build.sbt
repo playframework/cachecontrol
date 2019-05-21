@@ -6,7 +6,7 @@ organization := "com.typesafe.play"
 
 scalaVersion := "2.12.8"
 
-crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC1")
+crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC2")
 
 unmanagedSourceDirectories in Compile += {
   val sourceDir = (sourceDirectory in Compile).value
