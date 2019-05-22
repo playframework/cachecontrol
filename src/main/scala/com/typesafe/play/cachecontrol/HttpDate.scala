@@ -4,7 +4,7 @@
 
 package com.typesafe.play.cachecontrol
 
-import java.time.format.{ DateTimeFormatter, DateTimeFormatterBuilder, ResolverStyle, TextStyle }
+import java.time.format.{ DateTimeFormatter, DateTimeFormatterBuilder, ResolverStyle }
 import java.time.temporal.ChronoField
 import java.time._
 
