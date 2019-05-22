@@ -8,6 +8,9 @@ scalaVersion := "2.12.8"
 
 crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC2")
 
+scalacOptions ++= Seq("-encoding", "utf8")
+scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-Xlint")
+
 libraryDependencies := {
   CrossVersion.partialVersion(scalaVersion.value) match {
     case Some((2, 11)) =>
