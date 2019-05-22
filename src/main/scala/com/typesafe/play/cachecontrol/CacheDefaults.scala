@@ -109,8 +109,11 @@ trait CacheDefaults extends Cache {
     }
 
     // ALL of the selecting header fields nominated by the Vary header field match.
-    for (nominatedHeaderName <- nominatedHeaders.keys) {
+    val nominatedHeadersIter = nominatedHeaders.keys.iterator
+    while (nominatedHeadersIter.hasNext) {
+      val nominatedHeaderName = nominatedHeadersIter.next()
       presentedHeaders.get(nominatedHeaderName) match {
+        case None => return false
         case Some(presentedHeaderValues) =>
           val nominatedHeaderValues = nominatedHeaders(nominatedHeaderName)
           // There's a list of header values, so we need a way to normalize it.
@@ -129,13 +132,13 @@ trait CacheDefaults extends Cache {
           //
           // Properly implementing this feature means correctly parsing every single defined HTTP header.  Out of scope.
           // So, we punt, and just start looking for straight values.
-          for (nominatedHeaderValue <- nominatedHeaderValues) {
+          val nominatedHeaderValuesIter = nominatedHeaderValues.iterator
+          while (nominatedHeaderValuesIter.hasNext) {
+            val nominatedHeaderValue = nominatedHeaderValuesIter.next()
             if (!presentedHeaderValues.exists(value => value.equals(nominatedHeaderValue))) {
               return false
             }
           }
-        case None =>
-          return false
       }
     }
     true

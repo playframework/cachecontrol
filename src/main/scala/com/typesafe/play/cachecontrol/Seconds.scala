@@ -4,8 +4,8 @@
 
 package com.typesafe.play.cachecontrol
 
-import java.time.{ DateTimeException, Duration }
-import java.time.temporal.{ Temporal, TemporalAmount, TemporalUnit, UnsupportedTemporalTypeException }
+import java.time.Duration
+import java.time.temporal.{ Temporal, TemporalAmount, TemporalUnit }
 import java.util
 
 import scala.language.implicitConversions
