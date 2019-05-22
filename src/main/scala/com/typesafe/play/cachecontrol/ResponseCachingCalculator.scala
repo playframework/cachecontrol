@@ -5,8 +5,6 @@ package com.typesafe.play.cachecontrol
 
 import org.slf4j.LoggerFactory
 
-import scala.collection.immutable.Seq
-
 sealed trait ResponseCachingAction
 
 /**

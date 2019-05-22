@@ -41,7 +41,7 @@ object CacheDirectiveParser {
     private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.CacheControlParser")
 
     val separatorChars = "()<>@,;:\\\"/[]?={} \t"
-    val separatorBitSet: BitSet = BitSet(separatorChars.toCharArray.map(_.toInt): _*)
+    val separatorBitSet: BitSet = BitSet(separatorChars.iterator.map(_.toInt).toSeq: _*)
 
     type Elem = Char
 

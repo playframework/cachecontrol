@@ -389,7 +389,7 @@ class ResponseServingCalculator(cache: Cache) {
     // https://tools.ietf.org/html/rfc5861#section-3
     val freshnessLifetime = freshnessCalculator.calculateFreshnessLifetime(request, response)
 
-    CacheDirectives.staleWhileRevalidate(response.directives).map(_.delta).collectFirst {
+    CacheDirectives.staleWhileRevalidate(response.directives).iterator.map(_.delta).collectFirst {
       case delta if age.isLessThan(freshnessLifetime.plus(delta)) =>
         logger.debug(s"canServeStaleAndRevalidate: age = $age, delta = $delta")
         val reason = s"Response contains stale-while-revalidate and is within delta range $delta"
