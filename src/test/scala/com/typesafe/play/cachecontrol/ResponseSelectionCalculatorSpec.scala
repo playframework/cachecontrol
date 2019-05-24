@@ -6,7 +6,6 @@ package com.typesafe.play.cachecontrol
 
 import java.net.URI
 
-import CacheDirectives.CacheDirectiveExtension
 import HeaderNames._
 import ResponseSelectionActions.{ ForwardToOrigin, GatewayTimeout, SelectedResponse }
 import org.scalatest.Matchers._

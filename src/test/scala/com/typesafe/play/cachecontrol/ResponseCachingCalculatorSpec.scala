@@ -300,7 +300,7 @@ class ResponseCachingCalculatorSpec extends WordSpec {
         val request: CacheRequest = defaultRequest
         val response: OriginResponse = defaultResponse.copy(status = 400)
         val result = policy.isCacheable(request, response)
-        DoNotCacheResponse("Response is not cacheable by default, and there are no explicit overrides")
+        result should be(DoNotCacheResponse("Response is not cacheable by default, and there are no explicit overrides"))
       }
 
     }
