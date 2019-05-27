@@ -8,8 +8,30 @@ scalaVersion := "2.12.8"
 
 crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC2")
 
-scalacOptions ++= Seq("-encoding", "utf8")
-scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-Xlint")
+scalacOptions ++= {
+  if (scalaVersion.value.startsWith("2.11")) {
+    Seq("-target:jvm-1.8")
+  } else {
+    Seq(
+      "-target:jvm-1.8",
+      "-encoding", "utf8",
+      "-deprecation",
+      "-feature",
+      "-unchecked",
+      "-Xlint",
+      "-Ywarn-unused:imports",
+      "-Xlint:nullary-unit",
+      "-Ywarn-dead-code",
+    )
+  }
+}
+
+javacOptions ++= Seq(
+  "-source", "1.8",
+  "-target", "1.8",
+  "-Xlint:deprecation",
+  "-Xlint:unchecked",
+)
 
 unmanagedSourceDirectories in Compile += {
   val sourceDir = (sourceDirectory in Compile).value
