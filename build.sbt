@@ -6,7 +6,7 @@ organization := "com.typesafe.play"
 
 scalaVersion := "2.12.8"
 
-crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC2")
+crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0")
 
 scalacOptions ++= {
   if (scalaVersion.value.startsWith("2.11")) {
