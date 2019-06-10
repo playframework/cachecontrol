@@ -6,7 +6,7 @@ organization := "com.typesafe.play"
 
 scalaVersion := "2.12.8"
 
-crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC2")
+crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0")
 
 scalacOptions ++= Seq("-encoding", "utf8")
 scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-Xlint")
@@ -28,7 +28,7 @@ libraryDependencies ++= scalaTest ++ jodaTime ++ slf4j
 libraryDependencies += "org.slf4j" % "slf4j-simple" % slf4jVersion % Test
 
 mimaPreviousArtifacts := {
-  if (scalaVersion.value.startsWith("2.13.0-")) Set.empty
+  if (scalaVersion.value.startsWith("2.13")) Set.empty
   else Set("com.typesafe.play" %% "cachecontrol" % "1.1.5")
 }
 
