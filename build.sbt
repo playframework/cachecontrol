@@ -6,24 +6,20 @@ organization := "com.typesafe.play"
 
 scalaVersion := "2.12.8"
 
-crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0")
+crossScalaVersions := Seq("2.12.8", "2.13.0")
 
 scalacOptions ++= {
-  if (scalaVersion.value.startsWith("2.11")) {
-    Seq("-target:jvm-1.8")
-  } else {
-    Seq(
-      "-target:jvm-1.8",
-      "-encoding", "utf8",
-      "-deprecation",
-      "-feature",
-      "-unchecked",
-      "-Xlint",
-      "-Ywarn-unused:imports",
-      "-Xlint:nullary-unit",
-      "-Ywarn-dead-code",
-    )
-  }
+  Seq(
+    "-target:jvm-1.8",
+    "-encoding", "utf8",
+    "-deprecation",
+    "-feature",
+    "-unchecked",
+    "-Xlint",
+    "-Ywarn-unused:imports",
+    "-Xlint:nullary-unit",
+    "-Ywarn-dead-code",
+  )
 }
 
 javacOptions ++= Seq(
@@ -42,8 +38,6 @@ unmanagedSourceDirectories in Compile += {
 }
 
 libraryDependencies ++= parserCombinators
-
-fork in Test := scalaVersion.value.startsWith("2.11.") // https://github.com/sbt/sbt/issues/4609
 
 libraryDependencies ++= scalaTest ++ slf4j
 

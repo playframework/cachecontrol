@@ -9,7 +9,6 @@ env:
     - TRAVIS_JDK=adopt@1.11.0-2
 
 scala:
-  - 2.11.12
   - 2.12.8
   - 2.13.0
 
