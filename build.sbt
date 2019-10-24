@@ -4,9 +4,9 @@ name := "cachecontrol"
 
 organization := "com.typesafe.play"
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.12.10"
 
-crossScalaVersions := Seq("2.12.8", "2.13.0")
+crossScalaVersions := Seq("2.12.10", "2.13.1")
 
 scalacOptions ++= {
   Seq(
@@ -52,7 +52,7 @@ releaseCrossBuild := true
 
 // This automatically selects the snapshots or staging repository
 // according to the version value.
-publishTo in ThisBuild := Some(sonatypeDefaultResolver.value)
+publishTo in ThisBuild := sonatypePublishToBundle.value
 
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
@@ -65,7 +65,7 @@ releaseProcess := Seq[ReleaseStep](
   releaseStepCommandAndRemaining("+publishSigned"),
   setNextVersion,
   commitNextVersion,
-  releaseStepCommand("sonatypeRelease"),
+  releaseStepCommand("sonatypeBundleRelease"),
   pushChanges
 )
 
