@@ -52,7 +52,7 @@ releaseCrossBuild := true
 
 // This automatically selects the snapshots or staging repository
 // according to the version value.
-publishTo in ThisBuild := Some(sonatypeDefaultResolver.value)
+publishTo in ThisBuild := sonatypePublishToBundle.value
 
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
@@ -65,7 +65,7 @@ releaseProcess := Seq[ReleaseStep](
   releaseStepCommandAndRemaining("+publishSigned"),
   setNextVersion,
   commitNextVersion,
-  releaseStepCommand("sonatypeRelease"),
+  releaseStepCommand("sonatypeBundleRelease"),
   pushChanges
 )
 
