@@ -4,6 +4,8 @@ name := "cachecontrol"
 
 organization := "com.typesafe.play"
 
+playBuildRepoName in ThisBuild := "cachecontrol"
+
 scalaVersion := "2.12.10"
 
 crossScalaVersions := Seq("2.12.10", "2.13.1")
@@ -42,32 +44,6 @@ libraryDependencies ++= parserCombinators
 libraryDependencies ++= scalaTest ++ slf4j
 
 libraryDependencies += "org.slf4j" % "slf4j-simple" % slf4jVersion % Test
-
-//---------------------------------------------------------------
-// Release
-//---------------------------------------------------------------
-import ReleaseTransformations._
-
-releaseCrossBuild := true
-
-// This automatically selects the snapshots or staging repository
-// according to the version value.
-publishTo in ThisBuild := sonatypePublishToBundle.value
-
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  inquireVersions,
-  runClean,
-  runTest,
-  setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  releaseStepCommandAndRemaining("+publishSigned"),
-  setNextVersion,
-  commitNextVersion,
-  releaseStepCommand("sonatypeBundleRelease"),
-  pushChanges
-)
 
 headerLicense := {
   val currentYear = java.time.Year.now(java.time.Clock.systemUTC).getValue
