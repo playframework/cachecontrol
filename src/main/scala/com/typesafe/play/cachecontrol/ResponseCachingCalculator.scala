@@ -12,7 +12,6 @@ sealed trait ResponseCachingAction
  * Case classes used by ResponseCachingPolicy.
  */
 object ResponseCachingActions {
-
   /**
    * The client should store the origin response in the cache.
    *
@@ -29,7 +28,6 @@ object ResponseCachingActions {
    * The client should not store the origin response in the cache.
    */
   case class DoNotCacheResponse(reason: String) extends ResponseCachingAction
-
 }
 
 /**
@@ -38,7 +36,6 @@ object ResponseCachingActions {
  * https://tools.ietf.org/html/rfc7234#section-3
  */
 class ResponseCachingCalculator(cache: Cache) {
-
   import CacheDirectives._
   import ResponseCachingActions._
   import ResponseCachingCalculator._
@@ -55,17 +52,22 @@ class ResponseCachingCalculator(cache: Cache) {
     // Note that any of the requirements listed above can be overridden by a
     // cache-control extension; see Section 5.2.3.
 
-    val result: ResponseCachingAction = notCacheableMethod(request, response).orElse {
-      ineligibleResponseCode(request, response)
-    }.orElse {
-      containsNoStoreDirective(request, response)
-    }.orElse {
-      containsPrivateResponseDirectiveInSharedCache(request, response)
-    }.orElse {
-      containsIncompatibleAuthorizationInSharedCache(request, response)
-    }.getOrElse {
-      responseIsCacheable(request, response)
-    }
+    val result: ResponseCachingAction = notCacheableMethod(request, response)
+      .orElse {
+        ineligibleResponseCode(request, response)
+      }
+      .orElse {
+        containsNoStoreDirective(request, response)
+      }
+      .orElse {
+        containsPrivateResponseDirectiveInSharedCache(request, response)
+      }
+      .orElse {
+        containsIncompatibleAuthorizationInSharedCache(request, response)
+      }
+      .getOrElse {
+        responseIsCacheable(request, response)
+      }
 
     logger.trace(s"isCacheable: result = $result")
     result
@@ -136,7 +138,10 @@ class ResponseCachingCalculator(cache: Cache) {
    * "the "no-store" cache directive (see Section 5.2) does not appear
    * in request or response header fields"
    */
-  protected def containsNoStoreDirective(request: CacheRequest, response: OriginResponse): Option[DoNotCacheResponse] = {
+  protected def containsNoStoreDirective(
+      request: CacheRequest,
+      response: OriginResponse
+  ): Option[DoNotCacheResponse] = {
     if (request.directives.contains(NoStore)) {
       Some(DoNotCacheResponse("Request Cache-Control header contains no-store cache directive"))
     } else if (response.directives.contains(NoStore)) {
@@ -150,7 +155,10 @@ class ResponseCachingCalculator(cache: Cache) {
    * "the "private" response directive (see Section 5.2.2.6) does not
    * appear in the response, if the cache is shared, and"
    */
-  protected def containsPrivateResponseDirectiveInSharedCache(request: CacheRequest, response: OriginResponse): Option[DoNotCacheResponse] = {
+  protected def containsPrivateResponseDirectiveInSharedCache(
+      request: CacheRequest,
+      response: OriginResponse
+  ): Option[DoNotCacheResponse] = {
     if (cache.isShared) {
       CacheDirectives.`private`(response.directives).flatMap { privateDirective =>
         if (privateDirective.headerNames.isDefined) {
@@ -176,7 +184,10 @@ class ResponseCachingCalculator(cache: Cache) {
    * not appear in the request, if the cache is shared, unless the
    * response explicitly allows it (see Section 3.2)"
    */
-  protected def containsIncompatibleAuthorizationInSharedCache(request: CacheRequest, response: OriginResponse): Option[DoNotCacheResponse] = {
+  protected def containsIncompatibleAuthorizationInSharedCache(
+      request: CacheRequest,
+      response: OriginResponse
+  ): Option[DoNotCacheResponse] = {
     if (cache.isShared) {
       if (containsAuthorizationHeader(request) && !directiveAllowsAuthorization(response)) {
         val msg = s"Cache is shared, authorization header found, no cache directives allow authorization"
@@ -205,8 +216,8 @@ class ResponseCachingCalculator(cache: Cache) {
    */
   protected def directiveAllowsAuthorization(response: OriginResponse): Boolean = {
     containsMustRevalidateDirective(response) ||
-      containsPublicDirective(response) ||
-      containsSMaxAgeDirective(response)
+    containsPublicDirective(response) ||
+    containsSMaxAgeDirective(response)
   }
 
   /**
@@ -244,7 +255,6 @@ class ResponseCachingCalculator(cache: Cache) {
       isCacheableExtension(extension)
     }
   }
-
 }
 
 object ResponseCachingCalculator {

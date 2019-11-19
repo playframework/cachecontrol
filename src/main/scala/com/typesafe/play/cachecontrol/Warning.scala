@@ -11,11 +11,13 @@ import java.time.ZonedDateTime
  */
 case class Warning(code: Int, agent: String, text: String, date: Option[ZonedDateTime] = None) {
   override def toString: String = {
-    date.map { d =>
-      val httpDate = HttpDate.format(d)
-      s"""$code $agent "$text" "$httpDate""""
-    }.getOrElse {
-      s"""$code $agent "$text""""
-    }
+    date
+      .map { d =>
+        val httpDate = HttpDate.format(d)
+        s"""$code $agent "$text" "$httpDate""""
+      }
+      .getOrElse {
+        s"""$code $agent "$text""""
+      }
   }
 }

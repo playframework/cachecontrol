@@ -13,7 +13,6 @@ sealed trait CacheDirective
 // https://tools.ietf.org/html/rfc7234
 // https://tools.ietf.org/html/rfc7234#section-5.2
 object CacheDirectives {
-
   // https://tools.ietf.org/html/rfc7234#section-5.2.2.8
   // https://tools.ietf.org/html/rfc7234#section-5.2.1.1
   case class MaxAge(delta: Seconds) extends CacheDirective {
@@ -228,7 +227,9 @@ object CacheDirectives {
     override def toString: String = value.map(v => s"""$name="$v""").getOrElse(name)
   }
 
-  def extensions(directives: scala.collection.immutable.Seq[CacheDirective]): scala.collection.immutable.Seq[CacheDirectiveExtension] = {
+  def extensions(
+      directives: scala.collection.immutable.Seq[CacheDirective]
+  ): scala.collection.immutable.Seq[CacheDirectiveExtension] = {
     // We could use a TypeTag here, but until we know that 2.10 code is no
     // longer being used, it's probably safer just to provide the methods
     directives.collect {
@@ -236,6 +237,4 @@ object CacheDirectives {
         directive
     }
   }
-
 }
-

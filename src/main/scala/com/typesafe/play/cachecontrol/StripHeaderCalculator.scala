@@ -8,10 +8,9 @@ package com.typesafe.play.cachecontrol
  * Tells the cache what headers should be stripped before they are cached.
  */
 class StripHeaderCalculator(cache: Cache) {
-
   def stripHeaders(response: CacheResponse): Set[HeaderName] = {
     val directives = response.directives
-    val buffer = scala.collection.mutable.ListBuffer[HeaderName]()
+    val buffer     = scala.collection.mutable.ListBuffer[HeaderName]()
 
     if (cache.isShared) {
       CacheDirectives.`private`(directives).foreach {
@@ -28,5 +27,4 @@ class StripHeaderCalculator(cache: Cache) {
     }
     buffer.toSet
   }
-
 }

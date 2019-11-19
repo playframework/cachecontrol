@@ -17,19 +17,27 @@ class CurrentAgeCalculator {
   import HeaderNames._
   import CurrentAgeCalculator._
 
-  def calculateCurrentAge(request: CacheRequest, response: StoredResponse, requestTime: ZonedDateTime, responseTime: ZonedDateTime): Seconds = {
+  def calculateCurrentAge(
+      request: CacheRequest,
+      response: StoredResponse,
+      requestTime: ZonedDateTime,
+      responseTime: ZonedDateTime
+  ): Seconds = {
     calculateCurrentAge(response.headers, HttpDate.now, requestTime, responseTime)
   }
 
   def calculateCurrentAge(
-    headers: Map[HeaderName, Seq[String]],
-    now: ZonedDateTime,
-    requestTime: ZonedDateTime,
-    responseTime: ZonedDateTime): Seconds = {
+      headers: Map[HeaderName, Seq[String]],
+      now: ZonedDateTime,
+      requestTime: ZonedDateTime,
+      responseTime: ZonedDateTime
+  ): Seconds = {
     if (logger.isTraceEnabled) {
-      logger.trace(s"calculateCurrentAge(headers: $headers, now: $now, requestTime: $requestTime, responseTime: $responseTime)")
+      logger.trace(
+        s"calculateCurrentAge(headers: $headers, now: $now, requestTime: $requestTime, responseTime: $responseTime)"
+      )
     }
-    val ageValue = calculateAgeValue(headers)
+    val ageValue  = calculateAgeValue(headers)
     val dateValue = calculateDateValue(headers)
 
     //  apparent_age = max(0, response_time - date_value);
@@ -67,16 +75,20 @@ class CurrentAgeCalculator {
   def calculateAgeValue(headers: Map[HeaderName, Seq[String]]): Seconds = {
     // https://tools.ietf.org/html/rfc7234#section-5.1
     // Age is delta-seconds since generated or last validated.
-    headers.get(`Age`).flatMap(_.headOption).map { age =>
-      Seconds.seconds(age.toLong)
-    }.getOrElse {
-      Seconds.ZERO
-    }
+    headers
+      .get(`Age`)
+      .flatMap(_.headOption)
+      .map { age =>
+        Seconds.seconds(age.toLong)
+      }
+      .getOrElse {
+        Seconds.ZERO
+      }
   }
 
   def calculateDateValue(headers: Map[HeaderName, Seq[String]]): ZonedDateTime = {
     val result = for {
-      dateValues <- headers.get(`Date`)
+      dateValues     <- headers.get(`Date`)
       firstDateValue <- dateValues.headOption
     } yield {
       HttpDate.parse(firstDateValue)
@@ -86,10 +98,8 @@ class CurrentAgeCalculator {
       throw new CacheControlException(msg)
     }
   }
-
 }
 
 object CurrentAgeCalculator {
   private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.CurrentAgeCalculator")
-
 }

@@ -53,7 +53,10 @@ class SecondaryKeyCalculator {
    * @param responseHeaders the origin response
    * @return the selecting header fields, or None if there are no keys.
    */
-  def calculate(request: CacheRequest, responseHeaders: Map[HeaderName, Seq[String]]): Option[Map[HeaderName, Seq[String]]] = {
+  def calculate(
+      request: CacheRequest,
+      responseHeaders: Map[HeaderName, Seq[String]]
+  ): Option[Map[HeaderName, Seq[String]]] = {
     logger.trace(s"calculate: request = $request, responseHeaders = $responseHeaders")
 
     responseHeaders.get(`Vary`).map { varyHeaders =>
@@ -75,7 +78,6 @@ class SecondaryKeyCalculator {
       }
     }
   }
-
 }
 
 object SecondaryKeyCalculator {

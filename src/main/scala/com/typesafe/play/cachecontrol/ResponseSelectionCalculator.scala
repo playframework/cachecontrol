@@ -16,7 +16,6 @@ sealed trait ResponseSelectionAction
  * Predefined actions to take for a selected response.
  */
 object ResponseSelectionActions {
-
   /**
    * No stored response exists.
    *
@@ -64,14 +63,19 @@ class ResponseSelectionCalculator(cache: Cache) {
     override def compare(r1: StoredResponse, r2: StoredResponse): Int = toDate(r2).compareTo(toDate(r1))
   }
 
-  protected def findMatchingResponse(request: CacheRequest, responses: Seq[StoredResponse]): Option[SelectedResponse] = {
+  protected def findMatchingResponse(
+      request: CacheRequest,
+      responses: Seq[StoredResponse]
+  ): Option[SelectedResponse] = {
     logger.trace(s"findMatchingResponse: request = $request, responses = $responses")
 
-    val matchingResponses: Seq[StoredResponse] = responses.filter {
-      uriAndMethodMatch(request, _)
-    }.filter { r =>
-      cache.containsMatchingHeaders(request.headers, r.nominatedHeaders)
-    }
+    val matchingResponses: Seq[StoredResponse] = responses
+      .filter {
+        uriAndMethodMatch(request, _)
+      }
+      .filter { r =>
+        cache.containsMatchingHeaders(request.headers, r.nominatedHeaders)
+      }
 
     if (matchingResponses.isEmpty) {
       None
@@ -84,7 +88,7 @@ class ResponseSelectionCalculator(cache: Cache) {
 
       // Order the matching response by the most recent and find the most recent one...
       val mostRecentResponse = matchingResponses.sorted(mostRecentOrdering).head
-      val mostRecentIndex = responses.indexOf(mostRecentResponse)
+      val mostRecentIndex    = responses.indexOf(mostRecentResponse)
       Some(SelectedResponse(mostRecentResponse, mostRecentIndex))
     }
   }
@@ -102,7 +106,6 @@ class ResponseSelectionCalculator(cache: Cache) {
       ForwardToOrigin("Valid response not found for request")
     }
   }
-
 }
 
 object ResponseSelectionCalculator {

@@ -14,23 +14,21 @@ import org.scalatest.WordSpec
  *
  */
 class StripHeaderCalculatorSpec extends WordSpec {
-
   val privateCache = new StubCache(shared = false)
-  val sharedCache = new StubCache(shared = true)
+  val sharedCache  = new StubCache(shared = true)
 
   def defaultHeaders = {
-    Map(
-      `Date` -> Seq(HttpDate.format(HttpDate.now)))
+    Map(`Date` -> Seq(HttpDate.format(HttpDate.now)))
   }
 
   def defaultRequest = {
-    val uri = new java.net.URI("http://example.com/data")
+    val uri     = new java.net.URI("http://example.com/data")
     val headers = Map[HeaderName, collection.immutable.Seq[String]]()
     CacheRequest(uri, "GET", headers)
   }
 
   def defaultResponse = {
-    val uri = new URI("http://example.com/data")
+    val uri    = new URI("http://example.com/data")
     val status = 200
 
     OriginResponse(uri, status, defaultHeaders)
@@ -41,9 +39,8 @@ class StripHeaderCalculatorSpec extends WordSpec {
   }
 
   "stripHeaders" should {
-
     "contain no-cache results" in {
-      val stripper = new StripHeaderCalculator(privateCache)
+      val stripper                 = new StripHeaderCalculator(privateCache)
       val response: OriginResponse = defaultResponse.copy(headers = h("no-cache=Set-Cookie"))
 
       val result = stripper.stripHeaders(response)
@@ -52,7 +49,7 @@ class StripHeaderCalculatorSpec extends WordSpec {
     }
 
     "contain private results" in {
-      val stripper = new StripHeaderCalculator(sharedCache)
+      val stripper                 = new StripHeaderCalculator(sharedCache)
       val response: OriginResponse = defaultResponse.copy(headers = h("private=Set-Cookie"))
 
       val result = stripper.stripHeaders(response)
@@ -61,13 +58,12 @@ class StripHeaderCalculatorSpec extends WordSpec {
     }
 
     "contain no results when cache is private" in {
-      val stripper = new StripHeaderCalculator(privateCache)
+      val stripper                 = new StripHeaderCalculator(privateCache)
       val response: OriginResponse = defaultResponse.copy(headers = h("private=Set-Cookie"))
 
       val result = stripper.stripHeaders(response)
 
       result should be(Set())
     }
-
   }
 }

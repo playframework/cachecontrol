@@ -5,32 +5,33 @@
 package com.typesafe.play.cachecontrol
 
 import java.time.format.DateTimeFormatter
-import java.time.{ ZoneOffset, ZonedDateTime }
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
-import org.scalatest.{ TryValues, WordSpec }
+import org.scalatest.TryValues
+import org.scalatest.WordSpec
 import org.scalatest.MustMatchers
 
 /**
  *
  */
 class HttpDateSpec extends WordSpec with TryValues with MustMatchers {
-
   "parse a date in IMF-fixdate format" in {
     val expectedDate = ZonedDateTime.of(1994, 11, 6, 8, 49, 37, 0, HttpDate.zone)
-    val dateString = "Sun, 06 Nov 1994 08:49:37 GMT"
+    val dateString   = "Sun, 06 Nov 1994 08:49:37 GMT"
     (HttpDate.parse(dateString)) must ===(expectedDate)
   }
 
   "parse a date in RFC 850 format" in {
     val expectedDate = ZonedDateTime.of(1994, 11, 6, 8, 49, 37, 0, HttpDate.zone)
-    val dateString = "Sunday, 06-Nov-94 08:49:37 GMT"
+    val dateString   = "Sunday, 06-Nov-94 08:49:37 GMT"
     HttpDate.parse(dateString) must ===(expectedDate)
-
   }
 
   "parse a date that is > 50 years in the future correctly" in {
     pendingUntilFixed {
-      val rfc850Format = DateTimeFormatter.ofPattern("EEE, dd-MMM-yy HH:mm:ss 'GMT'")
+      val rfc850Format = DateTimeFormatter
+        .ofPattern("EEE, dd-MMM-yy HH:mm:ss 'GMT'")
         .withLocale(java.util.Locale.ENGLISH)
         .withZone(ZoneOffset.UTC)
 
@@ -49,14 +50,13 @@ class HttpDateSpec extends WordSpec with TryValues with MustMatchers {
 
   "parse a date in asctime format" in {
     val expectedDate = ZonedDateTime.of(1994, 11, 6, 8, 49, 37, 0, HttpDate.zone)
-    val dateString = "Sun Nov 6 08:49:37 1994"
+    val dateString   = "Sun Nov 6 08:49:37 1994"
     HttpDate.parse(dateString) must ===(expectedDate)
   }
 
   "format a date in IMF format" in {
     val expectedString = "Sun, 06 Nov 1994 08:49:37 GMT"
-    val date = ZonedDateTime.of(1994, 11, 6, 8, 49, 37, 0, HttpDate.zone)
+    val date           = ZonedDateTime.of(1994, 11, 6, 8, 49, 37, 0, HttpDate.zone)
     HttpDate.format(date) must ===(expectedString)
   }
 }
-

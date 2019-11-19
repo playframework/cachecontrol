@@ -11,7 +11,6 @@ class CacheDirectiveParserSpec extends WordSpec {
   import CacheDirectives._
 
   "CacheDirectiveParser" should {
-
     def parseSingleCacheDirective(cacheHeader: String): CacheDirective = {
       val parsed = CacheDirectiveParser.parse(cacheHeader)
       parsed.length should be(1)
@@ -100,7 +99,7 @@ class CacheDirectiveParserSpec extends WordSpec {
 
     // Private
     "parse private with values successfully" in {
-      val fieldNames = "a  , b , c"
+      val fieldNames     = "a  , b , c"
       val cacheDirective = parseSingleCacheDirective(s"""private="$fieldNames"""")
       cacheDirective should be(Private(Some(List("a", "b", "c"))))
     }
@@ -144,7 +143,13 @@ class CacheDirectiveParserSpec extends WordSpec {
     "parse complicated headers and join them with duplicates" in {
       val directives = CacheDirectiveParser.parse(Seq("private, no-cache, max-age=3600", "private, no-transform"))
 
-      directives should contain theSameElementsAs Seq(Private(None), NoCache(None), MaxAge(Seconds.seconds(3600)), Private(None), NoTransform)
+      directives should contain theSameElementsAs Seq(
+        Private(None),
+        NoCache(None),
+        MaxAge(Seconds.seconds(3600)),
+        Private(None),
+        NoTransform
+      )
     }
 
     "parse random input as cache directives" in {
@@ -154,7 +159,8 @@ class CacheDirectiveParserSpec extends WordSpec {
         CacheDirectiveExtension("i", None),
         CacheDirectiveExtension("have", None),
         CacheDirectiveExtension("no", Some("idea")),
-        CacheDirectiveExtension("what", Some("I'm, doing")))
+        CacheDirectiveExtension("what", Some("I'm, doing"))
+      )
 
       directives should contain theSameElementsAs badSequence
     }
