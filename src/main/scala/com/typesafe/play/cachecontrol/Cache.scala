@@ -11,7 +11,6 @@ import CacheDirectives.CacheDirectiveExtension
  * belongs to the cache that is not in scope for RFC 7234 and cannot be predefined.
  */
 trait Cache {
-
   /**
    * Allows the cache to calculate the freshness lifetime of the request using a heuristic.
    *
@@ -72,6 +71,8 @@ trait Cache {
    * @param nominatedHeaders the header fields nominated by the stored response
    * @return true if the cache considers it a match, false otherwise.
    */
-  def containsMatchingHeaders(presentedHeaders: Map[HeaderName, Seq[String]], nominatedHeaders: Map[HeaderName, Seq[String]]): Boolean
-
+  def containsMatchingHeaders(
+      presentedHeaders: Map[HeaderName, Seq[String]],
+      nominatedHeaders: Map[HeaderName, Seq[String]]
+  ): Boolean
 }

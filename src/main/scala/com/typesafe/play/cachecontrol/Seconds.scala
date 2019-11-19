@@ -5,7 +5,9 @@
 package com.typesafe.play.cachecontrol
 
 import java.time.Duration
-import java.time.temporal.{ Temporal, TemporalAmount, TemporalUnit }
+import java.time.temporal.Temporal
+import java.time.temporal.TemporalAmount
+import java.time.temporal.TemporalUnit
 import java.util
 
 import scala.language.implicitConversions
@@ -14,7 +16,6 @@ import scala.language.implicitConversions
  * An immutable time period representing a number of seconds.
  */
 case class Seconds private (duration: Duration) extends TemporalAmount {
-
   /**
    * Gets the number of seconds that this period represents.
    *
@@ -88,6 +89,7 @@ case class Seconds private (duration: Duration) extends TemporalAmount {
    * @throws UnsupportedTemporalTypeException if the unit is not supported
    */
   override def get(unit: TemporalUnit): Long = duration.get(unit)
+
   /**
    * Subtracts this duration from the specified temporal object.
    * <p>
@@ -153,11 +155,9 @@ case class Seconds private (duration: Duration) extends TemporalAmount {
    * @throws ArithmeticException if numeric overflow occurs
    */
   override def addTo(temporal: Temporal): Temporal = duration.addTo(temporal)
-
 }
 
 object Seconds {
-
   /** implicit that will only use the seconds part of a duration */
   implicit def fromDurationToSecond(duration: Duration): Seconds = {
     Seconds.seconds(duration.getSeconds)
@@ -214,5 +214,4 @@ object Seconds {
   def parse(periodStr: String): Seconds = {
     new Seconds(Duration.ofSeconds(Duration.parse(periodStr).getSeconds))
   }
-
 }

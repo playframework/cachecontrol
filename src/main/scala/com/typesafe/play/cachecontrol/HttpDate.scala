@@ -4,7 +4,9 @@
 
 package com.typesafe.play.cachecontrol
 
-import java.time.format.{ DateTimeFormatter, DateTimeFormatterBuilder, ResolverStyle }
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.format.ResolverStyle
 import java.time.temporal.ChronoField
 import java.time._
 
@@ -15,7 +17,6 @@ import scala.util.control.NonFatal
  * Defines methods for parsing and formatting HTTP dates.
  */
 object HttpDate {
-
   /**
    * The GMT time zone.
    */
@@ -84,10 +85,12 @@ object HttpDate {
     Try {
       parseIMF(dateString)
     }.recover {
-      case _ => parseRFC850(dateString)
-    }.recover {
-      case _ => parseAscTime(dateString)
-    }.get
+        case _ => parseRFC850(dateString)
+      }
+      .recover {
+        case _ => parseAscTime(dateString)
+      }
+      .get
   }
   private def parseIMF(dateString: String): ZonedDateTime = {
     ZonedDateTime.parse(dateString, imfFixDateFormat)
@@ -120,9 +123,6 @@ object HttpDate {
    * Java methods return TSE in milliseconds, so be careful.
    */
   def fromEpochSeconds(timeSinceEpochInSeconds: Int): ZonedDateTime = {
-    ZonedDateTime.ofInstant(
-      Instant.ofEpochSecond(timeSinceEpochInSeconds),
-      HttpDate.zone)
+    ZonedDateTime.ofInstant(Instant.ofEpochSecond(timeSinceEpochInSeconds), HttpDate.zone)
   }
-
 }

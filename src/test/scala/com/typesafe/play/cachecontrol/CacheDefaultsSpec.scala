@@ -4,12 +4,11 @@
 
 package com.typesafe.play.cachecontrol
 
-import org.scalatest.{ MustMatchers, WordSpec }
+import org.scalatest.MustMatchers
+import org.scalatest.WordSpec
 
 class CacheDefaultsSpec extends WordSpec with MustMatchers {
-
   "isCacheableMethod" should {
-
     "return true for GET" in {
       val defaults = new StubCache(false)
       defaults.isCacheableMethod("GET") must be(true)
@@ -24,7 +23,5 @@ class CacheDefaultsSpec extends WordSpec with MustMatchers {
       val defaults = new StubCache(false)
       defaults.isCacheableMethod("POST") must be(false)
     }
-
   }
-
 }

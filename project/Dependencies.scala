@@ -4,7 +4,6 @@
 import sbt._
 
 object Dependencies {
-
   def scalaTest = Seq("org.scalatest" %% "scalatest" % "3.0.8" % "test")
 
   val parserCombinators = Seq(
@@ -15,5 +14,4 @@ object Dependencies {
   val slf4j = Seq(
     "org.slf4j" % "slf4j-api" % slf4jVersion
   )
-
 }
