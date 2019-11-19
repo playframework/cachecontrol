@@ -12,7 +12,7 @@ scala:
   - 2.12.10
   - 2.13.1
 
-script: sbt "++$TRAVIS_SCALA_VERSION" scalastyle test validateCode publishLocal
+script: sbt "++$TRAVIS_SCALA_VERSION" headerCheck test:headerCheck scalastyle test publishLocal
 
 cache:
   directories:
