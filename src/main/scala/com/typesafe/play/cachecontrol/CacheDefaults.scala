@@ -5,7 +5,6 @@
 package com.typesafe.play.cachecontrol
 
 trait CacheDefaults extends Cache {
-
   /**
    * Cache understands the response status code behavior for caching purposes.
    */
@@ -98,7 +97,10 @@ trait CacheDefaults extends Cache {
     }
   }
 
-  override def containsMatchingHeaders(presentedHeaders: Map[HeaderName, Seq[String]], nominatedHeaders: Map[HeaderName, Seq[String]]): Boolean = {
+  override def containsMatchingHeaders(
+      presentedHeaders: Map[HeaderName, Seq[String]],
+      nominatedHeaders: Map[HeaderName, Seq[String]]
+  ): Boolean = {
     if (nominatedHeaders.isEmpty) {
       return true
     }

@@ -13,7 +13,6 @@ sealed trait ResponseServeAction
  * The possible actions a client can execute when determining to serve a stored response.
  */
 object ResponseServeActions {
-
   /**
    * The stored response is fresh.
    *
@@ -57,7 +56,6 @@ object ResponseServeActions {
    * If the origin server cannot be reached, then the cache MUST serve a gateway timeout response.
    */
   case class ValidateOrTimeout(reason: String) extends ResponseServeAction
-
 }
 
 /**
@@ -70,7 +68,6 @@ object ResponseServeActions {
  * https://tools.ietf.org/html/rfc7234#section-4
  */
 class ResponseServingCalculator(cache: Cache) {
-
   import HeaderNames._
   import ResponseServeActions._
   import ResponseServingCalculator._
@@ -92,49 +89,57 @@ class ResponseServingCalculator(cache: Cache) {
     //  (Section 4.3), and
     val explicitValidate: Option[Validate] = noCacheFound
 
-    explicitValidate.orElse {
-      //o  the stored response is either:
-      //
-      //   *  fresh (see Section 4.2), or
-      val serveFresh: Option[ServeFresh] = isCachedResponseFresh(currentAge)
-      serveFresh
-    }.orElse {
-      // "must-revalidate" / "proxy-revalidate" mean timeout on disconnect
-      // rather than serve stale
-      val notAllowedStale: Option[ValidateOrTimeout] = isStaleResponseExplicitlyProhibited
-      notAllowedStale
-    }.orElse {
-      //   *  allowed to be served stale (see Section 4.2.4), or
-      val serveStale: Option[ServeStale] = isStaleResponseAllowed(currentAge)
-      serveStale
-    }.orElse {
-      val serveStaleAndRevalidate: Option[ServeStaleAndValidate] = canServeStaleAndRevalidate(currentAge)
-      serveStaleAndRevalidate
-    }.getOrElse {
-      // "is successfully validated" -- which means validate but serve stale on disconnect.
-      val defaultValidation: Validate = allowStaleIfError(currentAge)
-      defaultValidation
-    }
+    explicitValidate
+      .orElse {
+        //o  the stored response is either:
+        //
+        //   *  fresh (see Section 4.2), or
+        val serveFresh: Option[ServeFresh] = isCachedResponseFresh(currentAge)
+        serveFresh
+      }
+      .orElse {
+        // "must-revalidate" / "proxy-revalidate" mean timeout on disconnect
+        // rather than serve stale
+        val notAllowedStale: Option[ValidateOrTimeout] = isStaleResponseExplicitlyProhibited
+        notAllowedStale
+      }
+      .orElse {
+        //   *  allowed to be served stale (see Section 4.2.4), or
+        val serveStale: Option[ServeStale] = isStaleResponseAllowed(currentAge)
+        serveStale
+      }
+      .orElse {
+        val serveStaleAndRevalidate: Option[ServeStaleAndValidate] = canServeStaleAndRevalidate(currentAge)
+        serveStaleAndRevalidate
+      }
+      .getOrElse {
+        // "is successfully validated" -- which means validate but serve stale on disconnect.
+        val defaultValidation: Validate = allowStaleIfError(currentAge)
+        defaultValidation
+      }
   }
 
   protected def allowStaleIfError(age: Seconds)(implicit request: CacheRequest, response: StoredResponse): Validate = {
     val v = Validate("Response is stale, and stale response is not allowed")
 
     val freshnessLifetime = freshnessCalculator.calculateFreshnessLifetime(request, response)
-    CacheDirectives.staleIfError(response.directives).map { staleIfError =>
-      val delta = staleIfError.delta
-      //Its value indicates the upper limit to staleness; when the cached
-      //response is more stale than the indicated amount, the cached response
-      //SHOULD NOT be used to satisfy the request, absent other information.
-      // https://tools.ietf.org/html/rfc5861#section-4
+    CacheDirectives
+      .staleIfError(response.directives)
+      .map { staleIfError =>
+        val delta = staleIfError.delta
+        //Its value indicates the upper limit to staleness; when the cached
+        //response is more stale than the indicated amount, the cached response
+        //SHOULD NOT be used to satisfy the request, absent other information.
+        // https://tools.ietf.org/html/rfc5861#section-4
 
-      val serveStale = age.isLessThan(freshnessLifetime.plus(delta))
-      logger.debug(s"allowStaleIfError: delta = ${delta}, staleIfError = $serveStale")
+        val serveStale = age.isLessThan(freshnessLifetime.plus(delta))
+        logger.debug(s"allowStaleIfError: delta = ${delta}, staleIfError = $serveStale")
 
-      v.copy(staleIfError = serveStale)
-    }.getOrElse {
-      v
-    }
+        v.copy(staleIfError = serveStale)
+      }
+      .getOrElse {
+        v
+      }
   }
 
   protected def noCacheFound(implicit request: CacheRequest, response: StoredResponse): Option[Validate] = {
@@ -162,7 +167,8 @@ class ResponseServingCalculator(cache: Cache) {
         // https://tools.ietf.org/html/rfc7234#section-5.4
         if (request.directives.isEmpty) {
           if (containsPragmaNoCache) {
-            val msg = "Request does not contain Cache-Control header found, but does contains no-cache Pragma header, validation required"
+            val msg =
+              "Request does not contain Cache-Control header found, but does contains no-cache Pragma header, validation required"
             Some(Validate(msg))
           } else {
             None
@@ -234,7 +240,9 @@ class ResponseServingCalculator(cache: Cache) {
    *
    * https://tools.ietf.org/html/rfc7234#section-4.2
    */
-  protected def isCachedResponseFresh(currentAge: Seconds)(implicit request: CacheRequest, response: StoredResponse): Option[ServeFresh] = {
+  protected def isCachedResponseFresh(
+      currentAge: Seconds
+  )(implicit request: CacheRequest, response: StoredResponse): Option[ServeFresh] = {
     if (logger.isTraceEnabled) {
       logger.trace(s"isCachedResponseFresh: request = $request, response = $response")
     }
@@ -260,15 +268,21 @@ class ResponseServingCalculator(cache: Cache) {
         // https://tools.ietf.org/html/rfc7234#section-5.2.1.3
         CacheDirectives.minFresh(request.directives).map(_.delta) match {
           case Some(minFresh) if !freshnessLifetime.isLessThan(currentAge.plus(minFresh)) =>
-            logger.debug(s"isCachedResponseFresh: freshnessLifetime = $freshnessLifetime, currentAge = $currentAge, minFresh = $minFresh")
-            Some(ServeFresh(s"Fresh response: minFresh = $minFresh, freshnessLifetime = $freshnessLifetime, currentAge = $currentAge"))
+            logger.debug(
+              s"isCachedResponseFresh: freshnessLifetime = $freshnessLifetime, currentAge = $currentAge, minFresh = $minFresh"
+            )
+            Some(
+              ServeFresh(
+                s"Fresh response: minFresh = $minFresh, freshnessLifetime = $freshnessLifetime, currentAge = $currentAge"
+              )
+            )
 
           case noMinFresh =>
             val responseIsFresh = freshnessLifetime.isGreaterThan(currentAge)
             logger.debug(s"isCachedResponseFresh: freshnessLifetime = $freshnessLifetime, currentAge = $currentAge")
             if (responseIsFresh) {
               val secondsLeft = freshnessLifetime.minus(currentAge)
-              val reason = s"Fresh response: lifetime = $freshnessLifetime, $secondsLeft seconds left"
+              val reason      = s"Fresh response: lifetime = $freshnessLifetime, $secondsLeft seconds left"
 
               Some(ServeFresh(reason))
             } else {
@@ -283,7 +297,9 @@ class ResponseServingCalculator(cache: Cache) {
    *
    * https://tools.ietf.org/html/rfc7234#section-4.2.4
    */
-  protected def isStaleResponseAllowed(currentAge: Seconds)(implicit request: CacheRequest, response: StoredResponse): Option[ServeStale] = {
+  protected def isStaleResponseAllowed(
+      currentAge: Seconds
+  )(implicit request: CacheRequest, response: StoredResponse): Option[ServeStale] = {
     if (logger.isTraceEnabled) {
       logger.trace(s"isStaleResponseAllowed: $currentAge, request = $request, response = $response")
     }
@@ -291,42 +307,52 @@ class ResponseServingCalculator(cache: Cache) {
     //The "max-stale" request directive indicates that the client is
     //willing to accept a response that has exceeded its freshness
     //lifetime.
-    val result = CacheDirectives.maxStale(request.directives).flatMap { maxStale =>
-      logger.debug(s"isStaleResponseAllowed: maxStale = $maxStale")
+    val result = CacheDirectives
+      .maxStale(request.directives)
+      .flatMap { maxStale =>
+        logger.debug(s"isStaleResponseAllowed: maxStale = $maxStale")
 
-      maxStale.delta match {
-        case Some(maxStaleDelta) =>
-          // If max-stale is assigned a value, then the client is
-          // willing to accept a response that has exceeded its freshness lifetime
-          // by no more than the specified number of seconds.
-          val freshnessLifetime = freshnessCalculator.calculateFreshnessLifetime(request, response)
-          val totalLifetime = freshnessLifetime.plus(maxStaleDelta)
-          logger.debug(s"isStaleResponseAllowed: freshnessLifetime = $freshnessLifetime, maxAge = $maxStaleDelta, totalLifetime = $totalLifetime, currentAge = $currentAge")
+        maxStale.delta match {
+          case Some(maxStaleDelta) =>
+            // If max-stale is assigned a value, then the client is
+            // willing to accept a response that has exceeded its freshness lifetime
+            // by no more than the specified number of seconds.
+            val freshnessLifetime = freshnessCalculator.calculateFreshnessLifetime(request, response)
+            val totalLifetime     = freshnessLifetime.plus(maxStaleDelta)
+            logger.debug(
+              s"isStaleResponseAllowed: freshnessLifetime = $freshnessLifetime, maxAge = $maxStaleDelta, totalLifetime = $totalLifetime, currentAge = $currentAge"
+            )
 
-          if (totalLifetime.isGreaterThan(currentAge)) {
-            logger.debug(s"isStaleResponseAllowed: ($freshnessLifetime + $maxStaleDelta) > = $currentAge, allowing serve stale")
-            val msg = s"Request contains ${maxStale}, current age = ${currentAge.seconds} which is inside range"
+            if (totalLifetime.isGreaterThan(currentAge)) {
+              logger.debug(
+                s"isStaleResponseAllowed: ($freshnessLifetime + $maxStaleDelta) > = $currentAge, allowing serve stale"
+              )
+              val msg = s"Request contains ${maxStale}, current age = ${currentAge.seconds} which is inside range"
+              Some(ServeStale(msg))
+            } else {
+              logger.debug(s"isStaleResponseAllowed: stale response outside of max-stale $maxStale")
+              None
+            }
+          case None =>
+            logger.debug(s"isStaleResponseAllowed: maxStale has no delta, stale response allowed")
+
+            // If no value is assigned to max-stale, then the client is willing
+            // to accept a stale response of any age.
+            val msg = "Request contains no-args max-stale directive"
             Some(ServeStale(msg))
-          } else {
-            logger.debug(s"isStaleResponseAllowed: stale response outside of max-stale $maxStale")
-            None
-          }
-        case None =>
-          logger.debug(s"isStaleResponseAllowed: maxStale has no delta, stale response allowed")
-
-          // If no value is assigned to max-stale, then the client is willing
-          // to accept a stale response of any age.
-          val msg = "Request contains no-args max-stale directive"
-          Some(ServeStale(msg))
+        }
       }
-    }.orElse {
-      logger.debug(s"isStaleResponseAllowed: stale response not allowed")
-      None
-    }
+      .orElse {
+        logger.debug(s"isStaleResponseAllowed: stale response not allowed")
+        None
+      }
     result
   }
 
-  protected def isStaleResponseExplicitlyProhibited(implicit request: CacheRequest, response: StoredResponse): Option[ValidateOrTimeout] = {
+  protected def isStaleResponseExplicitlyProhibited(
+      implicit request: CacheRequest,
+      response: StoredResponse
+  ): Option[ValidateOrTimeout] = {
     if (logger.isTraceEnabled) {
       logger.trace(s"isStaleResponseProhibited: request = $request, response = $response")
     }
@@ -382,7 +408,9 @@ class ResponseServingCalculator(cache: Cache) {
     }
   }
 
-  protected def canServeStaleAndRevalidate(age: Seconds)(implicit request: CacheRequest, response: StoredResponse): Option[ServeStaleAndValidate] = {
+  protected def canServeStaleAndRevalidate(
+      age: Seconds
+  )(implicit request: CacheRequest, response: StoredResponse): Option[ServeStaleAndValidate] = {
     if (logger.isTraceEnabled) {
       logger.trace(s"canServeStaleAndRevalidate: response = $response")
     }
@@ -397,7 +425,6 @@ class ResponseServingCalculator(cache: Cache) {
         ServeStaleAndValidate(reason)
     }
   }
-
 }
 
 object ResponseServingCalculator {

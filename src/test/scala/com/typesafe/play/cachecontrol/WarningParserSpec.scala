@@ -12,9 +12,8 @@ import org.scalatest.Inside._
  *
  */
 class WarningParserSpec extends WordSpec {
-
   "Parse a warning spec correctly with a date" in {
-    val warning = WarningParser.parse("""112 - "network down" "Sat, 25 Aug 2012 23:34:45 GMT"""")
+    val warning  = WarningParser.parse("""112 - "network down" "Sat, 25 Aug 2012 23:34:45 GMT"""")
     val dateTime = HttpDate.parse("Sat, 25 Aug 2012 23:34:45 GMT")
     warning should ===(Warning(112, "-", "network down", Some(dateTime)))
   }

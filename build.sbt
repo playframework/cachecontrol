@@ -13,7 +13,8 @@ crossScalaVersions := Seq("2.12.10", "2.13.1")
 scalacOptions ++= {
   Seq(
     "-target:jvm-1.8",
-    "-encoding", "utf8",
+    "-encoding",
+    "utf8",
     "-deprecation",
     "-feature",
     "-unchecked",
@@ -25,8 +26,10 @@ scalacOptions ++= {
 }
 
 javacOptions ++= Seq(
-  "-source", "1.8",
-  "-target", "1.8",
+  "-source",
+  "1.8",
+  "-target",
+  "1.8",
   "-Xlint:deprecation",
   "-Xlint:unchecked",
 )
@@ -47,7 +50,9 @@ libraryDependencies += "org.slf4j" % "slf4j-simple" % slf4jVersion % Test
 
 headerLicense := {
   val currentYear = java.time.Year.now(java.time.Clock.systemUTC).getValue
-  Some(HeaderLicense.Custom(
-    s"Copyright (C) 2009-$currentYear Lightbend Inc. <https://www.lightbend.com>"
-  ))
+  Some(
+    HeaderLicense.Custom(
+      s"Copyright (C) 2009-$currentYear Lightbend Inc. <https://www.lightbend.com>"
+    )
+  )
 }

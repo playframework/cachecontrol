@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory
  *
  */
 class FreshnessCalculator(cache: Cache) {
-
   import HeaderNames._
 
   private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.FreshnessCalculator")
@@ -41,21 +40,23 @@ class FreshnessCalculator(cache: Cache) {
       val freshnessLifetime: Option[Seconds] = {
         // o  If the cache is shared and the s-maxage response directive
         // (Section 5.2.2.9) is present, use its value, or
-        calculateFreshnessFromSMaxAge(request, response).orElse {
-
-          //    o  If the max-age response directive (Section 5.2.2.8) is present,
-          // use its value, or
-          calculateFreshnessFromMaxAge(request, response)
-        }.orElse {
-          //  o  If the Expires response header field (Section 5.3) is present, use
-          //its value minus the value of the Date response header field, or
-          calculateFreshnessFromExpires(request, response)
-        }.orElse {
-          // o  Otherwise, no explicit expiration time is present in the response.
-          //  A heuristic freshness lifetime might be applicable; see
-          // Section 4.2.2.
-          calculateFreshnessFromHeuristic(request, response)
-        }
+        calculateFreshnessFromSMaxAge(request, response)
+          .orElse {
+            //    o  If the max-age response directive (Section 5.2.2.8) is present,
+            // use its value, or
+            calculateFreshnessFromMaxAge(request, response)
+          }
+          .orElse {
+            //  o  If the Expires response header field (Section 5.3) is present, use
+            //its value minus the value of the Date response header field, or
+            calculateFreshnessFromExpires(request, response)
+          }
+          .orElse {
+            // o  Otherwise, no explicit expiration time is present in the response.
+            //  A heuristic freshness lifetime might be applicable; see
+            // Section 4.2.2.
+            calculateFreshnessFromHeuristic(request, response)
+          }
       }
       logger.debug(s"calculateFreshnessLifetime: freshnessLifetime = $freshnessLifetime")
       freshnessLifetime
@@ -73,7 +74,7 @@ class FreshnessCalculator(cache: Cache) {
    */
   def isFreshnessInformationInvalid(request: CacheRequest, response: CacheResponse): Boolean = {
     val responseHeaders = response.headers
-    val directives = response.directives
+    val directives      = response.directives
     if (responseHeaders.get(`Expires`).exists(_.size > 1)) {
       logger.debug("isFreshnessInformationInvalid: duplicate Expires headers found, returning true")
       true
@@ -137,7 +138,7 @@ class FreshnessCalculator(cache: Cache) {
       val dateString = headers.getOrElse(`Date`, throw new RuntimeException("No Date header found!")).head
       try {
         val expires = HttpDate.parse(expiresList.head)
-        val date = HttpDate.parse(dateString)
+        val date    = HttpDate.parse(dateString)
 
         val expiresDuration = HttpDate.diff(start = date, end = expires)
         logger.debug(s"calculateFreshnessFromExpires: expiresDuration = $expiresDuration")
@@ -162,8 +163,7 @@ class FreshnessCalculator(cache: Cache) {
   def unapplySeq(directives: Seq[CacheDirective]): Option[Seconds] = {
     directives match {
       case SMaxAge(delta) :: _ => Some(delta)
-      case _ => None
+      case _                   => None
     }
   }
-
 }

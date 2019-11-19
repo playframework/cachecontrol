@@ -11,21 +11,20 @@ import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 
 class SecondaryKeyCalculatorSpec extends WordSpec {
-
   def responseHeaders = {
     val now = HttpDate.now
     val age = Duration.ofSeconds(60)
     val headers = Map(
-      `Date` -> Seq(HttpDate.format(now)),
-      `Age` -> Seq(age.getSeconds.toString),
-      HeaderName("Content-Encoding") -> Seq("gzip"))
+      `Date`                         -> Seq(HttpDate.format(now)),
+      `Age`                          -> Seq(age.getSeconds.toString),
+      HeaderName("Content-Encoding") -> Seq("gzip")
+    )
     headers
   }
 
   def defaultRequest = {
-    val uri = new java.net.URI("http://example.com/data")
-    val headers = Map(
-      HeaderName("Accept-Encoding") -> Seq("gzip"))
+    val uri     = new java.net.URI("http://example.com/data")
+    val headers = Map(HeaderName("Accept-Encoding") -> Seq("gzip"))
     CacheRequest(uri, "GET", headers)
   }
 
@@ -33,7 +32,6 @@ class SecondaryKeyCalculatorSpec extends WordSpec {
     val calculator = new SecondaryKeyCalculator()
 
     "be None with no Vary header" in {
-
       val request = defaultRequest
       val matches = calculator.calculate(request, responseHeaders)
 
@@ -55,7 +53,5 @@ class SecondaryKeyCalculatorSpec extends WordSpec {
 
       matches should be(Some(Map(HeaderName("Accept-Encoding") -> Seq("gzip"))))
     }
-
   }
-
 }

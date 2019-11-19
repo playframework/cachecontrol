@@ -8,7 +8,6 @@ import scala.util.parsing.combinator.JavaTokenParsers
 import scala.util.parsing.input.CharSequenceReader
 
 object WarningParser {
-
   def parse(header: String): Warning = {
     WarningValueParser(new CharSequenceReader(header)) match {
       case WarningValueParser.Success(result, next) =>
@@ -22,7 +21,6 @@ object WarningParser {
    * Parses out a warning header.
    */
   object WarningValueParser extends JavaTokenParsers {
-
     override def skipWhitespace = false
 
     def apply(in: Input): ParseResult[Warning] = {
@@ -52,7 +50,5 @@ object WarningParser {
       case code ~ agent ~ text ~ date =>
         Warning(code, agent, text, date)
     }
-
   }
-
 }

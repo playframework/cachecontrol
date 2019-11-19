@@ -16,7 +16,6 @@ import scala.util.parsing.input.CharSequenceReader
  * https://tools.ietf.org/html/rfc7234#section-5.2
  */
 object CacheDirectiveParser {
-
   def parse(headers: Seq[String]): collection.immutable.Seq[CacheDirective] = {
     CacheDirectiveParserCompat.toImmutableSeq(headers.flatMap(parse))
   }
@@ -40,7 +39,7 @@ object CacheDirectiveParser {
 
     private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.CacheControlParser")
 
-    val separatorChars = "()<>@,;:\\\"/[]?={} \t"
+    val separatorChars          = "()<>@,;:\\\"/[]?={} \t"
     val separatorBitSet: BitSet = BitSet(separatorChars.iterator.map(_.toInt).toSeq: _*)
 
     type Elem = Char
@@ -79,7 +78,7 @@ object CacheDirectiveParser {
     // The spec is really vague about what a quotedPair means. We're going to assume that it's just to quote quotes,
     // which means all we have to do for the result of it is ignore the slash.
     val quotedPair = '\\' ~> char
-    val qdtext = not('"') ~> text
+    val qdtext     = not('"') ~> text
 
     // quoted-string https://tools.ietf.org/html/rfc7230#section-3.2.6
     val quotedString = '"' ~> rep(quotedPair | qdtext) <~ '"' ^^ charSeqToString
@@ -103,62 +102,62 @@ object CacheDirectiveParser {
      explicitly defined to be case-insensitive.
      */
     val cacheDirective: Parser[CacheDirective] = token ~ opt('=' ~> (token | quotedString)) <~ rep(' ') ^^ {
-      case maxAge ~ Some(v) if maxAge matches "(?i)max-age" =>
+      case maxAge ~ Some(v) if maxAge.matches("(?i)max-age") =>
         val delta = seconds(v)
         MaxAge(delta)
 
-      case maxStale ~ None if maxStale matches "(?i)max-stale" =>
+      case maxStale ~ None if maxStale.matches("(?i)max-stale") =>
         MaxStale(None)
 
-      case maxStale ~ Some(v) if maxStale matches "(?i)max-stale" =>
+      case maxStale ~ Some(v) if maxStale.matches("(?i)max-stale") =>
         val delta = seconds(v)
         MaxStale(Some(delta))
 
-      case minFresh ~ Some(v) if minFresh matches "(?i)min-fresh" =>
+      case minFresh ~ Some(v) if minFresh.matches("(?i)min-fresh") =>
         val delta = seconds(v)
         MinFresh(delta)
 
-      case noCache ~ Some(v) if noCache matches "(?i)no-cache" =>
+      case noCache ~ Some(v) if noCache.matches("(?i)no-cache") =>
         val args = fieldNames(v)
         NoCache(Some(args))
 
-      case noCache ~ None if noCache matches "(?i)no-cache" =>
+      case noCache ~ None if noCache.matches("(?i)no-cache") =>
         NoCache(None)
 
-      case noStore ~ None if noStore matches "(?i)no-store" =>
+      case noStore ~ None if noStore.matches("(?i)no-store") =>
         NoStore
 
-      case noTransform ~ None if noTransform matches "(?i)no-transform" =>
+      case noTransform ~ None if noTransform.matches("(?i)no-transform") =>
         NoTransform
 
-      case onlyIfCached ~ None if onlyIfCached matches "(?i)only-if-cached" =>
+      case onlyIfCached ~ None if onlyIfCached.matches("(?i)only-if-cached") =>
         OnlyIfCached
 
-      case mustRevalidated ~ None if mustRevalidated matches "(?i)must-revalidate" =>
+      case mustRevalidated ~ None if mustRevalidated.matches("(?i)must-revalidate") =>
         MustRevalidate
 
-      case public ~ None if public matches "(?i)public" =>
+      case public ~ None if public.matches("(?i)public") =>
         Public
 
-      case privateDirective ~ Some(v) if privateDirective matches "(?i)private" =>
+      case privateDirective ~ Some(v) if privateDirective.matches("(?i)private") =>
         val args = fieldNames(v)
         Private(Some(args))
 
-      case privateDirective ~ None if privateDirective matches "(?i)private" =>
+      case privateDirective ~ None if privateDirective.matches("(?i)private") =>
         Private(None)
 
-      case proxyRevalidate ~ None if proxyRevalidate matches "(?i)proxy-revalidate" =>
+      case proxyRevalidate ~ None if proxyRevalidate.matches("(?i)proxy-revalidate") =>
         ProxyRevalidate
 
-      case staleWhileRevalidate ~ Some(v) if staleWhileRevalidate matches "(?i)stale-while-revalidate" =>
+      case staleWhileRevalidate ~ Some(v) if staleWhileRevalidate.matches("(?i)stale-while-revalidate") =>
         val delta = seconds(v)
         StaleWhileRevalidate(delta)
 
-      case staleIfError ~ Some(v) if staleIfError matches "(?i)stale-if-error" =>
+      case staleIfError ~ Some(v) if staleIfError.matches("(?i)stale-if-error") =>
         val delta = seconds(v)
         StaleIfError(delta)
 
-      case sMaxAge ~ Some(v) if sMaxAge matches "(?i)s-maxage" =>
+      case sMaxAge ~ Some(v) if sMaxAge.matches("(?i)s-maxage") =>
         val delta = seconds(v)
         SMaxAge(delta)
 
