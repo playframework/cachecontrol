@@ -4,14 +4,11 @@
 
 package com.typesafe.play.cachecontrol
 
-import org.scalatest.WordSpec
-import org.scalatest.Matchers._
 import org.scalatest.Inside._
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers._
 
-/**
- *
- */
-class WarningParserSpec extends WordSpec {
+class WarningParserSpec extends AnyWordSpec {
   "Parse a warning spec correctly with a date" in {
     val warning  = WarningParser.parse("""112 - "network down" "Sat, 25 Aug 2012 23:34:45 GMT"""")
     val dateTime = HttpDate.parse("Sat, 25 Aug 2012 23:34:45 GMT")
