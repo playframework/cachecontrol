@@ -11,10 +11,10 @@ import CacheDirectives.Private
 import HeaderNames._
 import ResponseCachingActions.DoCacheResponse
 import ResponseCachingActions.DoNotCacheResponse
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-class ResponseCachingCalculatorSpec extends WordSpec {
+class ResponseCachingCalculatorSpec extends AnyWordSpec {
   val privateCache = new StubCache(shared = false)
 
   val sharedCache = new StubCache(shared = true)

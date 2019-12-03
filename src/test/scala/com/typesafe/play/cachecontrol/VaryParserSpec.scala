@@ -4,10 +4,10 @@
 
 package com.typesafe.play.cachecontrol
 
-import org.scalatest.WordSpec
-import org.scalatest.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers._
 
-class VaryParserSpec extends WordSpec {
+class VaryParserSpec extends AnyWordSpec {
   "Vary parser" should {
     "parse * correctly" in {
       (VaryParser.parse("*") should contain).theSameElementsInOrderAs(List(HeaderName("*")))

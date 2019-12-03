@@ -4,10 +4,10 @@
 
 package com.typesafe.play.cachecontrol
 
-import org.scalatest.WordSpec
-import org.scalatest.Matchers._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-class CacheDirectiveParserSpec extends WordSpec {
+class CacheDirectiveParserSpec extends AnyWordSpec {
   import CacheDirectives._
 
   "CacheDirectiveParser" should {
