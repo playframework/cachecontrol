@@ -13,6 +13,7 @@ sealed trait ResponseServeAction
  * The possible actions a client can execute when determining to serve a stored response.
  */
 object ResponseServeActions {
+
   /**
    * The stored response is fresh.
    *

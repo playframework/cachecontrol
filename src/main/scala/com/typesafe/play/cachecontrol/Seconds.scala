@@ -16,6 +16,7 @@ import scala.language.implicitConversions
  * An immutable time period representing a number of seconds.
  */
 case class Seconds private (duration: Duration) extends TemporalAmount {
+
   /**
    * Gets the number of seconds that this period represents.
    *
@@ -158,6 +159,7 @@ case class Seconds private (duration: Duration) extends TemporalAmount {
 }
 
 object Seconds {
+
   /** implicit that will only use the seconds part of a duration */
   implicit def fromDurationToSecond(duration: Duration): Seconds = {
     Seconds.seconds(duration.getSeconds)
