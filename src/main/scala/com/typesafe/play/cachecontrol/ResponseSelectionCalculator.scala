@@ -16,6 +16,7 @@ sealed trait ResponseSelectionAction
  * Predefined actions to take for a selected response.
  */
 object ResponseSelectionActions {
+
   /**
    * No stored response exists.
    *

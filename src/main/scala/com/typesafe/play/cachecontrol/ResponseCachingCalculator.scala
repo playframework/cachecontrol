@@ -12,6 +12,7 @@ sealed trait ResponseCachingAction
  * Case classes used by ResponseCachingPolicy.
  */
 object ResponseCachingActions {
+
   /**
    * The client should store the origin response in the cache.
    *

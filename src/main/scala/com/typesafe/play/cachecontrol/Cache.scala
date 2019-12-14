@@ -11,6 +11,7 @@ import CacheDirectives.CacheDirectiveExtension
  * belongs to the cache that is not in scope for RFC 7234 and cannot be predefined.
  */
 trait Cache {
+
   /**
    * Allows the cache to calculate the freshness lifetime of the request using a heuristic.
    *
