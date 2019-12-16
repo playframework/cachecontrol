@@ -8,10 +8,10 @@ import java.net.URI
 import java.time.Duration
 
 import HeaderNames._
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers._
 
-class ResponseServingCalculatorSpec extends WordSpec {
+class ResponseServingCalculatorSpec extends AnyWordSpec {
   import ResponseServeActions._
 
   val privateCache = new StubCache(shared = false)

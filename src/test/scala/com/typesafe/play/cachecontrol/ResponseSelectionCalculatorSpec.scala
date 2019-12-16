@@ -10,13 +10,10 @@ import HeaderNames._
 import ResponseSelectionActions.ForwardToOrigin
 import ResponseSelectionActions.GatewayTimeout
 import ResponseSelectionActions.SelectedResponse
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-/**
- *
- */
-class ResponseSelectionCalculatorSpec extends WordSpec {
+class ResponseSelectionCalculatorSpec extends AnyWordSpec {
   val cache = new StubCache(shared = false)
 
   def defaultHeaders(seconds: Int = 60): Map[HeaderName, Seq[String]] = {

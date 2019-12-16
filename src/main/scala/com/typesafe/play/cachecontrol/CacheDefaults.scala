@@ -5,6 +5,7 @@
 package com.typesafe.play.cachecontrol
 
 trait CacheDefaults extends Cache {
+
   /**
    * Cache understands the response status code behavior for caching purposes.
    */

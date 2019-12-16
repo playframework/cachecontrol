@@ -9,13 +9,13 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 import org.scalatest.TryValues
-import org.scalatest.WordSpec
-import org.scalatest.MustMatchers
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 /**
  *
  */
-class HttpDateSpec extends WordSpec with TryValues with MustMatchers {
+class HttpDateSpec extends AnyWordSpec with TryValues with Matchers {
   "parse a date in IMF-fixdate format" in {
     val expectedDate = ZonedDateTime.of(1994, 11, 6, 8, 49, 37, 0, HttpDate.zone)
     val dateString   = "Sun, 06 Nov 1994 08:49:37 GMT"

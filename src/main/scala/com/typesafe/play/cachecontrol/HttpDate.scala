@@ -17,6 +17,7 @@ import scala.util.control.NonFatal
  * Defines methods for parsing and formatting HTTP dates.
  */
 object HttpDate {
+
   /**
    * The GMT time zone.
    */

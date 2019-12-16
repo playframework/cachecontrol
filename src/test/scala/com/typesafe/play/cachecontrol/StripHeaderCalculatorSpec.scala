@@ -7,13 +7,10 @@ package com.typesafe.play.cachecontrol
 import java.net.URI
 
 import HeaderNames._
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers._
 
-/**
- *
- */
-class StripHeaderCalculatorSpec extends WordSpec {
+class StripHeaderCalculatorSpec extends AnyWordSpec {
   val privateCache = new StubCache(shared = false)
   val sharedCache  = new StubCache(shared = true)
 

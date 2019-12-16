@@ -7,10 +7,10 @@ package com.typesafe.play.cachecontrol
 import java.net.URI
 
 import HeaderNames._
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-class FreshnessCalculatorSpec extends WordSpec {
+class FreshnessCalculatorSpec extends AnyWordSpec {
   val cache = new StubCache(shared = false)
 
   def defaultHeaders = {

@@ -6,11 +6,11 @@ package com.typesafe.play.cachecontrol
 
 import java.net.URI
 
-import org.scalatest.WordSpec
-import org.scalatest.Matchers._
 import HeaderNames._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-class CurrentAgeCalculatorSpec extends WordSpec {
+class CurrentAgeCalculatorSpec extends AnyWordSpec {
   val ageCalculator = new CurrentAgeCalculator()
   val zeroSeconds   = Seconds.seconds(0)
 
