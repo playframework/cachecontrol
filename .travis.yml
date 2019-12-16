@@ -12,13 +12,14 @@ scala:
   - 2.12.10
   - 2.13.1
 
-script: sbt "++$TRAVIS_SCALA_VERSION" headerCheck test:headerCheck scalafmtCheckAll scalafmtSbtCheck scalastyle test publishLocal
+script: sbt "++$TRAVIS_SCALA_VERSION" headerCheck test:headerCheck scalafmtCheckAll scalafmtSbtCheck scalastyle test publishLocal mimaReportBinaryIssues
 
 cache:
   directories:
     - "$HOME/.ivy2/cache"
     - "$HOME/.jabba/jdk"
     - "$HOME/.sbt"
+    - "$HOME/.coursier"
 
 before_cache:
   - rm -rf $HOME/.ivy2/cache/com.typesafe.play/*

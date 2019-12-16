@@ -3,6 +3,8 @@ import interplay.ScalaVersions._
 
 playBuildRepoName in ThisBuild := "cachecontrol"
 
+val previousVersion = Some("2.0.0")
+
 lazy val cachecontrol = (project in file("."))
   .enablePlugins(PlayReleaseBase, PlayLibrary)
   .settings(
@@ -49,4 +51,6 @@ lazy val cachecontrol = (project in file("."))
         )
       )
     },
+    mimaFailOnNoPrevious := false,
+    mimaPreviousArtifacts := previousVersion.map(version => organization.value %% name.value % version).toSet
   )
