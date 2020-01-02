@@ -1,9 +1,9 @@
 <!--
-  ~ Copyright (C) 2009-2019 Lightbend Inc. <https://www.lightbend.com>
+  ~ Copyright (C) Lightbend Inc. <https://www.lightbend.com>
   -->
 
 <!--
-  ~ Copyright (C) 2009-2019 Lightbend Inc. <https://www.lightbend.com>
+  ~ Copyright (C) Lightbend Inc. <https://www.lightbend.com>
   -->
 
 <scalastyle>
@@ -17,7 +17,7 @@
  <check level="warning" class="org.scalastyle.file.HeaderMatchesChecker" enabled="true">
   <parameters>
    <parameter name="header"><![CDATA[/*
- * Copyright (C) 2009-2019 Lightbend Inc. <https://www.lightbend.com>
+ * Copyright (C) Lightbend Inc. <https://www.lightbend.com>
  */]]></parameter>
   </parameters>
  </check>
