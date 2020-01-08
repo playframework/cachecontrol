@@ -15,7 +15,7 @@ scala:
   - 2.12.10
   - 2.13.1
 
-script: sbt "++$TRAVIS_SCALA_VERSION" headerCheck test:headerCheck scalafmtCheckAll scalafmtSbtCheck scalastyle test publishLocal mimaReportBinaryIssues
+script: sbt "++$TRAVIS_SCALA_VERSION" headerCheckAll scalafmtCheckAll scalafmtSbtCheck scalastyle test publishLocal mimaReportBinaryIssues
 
 cache:
   directories:
