@@ -78,9 +78,7 @@ class CurrentAgeCalculator {
     headers
       .get(`Age`)
       .flatMap(_.headOption)
-      .map { age =>
-        Seconds.seconds(age.toLong)
-      }
+      .map { age => Seconds.seconds(age.toLong) }
       .getOrElse {
         Seconds.ZERO
       }

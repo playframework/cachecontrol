@@ -252,9 +252,7 @@ class ResponseCachingCalculator(cache: Cache) {
   }
 
   protected def containsCachableExtension(response: OriginResponse): Boolean = {
-    CacheDirectives.extensions(response.directives).exists { extension =>
-      isCacheableExtension(extension)
-    }
+    CacheDirectives.extensions(response.directives).exists { extension => isCacheableExtension(extension) }
   }
 }
 

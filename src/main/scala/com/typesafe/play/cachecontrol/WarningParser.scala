@@ -29,15 +29,11 @@ object WarningParser {
 
     val space = regex("[ \\n]+".r)
 
-    val warnCode = regex("""\d{3}""".r) <~ space ^^ { s =>
-      Integer.parseInt(s)
-    }
+    val warnCode = regex("""\d{3}""".r) <~ space ^^ { s => Integer.parseInt(s) }
 
     val warnAgent = regex("\\S+".r) <~ space
 
-    val warnText = stringLiteral ^^ { s =>
-      s.replaceAllLiterally('"'.toString, "")
-    }
+    val warnText = stringLiteral ^^ { s => s.replaceAllLiterally('"'.toString, "") }
 
     val warnDate = opt(space ~> stringLiteral) ^^ { maybeString =>
       maybeString.map { s =>
