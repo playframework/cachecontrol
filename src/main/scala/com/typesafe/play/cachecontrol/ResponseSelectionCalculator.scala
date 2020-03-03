@@ -74,9 +74,7 @@ class ResponseSelectionCalculator(cache: Cache) {
       .filter {
         uriAndMethodMatch(request, _)
       }
-      .filter { r =>
-        cache.containsMatchingHeaders(request.headers, r.nominatedHeaders)
-      }
+      .filter { r => cache.containsMatchingHeaders(request.headers, r.nominatedHeaders) }
 
     if (matchingResponses.isEmpty) {
       None

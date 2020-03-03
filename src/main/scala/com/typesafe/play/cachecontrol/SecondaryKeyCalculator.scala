@@ -63,9 +63,7 @@ class SecondaryKeyCalculator {
       logger.debug(s"calculate: varyHeaders = $varyHeaders")
       // The origin server sent a Vary header saying that the content will only match
       // if the given headers in the response match what's in the request.
-      val varyHeaderSet = varyHeaders.foldLeft(Set[HeaderName]()) { (acc, line) =>
-        acc ++ VaryParser.parse(line)
-      }
+      val varyHeaderSet = varyHeaders.foldLeft(Set[HeaderName]()) { (acc, line) => acc ++ VaryParser.parse(line) }
 
       if (varyHeaderSet.contains(HeaderName("*"))) {
         logger.debug(s"calculate: returning wildcard keys *")
