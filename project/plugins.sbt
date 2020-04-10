@@ -5,5 +5,5 @@ addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.versio
 addSbtPlugin("com.typesafe"      % "sbt-mima-plugin"        % "0.7.0")
 addSbtPlugin("org.scalastyle"    %% "scalastyle-sbt-plugin" % "1.0.0")
 addSbtPlugin("de.heikoseeberger" % "sbt-header"             % "5.5.0")
-addSbtPlugin("org.scalameta"     % "sbt-scalafmt"           % "2.3.1")
+addSbtPlugin("org.scalameta"     % "sbt-scalafmt"           % "2.3.3")
 addSbtPlugin("com.dwijnand"      % "sbt-dynver"             % "4.0.0")
