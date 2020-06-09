@@ -4,6 +4,7 @@
 import sbt._
 
 object Dependencies {
+  // Sync versions in .travis.yml
   val Scala212 = "2.12.11"
   val Scala213 = "2.13.2"
 

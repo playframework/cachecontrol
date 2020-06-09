@@ -1,7 +1,4 @@
 import Dependencies._
-import de.heikoseeberger.sbtheader.HeaderPlugin
-import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport.HeaderLicense
-import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport.headerLicense
 import sbt.Keys._
 import sbt._
 import sbt.plugins.JvmPlugin
@@ -10,7 +7,7 @@ object Common extends AutoPlugin {
 
   override def trigger = noTrigger
 
-  override def requires = JvmPlugin && HeaderPlugin
+  override def requires = JvmPlugin
 
   val repoName = "cachecontrol"
 
@@ -59,14 +56,7 @@ object Common extends AutoPlugin {
         "https://gitter.im/playframework/contributors",
         url("https://github.com/playframework")
       ),
-      description := "Cachecontrol - Minimal HTTP cache management library in Scala",
-      headerLicense := {
-        Some(
-          HeaderLicense.Custom(
-            s"Copyright (C) Lightbend Inc. <https://www.lightbend.com>"
-          )
-        )
-      }
+      description := "Cachecontrol - Minimal HTTP cache management library in Scala"
     )
 
 }

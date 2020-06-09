@@ -26,5 +26,12 @@ lazy val cachecontrol = (project in file("."))
     mimaPreviousArtifacts := Set(
       organization.value %% name.value % previousStableVersion.value
         .getOrElse(throw new Error("Unable to determine previous version"))
-    )
+    ),
+    headerLicense := {
+      Some(
+        HeaderLicense.Custom(
+          s"Copyright (C) Lightbend Inc. <https://www.lightbend.com>"
+        )
+      )
+    }
   )
