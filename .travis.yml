@@ -8,19 +8,11 @@ git:
   depth: false # Avoid sbt-dynver not seeing the tag
 
 env:
-  matrix:
-    - TRAVIS_JDK=11
-
   global:
     # encrypt with: travis encrypt --pro BINTRAY_USER=...
     - secure: "EFLixFgHISkKkjxk6FV1WMSUcYSZObsPL/055PALBesySLRxrosy7dU2lbESSRSJOYrLV79MJkT1LdiOdDMUKACu4STIDiC46YMkffa+VdWsUIhB5uktSa5/RfLTj2LGIHsygDPD2YcoIqz2WJus34wK88fdRYga3fnH23ilnSg="
     # encrypt with: travis encrypt --pro BINTRAY_PASS=...
     - secure: "S86NIK95mKMSJd5XZ1PjWNC0Dg8Pmr6oSdTJB5AKSTkeWRlkuE4ldkz841gYk6QObCcVT/mAIV5i8QW4KK+Md/4fq+eExEoe1VBAMSglBQyzeLFaKbPL7aKsk7Ma+Qeis5nFU6dje/ANuK4mAWxAmORq8r5+h5oT5uIb+UrOZn0="
-
-scala:
-  - 2.13.2
-
-script: sbt "++$TRAVIS_SCALA_VERSION" test
 
 jobs:
   include:
@@ -28,32 +20,23 @@ jobs:
       name: "Validations"
       script: sbt headerCheckAll scalafmtCheckAll scalafmtSbtCheck scalastyle mimaReportBinaryIssues
       env:
-        - TRAVIS_SCALA_VERSION=2.13.2
         - TRAVIS_JDK=11
 
-    - name: "Run tests with Scala 2.12 and AdoptOpenJDK 11"
+    - name: "Run tests on AdoptOpenJDK 11"
+      script: sbt +test
       env:
-        - TRAVIS_SCALA_VERSION=2.12.11
         - TRAVIS_JDK=11
 
-    - name: "Run tests with Scala 2.13 and AdoptOpenJDK 11"
+    - name: "Run tests on AdoptOpenJDK 8"
+      script: sbt +test
       env:
-        - TRAVIS_SCALA_VERSION=2.13.2
-        - TRAVIS_JDK=11
-
-    - name: "Run tests with Scala 2.12 and AdoptOpenJDK 8"
-      env:
-        - TRAVIS_SCALA_VERSION=2.12.11
-        - TRAVIS_JDK=8
-
-    - name: "Run tests with Scala 2.13 and AdoptOpenJDK 8"
-      env:
-        - TRAVIS_SCALA_VERSION=2.13.2
         - TRAVIS_JDK=8
 
     - stage: publish
       name: "Publish artifacts to Bintray"
       script: sbt +publish
+      env:
+        - TRAVIS_JDK=11
 
 stages:
   - name: test
