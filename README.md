@@ -11,7 +11,7 @@ It does not implement caching itself, and there are some aspects of RFC 7234 whi
 To add this project to sbt, use:
 
 ```
-libraryDependencies += "com.typesafe.play" %% "cachecontrol" % "1.1.6"
+libraryDependencies += "com.typesafe.play" %% "cachecontrol" % -latest version-
 ```
 
 ## License 

@@ -1,28 +1,54 @@
+version: ~> 1.0
 language: scala
 
-before_install: curl -Ls https://git.io/jabba | bash && . ~/.jabba/jabba.sh
+before_install: curl -Ls https://raw.githubusercontent.com/shyiko/jabba/0.11.2/install.sh | bash && . ~/.jabba/jabba.sh
 install: jabba install "adopt@~1.$TRAVIS_JDK.0-0" && jabba use "$_" && java -Xmx32m -version
 
 git:
   depth: false # Avoid sbt-dynver not seeing the tag
 
 env:
-  matrix:
-    - TRAVIS_JDK=8
-    - TRAVIS_JDK=11
+  global:
+    # encrypt with: travis encrypt --pro BINTRAY_USER=...
+    - secure: "EFLixFgHISkKkjxk6FV1WMSUcYSZObsPL/055PALBesySLRxrosy7dU2lbESSRSJOYrLV79MJkT1LdiOdDMUKACu4STIDiC46YMkffa+VdWsUIhB5uktSa5/RfLTj2LGIHsygDPD2YcoIqz2WJus34wK88fdRYga3fnH23ilnSg="
+    # encrypt with: travis encrypt --pro BINTRAY_PASS=...
+    - secure: "S86NIK95mKMSJd5XZ1PjWNC0Dg8Pmr6oSdTJB5AKSTkeWRlkuE4ldkz841gYk6QObCcVT/mAIV5i8QW4KK+Md/4fq+eExEoe1VBAMSglBQyzeLFaKbPL7aKsk7Ma+Qeis5nFU6dje/ANuK4mAWxAmORq8r5+h5oT5uIb+UrOZn0="
 
-scala:
-  - 2.12.10
-  - 2.13.1
+jobs:
+  include:
+    - stage: test
+      name: "Validations"
+      script: sbt headerCheckAll scalafmtCheckAll scalafmtSbtCheck scalastyle mimaReportBinaryIssues
+      env:
+        - TRAVIS_JDK=11
 
-script: sbt "++$TRAVIS_SCALA_VERSION" headerCheckAll scalafmtCheckAll scalafmtSbtCheck scalastyle test publishLocal mimaReportBinaryIssues
+    - name: "Run tests on AdoptOpenJDK 11"
+      script: sbt +test
+      env:
+        - TRAVIS_JDK=11
+
+    - name: "Run tests on AdoptOpenJDK 8"
+      script: sbt +test
+      env:
+        - TRAVIS_JDK=8
+
+    - stage: publish
+      name: "Publish artifacts to Bintray"
+      script: sbt +publish
+      env:
+        - TRAVIS_JDK=11
+
+stages:
+  - name: test
+  - name: publish
+    if: ((branch = master AND type = push) OR (tag IS present)) AND NOT fork
 
 cache:
   directories:
     - "$HOME/.ivy2/cache"
     - "$HOME/.jabba/jdk"
     - "$HOME/.sbt"
-    - "$HOME/.coursier"
+    - "$HOME/.cache/coursier"
 
 before_cache:
   - rm -rf $HOME/.ivy2/cache/com.typesafe.play/*
@@ -30,6 +56,7 @@ before_cache:
   - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
   - find $HOME/.sbt  -name "*.lock"               -delete
 
-notifications:
-  slack:
-    secure: J6SqDQgrnauTDSeiRCsMyYqCQDzF1gPbgVX1yTgnqUhyDJYIR5js4W3ufLUAwQCtI7fxj46Kca97ZcEC9ttnC/qD6RV+pUeszbQIBMcIZtH83R/vZaYaFIYNOLWHkFk38cglpYw2bhzMx3vSW4QT6LUyhJqSfDuQVWfB1RT6PE8=
+branches:
+  only:
+    - master
+    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
