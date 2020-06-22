@@ -1,9 +1,4 @@
 import Dependencies._
-import interplay.ScalaVersions._
-
-playBuildRepoName in ThisBuild := "cachecontrol"
-
-val previousVersion = Some("2.0.0")
 
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
 dynverVTagPrefix in ThisBuild := false
@@ -20,65 +15,23 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 }
 
 lazy val cachecontrol = (project in file("."))
-  .enablePlugins(PlayReleaseBase, PlayLibrary)
+  .enablePlugins(Common, Publish)
   .settings(
-    name := "cachecontrol",
-    organization := "com.typesafe.play",
-    scalaVersion := scala212,
-    crossScalaVersions := Seq(scala212, scala213),
-    scalacOptions ++= {
-      Seq(
-        "-target:jvm-1.8",
-        "-encoding",
-        "utf8",
-        "-deprecation",
-        "-feature",
-        "-unchecked",
-        "-Xlint",
-        "-Ywarn-unused:imports",
-        "-Xlint:nullary-unit",
-        "-Ywarn-dead-code",
-      )
-    },
-    javacOptions ++= Seq(
-      "-source",
-      "1.8",
-      "-target",
-      "1.8",
-      "-Xlint:deprecation",
-      "-Xlint:unchecked",
+    libraryDependencies ++= Seq(
+      parserCombinators,
+      scalaTest,
+      slf4j,
+      slf4jSimple % Test
     ),
-    unmanagedSourceDirectories in Compile += {
-      val sourceDir = (sourceDirectory in Compile).value
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, 13)) => sourceDir / "scala-2.13+"
-        case _             => sourceDir / "scala-2.13-"
-      }
-    },
-    libraryDependencies ++= parserCombinators ++ scalaTest ++ slf4j,
-    libraryDependencies += "org.slf4j" % "slf4j-simple" % slf4jVersion % Test,
+    mimaPreviousArtifacts := Set(
+      organization.value %% name.value % previousStableVersion.value
+        .getOrElse(throw new Error("Unable to determine previous version"))
+    ),
     headerLicense := {
       Some(
         HeaderLicense.Custom(
           s"Copyright (C) Lightbend Inc. <https://www.lightbend.com>"
         )
       )
-    },
-    mimaFailOnNoPrevious := false,
-    mimaPreviousArtifacts := previousVersion.map(version => organization.value %% name.value % version).toSet
-  )
-  .settings(
-    Seq(
-      releaseProcess := {
-        import ReleaseTransformations._
-        Seq[ReleaseStep](
-          checkSnapshotDependencies,
-          runClean,
-          releaseStepCommandAndRemaining("+test"),
-          releaseStepCommandAndRemaining("+publishSigned"),
-          releaseStepCommand("sonatypeBundleRelease"),
-          pushChanges // <- this needs to be removed when releasing from tag
-        )
-      }
-    )
+    }
   )

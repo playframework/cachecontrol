@@ -1,6 +1,4 @@
-resolvers += "sonatype-releases".at("https://oss.sonatype.org/content/repositories/releases/")
-
-addSbtPlugin("com.typesafe.play" % "interplay" % sys.props.get("interplay.version").getOrElse("3.0.0"))
+addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.5.6")
 
 addSbtPlugin("com.typesafe"      % "sbt-mima-plugin"        % "0.7.0")
 addSbtPlugin("org.scalastyle"    %% "scalastyle-sbt-plugin" % "1.0.0")
