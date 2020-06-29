@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory
 
 /**
  * Calculates freshness lifetime for a request.
- *
  */
 class FreshnessCalculator(cache: Cache) {
   import HeaderNames._
