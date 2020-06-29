@@ -350,8 +350,8 @@ class ResponseServingCalculator(cache: Cache) {
     result
   }
 
-  protected def isStaleResponseExplicitlyProhibited(
-      implicit request: CacheRequest,
+  protected def isStaleResponseExplicitlyProhibited(implicit
+      request: CacheRequest,
       response: StoredResponse
   ): Option[ValidateOrTimeout] = {
     if (logger.isTraceEnabled) {

@@ -86,12 +86,10 @@ object HttpDate {
     Try {
       parseIMF(dateString)
     }.recover {
-        case _ => parseRFC850(dateString)
-      }
-      .recover {
-        case _ => parseAscTime(dateString)
-      }
-      .get
+      case _ => parseRFC850(dateString)
+    }.recover {
+      case _ => parseAscTime(dateString)
+    }.get
   }
   private def parseIMF(dateString: String): ZonedDateTime = {
     ZonedDateTime.parse(dateString, imfFixDateFormat)

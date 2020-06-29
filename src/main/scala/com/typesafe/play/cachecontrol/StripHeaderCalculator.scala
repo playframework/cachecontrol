@@ -14,7 +14,7 @@ class StripHeaderCalculator(cache: Cache) {
 
     if (cache.isShared) {
       CacheDirectives.`private`(directives).foreach {
-        _.headerNames.foreach { headers => headers.foreach((name) => buffer += HeaderName(name)) }
+        _.headerNames.foreach { headers => headers.foreach(name => buffer += HeaderName(name)) }
       }
     }
 

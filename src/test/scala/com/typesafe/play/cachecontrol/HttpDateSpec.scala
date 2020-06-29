@@ -13,7 +13,6 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 /**
- *
  */
 class HttpDateSpec extends AnyWordSpec with TryValues with Matchers {
   "parse a date in IMF-fixdate format" in {

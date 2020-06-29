@@ -53,7 +53,7 @@ object CacheDirectiveParser {
      *
      * These patterns are translated directly using the same naming
      */
-    val ctl  = acceptIf { c => (c >= 0 && c <= 0x1F) || c.toInt == 0x7F }(_ => "Expected a control character")
+    val ctl  = acceptIf { c => (c >= 0 && c <= 0x1f) || c.toInt == 0x7f }(_ => "Expected a control character")
     val char = acceptIf(_ < 0x80)(_ => "Expected an ascii character")
     val text = not(ctl) ~> any
     val separators = {
@@ -63,11 +63,12 @@ object CacheDirectiveParser {
     // token = <token, see [RFC7230], Section 3.2.6>
     val token = rep1(not(separators | ctl) ~> any) ^^ charSeqToString
 
-    def badPart(p: Char => Boolean, msg: => String): Parser[None.type] = rep1(acceptIf(p)(ignoreErrors)) ^^ {
-      case chars =>
-        logger.debug(msg + ": " + charSeqToString(chars))
-        None
-    }
+    def badPart(p: Char => Boolean, msg: => String): Parser[None.type] =
+      rep1(acceptIf(p)(ignoreErrors)) ^^ {
+        case chars =>
+          logger.debug(msg + ": " + charSeqToString(chars))
+          None
+      }
 
     val badParameter = badPart(c => c != ',' && c != ';', "Bad parameter")
 
