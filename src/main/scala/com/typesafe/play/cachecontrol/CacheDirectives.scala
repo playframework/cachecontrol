@@ -25,9 +25,8 @@ object CacheDirectives {
   def maxAge(directives: Seq[CacheDirective]): Option[MaxAge] = {
     // We could use a TypeTag here, but until we know that 2.10 code is no
     // longer being used, it's probably safer just to provide the methods
-    directives.collectFirst {
-      case directive: MaxAge =>
-        directive
+    directives.collectFirst { case directive: MaxAge =>
+      directive
     }
   }
 
@@ -60,9 +59,8 @@ object CacheDirectives {
   def maxStale(directives: scala.collection.immutable.Seq[CacheDirective]): Option[MaxStale] = {
     // We could use a TypeTag here, but until we know that 2.10 code is no
     // longer being used, it's probably safer just to provide the methods
-    directives.collectFirst {
-      case directive: MaxStale =>
-        directive
+    directives.collectFirst { case directive: MaxStale =>
+      directive
     }
   }
 
@@ -74,9 +72,8 @@ object CacheDirectives {
   def minFresh(directives: scala.collection.immutable.Seq[CacheDirective]): Option[MinFresh] = {
     // We could use a TypeTag here, but until we know that 2.10 code is no
     // longer being used, it's probably safer just to provide the methods
-    directives.collectFirst {
-      case directive: MinFresh =>
-        directive
+    directives.collectFirst { case directive: MinFresh =>
+      directive
     }
   }
 
@@ -99,9 +96,8 @@ object CacheDirectives {
   def noCache(directives: scala.collection.immutable.Seq[CacheDirective]): Option[NoCache] = {
     // We could use a TypeTag here, but until we know that 2.10 code is no
     // longer being used, it's probably safer just to provide the methods
-    directives.collectFirst {
-      case directive: NoCache =>
-        directive
+    directives.collectFirst { case directive: NoCache =>
+      directive
     }
   }
 
@@ -169,9 +165,8 @@ object CacheDirectives {
   }
 
   def `private`(directives: scala.collection.immutable.Seq[CacheDirective]): Option[Private] = {
-    directives.collectFirst {
-      case directive: Private =>
-        directive
+    directives.collectFirst { case directive: Private =>
+      directive
     }
   }
 
@@ -188,9 +183,8 @@ object CacheDirectives {
   def sMaxAge(directives: scala.collection.immutable.Seq[CacheDirective]): Option[SMaxAge] = {
     // We could use a TypeTag here, but until we know that 2.10 code is no
     // longer being used, it's probably safer just to provide the methods
-    directives.collectFirst {
-      case directive: SMaxAge =>
-        directive
+    directives.collectFirst { case directive: SMaxAge =>
+      directive
     }
   }
 
@@ -202,9 +196,8 @@ object CacheDirectives {
   def staleWhileRevalidate(directives: scala.collection.immutable.Seq[CacheDirective]): Option[StaleWhileRevalidate] = {
     // We could use a TypeTag here, but until we know that 2.10 code is no
     // longer being used, it's probably safer just to provide the methods
-    directives.collectFirst {
-      case directive: StaleWhileRevalidate =>
-        directive
+    directives.collectFirst { case directive: StaleWhileRevalidate =>
+      directive
     }
   }
 
@@ -216,9 +209,8 @@ object CacheDirectives {
   def staleIfError(directives: scala.collection.immutable.Seq[CacheDirective]): Option[StaleIfError] = {
     // We could use a TypeTag here, but until we know that 2.10 code is no
     // longer being used, it's probably safer just to provide the methods
-    directives.collectFirst {
-      case directive: StaleIfError =>
-        directive
+    directives.collectFirst { case directive: StaleIfError =>
+      directive
     }
   }
 
@@ -232,9 +224,8 @@ object CacheDirectives {
   ): scala.collection.immutable.Seq[CacheDirectiveExtension] = {
     // We could use a TypeTag here, but until we know that 2.10 code is no
     // longer being used, it's probably safer just to provide the methods
-    directives.collect {
-      case directive: CacheDirectiveExtension =>
-        directive
+    directives.collect { case directive: CacheDirectiveExtension =>
+      directive
     }
   }
 }
