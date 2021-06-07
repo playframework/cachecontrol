@@ -64,10 +64,9 @@ object CacheDirectiveParser {
     val token = rep1(not(separators | ctl) ~> any) ^^ charSeqToString
 
     def badPart(p: Char => Boolean, msg: => String): Parser[None.type] =
-      rep1(acceptIf(p)(ignoreErrors)) ^^ {
-        case chars =>
-          logger.debug(msg + ": " + charSeqToString(chars))
-          None
+      rep1(acceptIf(p)(ignoreErrors)) ^^ { case chars =>
+        logger.debug(msg + ": " + charSeqToString(chars))
+        None
       }
 
     val badParameter = badPart(c => c != ',' && c != ';', "Bad parameter")

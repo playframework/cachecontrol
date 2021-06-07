@@ -85,10 +85,10 @@ object HttpDate {
     // MUST accept all three HTTP-date formats.
     Try {
       parseIMF(dateString)
-    }.recover {
-      case _ => parseRFC850(dateString)
-    }.recover {
-      case _ => parseAscTime(dateString)
+    }.recover { case _ =>
+      parseRFC850(dateString)
+    }.recover { case _ =>
+      parseAscTime(dateString)
     }.get
   }
   private def parseIMF(dateString: String): ZonedDateTime = {

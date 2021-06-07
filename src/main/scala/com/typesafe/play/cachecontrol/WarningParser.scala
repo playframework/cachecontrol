@@ -43,9 +43,8 @@ object WarningParser {
     }
 
     def warningValue: Parser[Warning] =
-      warnCode ~ warnAgent ~ warnText ~ warnDate ^^ {
-        case code ~ agent ~ text ~ date =>
-          Warning(code, agent, text, date)
+      warnCode ~ warnAgent ~ warnText ~ warnDate ^^ { case code ~ agent ~ text ~ date =>
+        Warning(code, agent, text, date)
       }
   }
 }
