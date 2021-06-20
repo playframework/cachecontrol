@@ -5,7 +5,7 @@ import sbt._
 
 object Dependencies {
   // Sync versions in .travis.yml
-  val Scala212 = "2.12.13"
+  val Scala212 = "2.12.14"
   val Scala213 = "2.13.6"
 
   val ScalaVersions = Seq(Scala212, Scala213)
