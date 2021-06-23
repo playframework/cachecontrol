@@ -15,7 +15,7 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 }
 
 lazy val cachecontrol = (project in file("."))
-  .enablePlugins(Common, Publish)
+  .enablePlugins(Common)
   .settings(
     libraryDependencies ++= Seq(
       parserCombinators,
