@@ -32,17 +32,16 @@ jobs:
       env:
         - TRAVIS_JDK=8
 
-# TODO: replace with Sonatype
-#    - stage: publish
-#      name: "Publish artifacts to Bintray"
-#      script: sbt +publish
-#      env:
-#        - TRAVIS_JDK=11
+    - stage: release
+      name: "Publish artifacts to Sonatype"
+      script: sbt ci-release
+      env:
+        - TRAVIS_JDK=8
 
 stages:
   - name: test
-  - name: publish
-    if: ((branch = main AND type = push) OR (tag IS present)) AND NOT fork
+  - name: release
+    if: tag IS present
 
 cache:
   directories:
