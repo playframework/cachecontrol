@@ -15,7 +15,7 @@ object Dependencies {
   val parserCombinators =
     "org.scala-lang.modules" %% "scala-parser-combinators" % "2.0.0"
 
-  val slf4jVersion = "1.7.31"
+  val slf4jVersion = "1.7.32"
   val slf4j        = "org.slf4j" % "slf4j-api"    % slf4jVersion
   val slf4jSimple  = "org.slf4j" % "slf4j-simple" % slf4jVersion
 }
