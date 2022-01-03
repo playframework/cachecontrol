@@ -26,7 +26,7 @@ lazy val cachecontrol = (project in file("."))
     // On the main branch we don't check for incompatible changes,
     // because it's ok to introduce breaking changes between minor version bumps
     mimaPreviousArtifacts := Set.empty,
-    sonatypeProfileName := "com.typesafe",
+    sonatypeProfileName := "com.typesafe.play",
     headerLicense := {
       Some(
         HeaderLicense.Custom(
