@@ -12,8 +12,13 @@ object Dependencies {
 
   def scalaTest = "org.scalatest" %% "scalatest" % "3.2.10" % Test
 
-  val parserCombinators =
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "2.0.0"
+  def parserCombinators(scalaVersion: String) =
+    "org.scala-lang.modules" %% "scala-parser-combinators" % {
+      CrossVersion.partialVersion(scalaVersion) match {
+        case Some((2, _)) => "1.1.2"
+        case _            => "2.1.0"
+      }
+    }
 
   val slf4jVersion = "1.7.32"
   val slf4j        = "org.slf4j" % "slf4j-api"    % slf4jVersion

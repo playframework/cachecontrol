@@ -18,15 +18,14 @@ lazy val cachecontrol = (project in file("."))
   .enablePlugins(Common)
   .settings(
     libraryDependencies ++= Seq(
-      parserCombinators,
+      parserCombinators(scalaVersion.value),
       scalaTest,
       slf4j,
       slf4jSimple % Test
     ),
-    mimaPreviousArtifacts := Set(
-      organization.value %% name.value % previousStableVersion.value
-        .getOrElse(throw new Error("Unable to determine previous version"))
-    ),
+    // On the main branch we don't check for incompatible changes,
+    // because it's ok to introduce breaking changes between minor version bumps
+    mimaPreviousArtifacts := Set.empty,
     sonatypeProfileName := "com.typesafe",
     headerLicense := {
       Some(

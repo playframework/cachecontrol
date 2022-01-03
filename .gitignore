@@ -68,6 +68,7 @@ project/boot/
 .lib/
 dist/*
 project/plugins/project/
+.bsp/
 
 # Scala-IDE specific
 .scala_dependencies
