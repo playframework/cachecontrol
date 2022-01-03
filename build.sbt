@@ -18,7 +18,7 @@ lazy val cachecontrol = (project in file("."))
   .enablePlugins(Common)
   .settings(
     libraryDependencies ++= Seq(
-      parserCombinators,
+      parserCombinators(scalaVersion.value),
       scalaTest,
       slf4j,
       slf4jSimple % Test
