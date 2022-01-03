@@ -4,13 +4,13 @@
 import sbt._
 
 object Dependencies {
-  val Scala212 = "2.12.14"
+  val Scala212 = "2.12.15"
   val Scala213 = "2.13.7"
   val Scala3   = "3.0.2"
 
   val ScalaVersions = Seq(Scala212, Scala213, Scala3)
 
-  def scalaTest = "org.scalatest" %% "scalatest" % "3.2.9" % Test
+  def scalaTest = "org.scalatest" %% "scalatest" % "3.2.10" % Test
 
   val parserCombinators =
     "org.scala-lang.modules" %% "scala-parser-combinators" % "2.0.0"
