@@ -27,7 +27,7 @@ lazy val cachecontrol = (project in file("."))
       organization.value %% name.value % previousStableVersion.value
         .getOrElse(throw new Error("Unable to determine previous version"))
     ),
-    sonatypeProfileName := "com.typesafe",
+    sonatypeProfileName := "com.typesafe.play",
     headerLicense := {
       Some(
         HeaderLicense.Custom(
