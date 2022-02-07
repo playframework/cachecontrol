@@ -13,6 +13,7 @@ jobs:
         with:
           name: "cachecontrol $RESOLVED_VERSION"
           config-name: release-drafts/increasing-patch-version.yml # located in .github/ in the default branch within this or the .github repo
-          commitish: ${{ env.GITHUB_REF_NAME }}
+          # commitish: ${{ env.GITHUB_REF_NAME }}
+          commitish: main # Use until 2.2.1 got released, after that use the (commented out) line above
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
