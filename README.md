@@ -25,3 +25,7 @@ To add this project to sbt, use:
 ```
 libraryDependencies += "com.typesafe.play" %% "cachecontrol" % -latest version-
 ```
+
+## Releasing a new version
+
+See https://github.com/playframework/.github/blob/main/RELEASING.md
