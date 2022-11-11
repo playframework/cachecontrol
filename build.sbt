@@ -30,13 +30,3 @@ lazy val cachecontrol = (project in file("."))
       )
     }
   )
-
-addCommandAlias(
-  "validateCode",
-  List(
-    "headerCheckAll",
-    "scalafmtSbtCheck",
-    "scalafmtCheckAll",
-    "scalastyle",
-  ).mkString(";")
-)
