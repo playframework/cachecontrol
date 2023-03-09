@@ -44,9 +44,9 @@ object Common extends AutoPlugin {
       scalacOptions ++= scalacParameters,
       javacOptions ++= javacParameters,
       developers += Developer(
-        "contributors",
-        "Contributors",
-        "https://gitter.im/playframework/contributors",
+        "playframework",
+        "Play Framework Team",
+        "contact@playframework.com",
         url("https://github.com/playframework")
       ),
       description := "Cachecontrol - Minimal HTTP cache management library in Scala"
