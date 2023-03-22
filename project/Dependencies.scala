@@ -20,7 +20,7 @@ object Dependencies {
       }
     }
 
-  val slf4jVersion = "2.0.6"
+  val slf4jVersion = "2.0.7"
   val slf4j        = "org.slf4j" % "slf4j-api"    % slf4jVersion
   val slf4jSimple  = "org.slf4j" % "slf4j-simple" % slf4jVersion
 }
