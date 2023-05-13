@@ -92,7 +92,7 @@ class ResponseServingCalculator(cache: Cache) {
 
     explicitValidate
       .orElse {
-        //o  the stored response is either:
+        // o  the stored response is either:
         //
         //   *  fresh (see Section 4.2), or
         val serveFresh: Option[ServeFresh] = isCachedResponseFresh(currentAge)
@@ -128,9 +128,9 @@ class ResponseServingCalculator(cache: Cache) {
       .staleIfError(response.directives)
       .map { staleIfError =>
         val delta = staleIfError.delta
-        //Its value indicates the upper limit to staleness; when the cached
-        //response is more stale than the indicated amount, the cached response
-        //SHOULD NOT be used to satisfy the request, absent other information.
+        // Its value indicates the upper limit to staleness; when the cached
+        // response is more stale than the indicated amount, the cached response
+        // SHOULD NOT be used to satisfy the request, absent other information.
         // https://tools.ietf.org/html/rfc5861#section-4
 
         val serveStale = age.isLessThan(freshnessLifetime.plus(delta))
@@ -211,9 +211,9 @@ class ResponseServingCalculator(cache: Cache) {
             logger.debug(s"noCacheFound: no-cache response directive qualified with ${noCache.headerNames}")
             None
           case None =>
-            //The "no-cache" response directive indicates that the response MUST
-            //NOT be used to satisfy a subsequent request without successful
-            //validation on the origin server.
+            // The "no-cache" response directive indicates that the response MUST
+            // NOT be used to satisfy a subsequent request without successful
+            // validation on the origin server.
             val msg = "Response contains no-args no-cache directive"
             Some(Validate(msg))
         }
@@ -305,9 +305,9 @@ class ResponseServingCalculator(cache: Cache) {
       logger.trace(s"isStaleResponseAllowed: $currentAge, request = $request, response = $response")
     }
 
-    //The "max-stale" request directive indicates that the client is
-    //willing to accept a response that has exceeded its freshness
-    //lifetime.
+    // The "max-stale" request directive indicates that the client is
+    // willing to accept a response that has exceeded its freshness
+    // lifetime.
     val result = CacheDirectives
       .maxStale(request.directives)
       .flatMap { maxStale =>
@@ -369,9 +369,9 @@ class ResponseServingCalculator(cache: Cache) {
     //      cache can satisfy a request with no-store on it and does not
     //        invalidate it.  (Section 5.2.1.5)
 
-    //The "must-revalidate" response directive indicates that once it has
-    //become stale, a cache MUST NOT use the response to satisfy subsequent
-    //requests without successful validation on the origin server.
+    // The "must-revalidate" response directive indicates that once it has
+    // become stale, a cache MUST NOT use the response to satisfy subsequent
+    // requests without successful validation on the origin server.
     // In all circumstances a cache MUST obey the must-revalidate directive;
     // in particular, if a cache cannot reach the origin server for any reason,
     // it MUST generate a 504 (Gateway Timeout) response.
@@ -379,9 +379,9 @@ class ResponseServingCalculator(cache: Cache) {
     if (response.directives.contains(MustRevalidate)) {
       Some(ValidateOrTimeout("Response is stale, response contains must-revalidate directive"))
     } else if (cache.isShared) {
-      //The "proxy-revalidate" response directive has the same meaning as the
-      //must-revalidate response directive, except that it does not apply to
-      //private caches.
+      // The "proxy-revalidate" response directive has the same meaning as the
+      // must-revalidate response directive, except that it does not apply to
+      // private caches.
       // https://tools.ietf.org/html/rfc7234#section-5.2.2.7
       if (response.directives.contains(ProxyRevalidate)) {
         val msg = "Response is stale, response contains proxy-revalidate directive and cache is shared"
@@ -389,12 +389,12 @@ class ResponseServingCalculator(cache: Cache) {
       } else if (CacheDirectives.sMaxAge(response.directives).isDefined) {
         // Note that s-maxage REQUIRES revalidation or timeout, and never serves stale!
         //
-        //Note that cached responses that contain the "must-revalidate" and/or
-        //"s-maxage" response directives are not allowed to be served stale
-        //(Section 4.2.4) by shared caches.  In particular, a response with
-        //either "max-age=0, must-revalidate" or "s-maxage=0" cannot be used to
-        //satisfy a subsequent request without revalidating it on the origin
-        //server.
+        // Note that cached responses that contain the "must-revalidate" and/or
+        // "s-maxage" response directives are not allowed to be served stale
+        // (Section 4.2.4) by shared caches.  In particular, a response with
+        // either "max-age=0, must-revalidate" or "s-maxage=0" cannot be used to
+        // satisfy a subsequent request without revalidating it on the origin
+        // server.
         // https://tools.ietf.org/html/rfc7234#section-3.2
 
         // The s-maxage directive also implies the semantics of the proxy-revalidate response directive.

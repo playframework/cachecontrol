@@ -244,7 +244,7 @@ class ResponseCachingCalculatorSpec extends AnyWordSpec {
         var called = false
         val cacheWithExtensions = new StubCache(shared = false) {
           override def isCacheableExtension(extension: CacheDirectives.CacheDirectiveExtension): Boolean = {
-            called = (extension.name == "public-on-tuesday")
+            called = extension.name == "public-on-tuesday"
             true
           }
         }
