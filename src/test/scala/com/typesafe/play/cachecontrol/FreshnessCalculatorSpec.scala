@@ -55,8 +55,8 @@ class FreshnessCalculatorSpec extends AnyWordSpec {
     "use the Expires headers" in {
       val calculator = new FreshnessCalculator(cache)
 
-      val request                  = defaultRequest
-      val headers                  = defaultHeaders ++ Map(HeaderName("Expires") -> Seq(HttpDate.format(HttpDate.now.plusSeconds(134))))
+      val request = defaultRequest
+      val headers = defaultHeaders ++ Map(HeaderName("Expires") -> Seq(HttpDate.format(HttpDate.now.plusSeconds(134))))
       val response: OriginResponse = defaultResponse.copy(headers = headers)
 
       val seconds = calculator.calculateFreshnessLifetime(request, response)
@@ -77,8 +77,8 @@ class FreshnessCalculatorSpec extends AnyWordSpec {
     "use the max-age directive over the expires header" in {
       val calculator = new FreshnessCalculator(cache)
 
-      //If a response includes a Cache-Control field with the max-age
-      //directive (Section 5.2.2.8), a recipient MUST ignore the Expires field.
+      // If a response includes a Cache-Control field with the max-age
+      // directive (Section 5.2.2.8), a recipient MUST ignore the Expires field.
 
       val request = defaultRequest
       val headers = defaultHeaders ++ Map(
@@ -95,11 +95,11 @@ class FreshnessCalculatorSpec extends AnyWordSpec {
       val sharedCache = new StubCache(shared = true)
       val calculator  = new FreshnessCalculator(sharedCache)
 
-      //The "s-maxage" response directive indicates that, in shared caches,
-      //the maximum age specified by this directive overrides the maximum age
-      //specified by either the max-age directive or the Expires header
-      //field.  The s-maxage directive also implies the semantics of the
-      //proxy-revalidate response directive.
+      // The "s-maxage" response directive indicates that, in shared caches,
+      // the maximum age specified by this directive overrides the maximum age
+      // specified by either the max-age directive or the Expires header
+      // field.  The s-maxage directive also implies the semantics of the
+      // proxy-revalidate response directive.
 
       // Likewise, if a response includes the s-maxage directive
       // (Section 5.2.2.9), a shared cache recipient MUST ignore the Expires field.

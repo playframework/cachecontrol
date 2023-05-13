@@ -36,9 +36,9 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
   }
 
   "serviceResponse" when {
-    //--------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------
     // Request Directives
-    //--------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------
 
     "no-cache request directive" should {
       "return Validate" in {
@@ -258,9 +258,9 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
       }
     }
 
-    //--------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------
     // Response Directives
-    //--------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------
 
     "no-cache response directive" should {
       "always return Validate, even when fresh" in {
@@ -288,11 +288,11 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
       }
 
       "return Validate when stale" in {
-        //A cache MUST NOT generate a stale response if it is prohibited by an
-        //explicit in-protocol directive (e.g., by a "no-store" or "no-cache"
-        //cache directive, a "must-revalidate" cache-response-directive, or an
-        //applicable "s-maxage" or "proxy-revalidate" cache-response-directive;
-        //see Section 5.2.2).
+        // A cache MUST NOT generate a stale response if it is prohibited by an
+        // explicit in-protocol directive (e.g., by a "no-store" or "no-cache"
+        // cache directive, a "must-revalidate" cache-response-directive, or an
+        // applicable "s-maxage" or "proxy-revalidate" cache-response-directive;
+        // see Section 5.2.2).
         val policy = new ResponseServingCalculator(privateCache)
 
         val headers  = Map(`Cache-Control` -> Seq("max-age=10, no-store"))
@@ -331,9 +331,9 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
     }
 
     "max-age response directive" should {
-      //The "max-age" response directive indicates that the response is to be
-      //considered stale after its age is greater than the specified number
-      //of seconds.
+      // The "max-age" response directive indicates that the response is to be
+      // considered stale after its age is greater than the specified number
+      // of seconds.
 
       "return ServeFresh when fresh" in {
         val policy = new ResponseServingCalculator(privateCache)
@@ -400,10 +400,10 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
       }
 
       "shared cache" should {
-        //The "s-maxage" response directive indicates that, in shared caches,
-        //the maximum age specified by this directive overrides the maximum age
-        //specified by either the max-age directive or the Expires header
-        //field.
+        // The "s-maxage" response directive indicates that, in shared caches,
+        // the maximum age specified by this directive overrides the maximum age
+        // specified by either the max-age directive or the Expires header
+        // field.
 
         "return ServeFresh when fresh, overriding max-age" in {
           val policy = new ResponseServingCalculator(sharedCache)
@@ -435,10 +435,10 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
 
         // Double check that s-maxage=0 works as defined
         "return ValidateOrTimeout when s-maxage=0" in {
-          //In particular, a response with
-          //either "max-age=0, must-revalidate" or "s-maxage=0" cannot be used to
-          //satisfy a subsequent request without revalidating it on the origin
-          //server.
+          // In particular, a response with
+          // either "max-age=0, must-revalidate" or "s-maxage=0" cannot be used to
+          // satisfy a subsequent request without revalidating it on the origin
+          // server.
           //
           // In other words, "s-maxage=0" === "max-age=0, must-revalidate"
 
@@ -457,9 +457,9 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
       }
     }
 
-    //The "proxy-revalidate" response directive has the same meaning as the
-    //must-revalidate response directive, except that it does not apply to
-    //private caches.
+    // The "proxy-revalidate" response directive has the same meaning as the
+    // must-revalidate response directive, except that it does not apply to
+    // private caches.
     "proxy-revalidate response directive" should {
       "return ServeFresh when fresh" in {
         val policy = new ResponseServingCalculator(sharedCache)
@@ -481,9 +481,9 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120, proxy-revalidate"))
         val response        = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        //The "must-revalidate" response directive indicates that once it has
-        //become stale, a cache MUST NOT use the response to satisfy subsequent
-        //requests without successful validation on the origin server.
+        // The "must-revalidate" response directive indicates that once it has
+        // become stale, a cache MUST NOT use the response to satisfy subsequent
+        // requests without successful validation on the origin server.
         val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(300))
         action should be(
           ValidateOrTimeout(s"Response is stale, response contains proxy-revalidate directive and cache is shared")
@@ -498,9 +498,9 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
         val responseHeaders = Map(`Cache-Control` -> Seq("public, max-age=120, proxy-revalidate"))
         val response        = defaultResponse.copy(headers = defaultResponse.headers ++ responseHeaders)
 
-        //The "must-revalidate" response directive indicates that once it has
-        //become stale, a cache MUST NOT use the response to satisfy subsequent
-        //requests without successful validation on the origin server.
+        // The "must-revalidate" response directive indicates that once it has
+        // become stale, a cache MUST NOT use the response to satisfy subsequent
+        // requests without successful validation on the origin server.
         val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(300))
         action should be(Validate(s"Response is stale, and stale response is not allowed"))
       }

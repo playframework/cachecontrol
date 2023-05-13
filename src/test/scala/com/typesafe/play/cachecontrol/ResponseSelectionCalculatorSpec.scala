@@ -138,13 +138,13 @@ class ResponseSelectionCalculatorSpec extends AnyWordSpec {
       }
 
       "return SelectedResponse with the most recent stored response if multiple responses" in {
-        //If multiple selected responses are available (potentially including
-        //responses without a Vary header field), the cache will need to choose
-        //one to use.  When a selecting header field has a known mechanism for
-        //doing so (e.g., qvalues on Accept and similar request header fields),
-        //that mechanism MAY be used to select preferred responses; of the
-        //remainder, the most recent response (as determined by the Date header
-        //field) is used, as per Section 4.
+        // If multiple selected responses are available (potentially including
+        // responses without a Vary header field), the cache will need to choose
+        // one to use.  When a selecting header field has a known mechanism for
+        // doing so (e.g., qvalues on Accept and similar request header fields),
+        // that mechanism MAY be used to select preferred responses; of the
+        // remainder, the most recent response (as determined by the Date header
+        // field) is used, as per Section 4.
 
         val policy = new ResponseSelectionCalculator(cache)
 

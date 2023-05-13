@@ -83,9 +83,9 @@ object CacheDirectives {
     override def toString: String = {
       headerNames match {
         case Some(names) =>
-          //This directive uses the quoted-string form of the argument syntax.  A
-          //sender SHOULD NOT generate the token form (even if quoting appears
-          //not to be needed for single-entry lists).
+          // This directive uses the quoted-string form of the argument syntax.  A
+          // sender SHOULD NOT generate the token form (even if quoting appears
+          // not to be needed for single-entry lists).
           s"""no-cache="${names.mkString(",")}""""
         case None =>
           s"no-cache"
@@ -154,9 +154,9 @@ object CacheDirectives {
     override def toString: String = {
       headerNames match {
         case Some(names) =>
-          //This directive uses the quoted-string form of the argument syntax.  A
-          //sender SHOULD NOT generate the token form (even if quoting appears
-          //not to be needed for single-entry lists).
+          // This directive uses the quoted-string form of the argument syntax.  A
+          // sender SHOULD NOT generate the token form (even if quoting appears
+          // not to be needed for single-entry lists).
           s"""private="${names.mkString(",")}""""
         case None =>
           "private"

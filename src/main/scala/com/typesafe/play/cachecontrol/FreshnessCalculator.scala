@@ -47,7 +47,7 @@ class FreshnessCalculator(cache: Cache) {
           }
           .orElse {
             //  o  If the Expires response header field (Section 5.3) is present, use
-            //its value minus the value of the Date response header field, or
+            // its value minus the value of the Date response header field, or
             calculateFreshnessFromExpires(request, response)
           }
           .orElse {
