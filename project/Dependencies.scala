@@ -10,7 +10,7 @@ object Dependencies {
 
   val ScalaVersions = Seq(Scala212, Scala213, Scala3)
 
-  def scalaTest = "org.scalatest" %% "scalatest" % "3.2.16" % Test
+  def scalaTest = "org.scalatest" %% "scalatest" % "3.2.17" % Test
 
   def parserCombinators(scalaVersion: String) =
     "org.scala-lang.modules" %% "scala-parser-combinators" % {
@@ -20,7 +20,7 @@ object Dependencies {
       }
     }
 
-  val slf4jVersion = "2.0.7"
+  val slf4jVersion = "2.0.9"
   val slf4j        = "org.slf4j" % "slf4j-api"    % slf4jVersion
   val slf4jSimple  = "org.slf4j" % "slf4j-simple" % slf4jVersion
 }
