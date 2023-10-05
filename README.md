@@ -9,7 +9,7 @@
 [![OpenCollective](https://img.shields.io/opencollective/all/playframework?label=financial%20contributors&logo=open-collective)](https://opencollective.com/playframework)
 
 [![Build Status](https://github.com/playframework/cachecontrol/actions/workflows/build-test.yml/badge.svg)](https://github.com/playframework/cachecontrol/actions/workflows/build-test.yml)
-[![Maven](https://img.shields.io/maven-central/v/com.typesafe.play/cachecontrol_2.13.svg?logo=apache-maven)](https://mvnrepository.com/artifact/com.typesafe.play/cachecontrol_2.13)
+[![Maven](https://img.shields.io/maven-central/v/org.playframework/cachecontrol_2.13.svg?logo=apache-maven)](https://mvnrepository.com/artifact/org.playframework/cachecontrol_2.13)
 [![Repository size](https://img.shields.io/github/repo-size/playframework/cachecontrol.svg?logo=git)](https://github.com/playframework/cachecontrol)
 [![Scala Steward badge](https://img.shields.io/badge/Scala_Steward-helping-blue.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=)](https://scala-steward.org)
 [![Mergify Status](https://img.shields.io/endpoint.svg?url=https://api.mergify.com/v1/badges/playframework/cachecontrol&style=flat)](https://mergify.com)
@@ -23,7 +23,9 @@ It does not implement caching itself, and there are some aspects of RFC 7234 whi
 To add this project to sbt, use:
 
 ```
-libraryDependencies += "com.typesafe.play" %% "cachecontrol" % -latest version-
+libraryDependencies += "org.playframework" %% "cachecontrol" % -latest version-
+// Versions older than 3.0.0:
+libraryDependencies += "com.typesafe.play" %% "cachecontrol" % "2.3.1"
 ```
 
 ## Releasing a new version
