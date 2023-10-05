@@ -429,5 +429,5 @@ class ResponseServingCalculator(cache: Cache) {
 }
 
 object ResponseServingCalculator {
-  private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.ResponseServingCalculator")
+  private val logger = LoggerFactory.getLogger("org.playframework.cachecontrol.ResponseServingCalculator")
 }

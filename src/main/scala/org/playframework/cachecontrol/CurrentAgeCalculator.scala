@@ -99,5 +99,5 @@ class CurrentAgeCalculator {
 }
 
 object CurrentAgeCalculator {
-  private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.CurrentAgeCalculator")
+  private val logger = LoggerFactory.getLogger("org.playframework.cachecontrol.CurrentAgeCalculator")
 }

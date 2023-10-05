@@ -79,5 +79,5 @@ class SecondaryKeyCalculator {
 }
 
 object SecondaryKeyCalculator {
-  private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.SecondaryKeyCalculator")
+  private val logger = LoggerFactory.getLogger("org.playframework.cachecontrol.SecondaryKeyCalculator")
 }

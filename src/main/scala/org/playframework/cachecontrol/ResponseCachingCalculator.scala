@@ -257,5 +257,5 @@ class ResponseCachingCalculator(cache: Cache) {
 }
 
 object ResponseCachingCalculator {
-  private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.ResponseCachingCalculator")
+  private val logger = LoggerFactory.getLogger("org.playframework.cachecontrol.ResponseCachingCalculator")
 }

@@ -37,7 +37,7 @@ object CacheDirectiveParser {
 
     import CacheDirectives._
 
-    private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.CacheControlParser")
+    private val logger = LoggerFactory.getLogger("org.playframework.cachecontrol.CacheControlParser")
 
     val separatorChars          = "()<>@,;:\\\"/[]?={} \t"
     val separatorBitSet: BitSet = BitSet(separatorChars.iterator.map(_.toInt).toSeq: _*)

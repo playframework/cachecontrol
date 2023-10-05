@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory
 class FreshnessCalculator(cache: Cache) {
   import HeaderNames._
 
-  private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.FreshnessCalculator")
+  private val logger = LoggerFactory.getLogger("org.playframework.cachecontrol.FreshnessCalculator")
 
   /**
    * Returns the freshness lifetime in seconds.

@@ -108,5 +108,5 @@ class ResponseSelectionCalculator(cache: Cache) {
 }
 
 object ResponseSelectionCalculator {
-  private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.ResponseSelectionCalculator")
+  private val logger = LoggerFactory.getLogger("org.playframework.cachecontrol.ResponseSelectionCalculator")
 }
