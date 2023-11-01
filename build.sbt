@@ -10,6 +10,8 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
   s
 }
 
+val previousVersion: Option[String] = Some("2.3.0")
+
 lazy val cachecontrol = (project in file("."))
   .enablePlugins(Common)
   .settings(
@@ -19,9 +21,7 @@ lazy val cachecontrol = (project in file("."))
       slf4j,
       slf4jSimple % Test
     ),
-    // On the main branch we don't check for incompatible changes,
-    // because it's ok to introduce breaking changes between minor version bumps
-    mimaPreviousArtifacts := Set.empty,
+    mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet,
     headerLicense := {
       Some(
         HeaderLicense.Custom(
