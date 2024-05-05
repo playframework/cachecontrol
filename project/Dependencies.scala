@@ -5,7 +5,7 @@ import sbt._
 
 object Dependencies {
   val Scala212 = "2.12.19"
-  val Scala213 = "2.13.13"
+  val Scala213 = "2.13.14"
   val Scala3   = "3.3.3"
 
   val ScalaVersions = Seq(Scala212, Scala213, Scala3)
@@ -20,7 +20,7 @@ object Dependencies {
       }
     }
 
-  val slf4jVersion = "2.0.12"
+  val slf4jVersion = "2.0.13"
   val slf4j        = "org.slf4j" % "slf4j-api"    % slf4jVersion
   val slf4jSimple  = "org.slf4j" % "slf4j-simple" % slf4jVersion
 }
