@@ -13,14 +13,14 @@ object Common extends AutoPlugin {
 
   val javacParameters = Seq(
     "--release",
-    "11",
+    "17",
     "-Xlint:deprecation",
     "-Xlint:unchecked",
   )
 
   val scalacParameters = Seq(
     "-release",
-    "11",
+    "17",
     "-encoding",
     "utf8",
     "-deprecation",
