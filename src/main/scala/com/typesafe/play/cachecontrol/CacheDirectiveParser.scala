@@ -34,7 +34,6 @@ object CacheDirectiveParser {
     // http://bitwalker.org/blog/2013/08/10/learn-by-example-scala-parser-combinators/
     // https://wiki.scala-lang.org/display/SW/Parser+Combinators--Getting+Started
     // http://www.bizcoder.com/everything-you-need-to-know-about-http-header-syntax-but-were-afraid-to-ask
-
     import CacheDirectives._
 
     private val logger = LoggerFactory.getLogger("com.typesafe.cachecontrol.CacheControlParser")
