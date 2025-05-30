@@ -22,7 +22,7 @@ lazy val cachecontrol = (project in file("."))
       slf4jSimple % Test
     ),
     mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet,
-    headerLicense := {
+    headerLicense         := {
       Some(
         HeaderLicense.Custom(
           s"Copyright (C) from 2022 The Play Framework Contributors <https://github.com/playframework>, 2011-2021 Lightbend Inc. <https://www.lightbend.com>"
