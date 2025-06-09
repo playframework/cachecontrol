@@ -52,9 +52,9 @@ object CacheDirectiveParser {
      *
      * These patterns are translated directly using the same naming
      */
-    val ctl  = acceptIf { c => (c >= 0 && c <= 0x1f) || c.toInt == 0x7f }(_ => "Expected a control character")
-    val char = acceptIf(_ < 0x80)(_ => "Expected an ascii character")
-    val text = not(ctl) ~> any
+    val ctl        = acceptIf { c => (c >= 0 && c <= 0x1f) || c.toInt == 0x7f }(_ => "Expected a control character")
+    val char       = acceptIf(_ < 0x80)(_ => "Expected an ascii character")
+    val text       = not(ctl) ~> any
     val separators = {
       acceptIf(c => separatorBitSet(c.toInt))(_ => "Expected one of " + separatorChars)
     }

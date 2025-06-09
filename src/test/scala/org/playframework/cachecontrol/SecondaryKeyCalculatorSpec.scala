@@ -12,8 +12,8 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class SecondaryKeyCalculatorSpec extends AnyWordSpec {
   def responseHeaders = {
-    val now = HttpDate.now
-    val age = Duration.ofSeconds(60)
+    val now     = HttpDate.now
+    val age     = Duration.ofSeconds(60)
     val headers = Map(
       `Date`                         -> Seq(HttpDate.format(now)),
       `Age`                          -> Seq(age.getSeconds.toString),
