@@ -44,7 +44,7 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
       "return Validate" in {
         val policy = new ResponseServingCalculator(privateCache)
 
-        val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-cache")))
+        val request  = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-cache")))
         val response =
           defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("max-age=60")))
 
@@ -58,12 +58,12 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
       "return Validate" in {
         val policy = new ResponseServingCalculator(privateCache)
 
-        val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Pragma` -> Seq("no-cache")))
+        val request  = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Pragma` -> Seq("no-cache")))
         val response =
           defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("max-age=60")))
 
         val action: ResponseServeAction = policy.serveResponse(request, response, Duration.ofSeconds(5))
-        val msg =
+        val msg                         =
           "Request does not contain Cache-Control header found, but does contains no-cache Pragma header, validation required"
         action should be(Validate(msg))
       }
@@ -73,7 +73,7 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
       "return ServeFresh when fresh" in {
         val policy = new ResponseServingCalculator(privateCache)
 
-        val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-store")))
+        val request  = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-store")))
         val response =
           defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("publish,max-age=60")))
 
@@ -85,7 +85,7 @@ class ResponseServingCalculatorSpec extends AnyWordSpec {
       "return Validate when stale" in {
         val policy = new ResponseServingCalculator(privateCache)
 
-        val request = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-store")))
+        val request  = defaultRequest.copy(headers = defaultRequest.headers ++ Map(`Cache-Control` -> Seq("no-store")))
         val response =
           defaultResponse.copy(headers = defaultResponse.headers ++ Map(`Cache-Control` -> Seq("publish,max-age=60")))
 

@@ -116,7 +116,7 @@ trait CacheDefaults extends Cache {
     while (nominatedHeadersIter.hasNext) {
       val nominatedHeaderName = nominatedHeadersIter.next()
       presentedHeaders.get(nominatedHeaderName) match {
-        case None => return false
+        case None                        => return false
         case Some(presentedHeaderValues) =>
           val nominatedHeaderValues = nominatedHeaders(nominatedHeaderName)
           // There's a list of header values, so we need a way to normalize it.

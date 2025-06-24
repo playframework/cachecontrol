@@ -113,7 +113,7 @@ class ResponseSelectionCalculatorSpec extends AnyWordSpec {
         val policy            = new ResponseSelectionCalculator(cache)
         val presentingHeaders = Map(HeaderName("X-Custom-Header") -> Seq("value1"))
         val request           = defaultRequest.copy(headers = presentingHeaders)
-        val nominatedHeaders =
+        val nominatedHeaders  =
           Map(HeaderName("X-Custom-Header") -> Seq("value1"), HeaderName("X-Custom-Header") -> Seq("value2"))
         val response = defaultResponse.copy(nominatedHeaders = nominatedHeaders)
         val action   = policy.selectResponse(request, Seq(response))
