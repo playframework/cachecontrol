@@ -154,7 +154,7 @@ class CacheDirectiveParserSpec extends AnyWordSpec {
 
     "parse random input as cache directives" in {
       // include embedded commas to make things interesting...
-      val directives = CacheDirectiveParser.parse(Seq("""i,  have, no=idea,  what="I'm, doing""""))
+      val directives  = CacheDirectiveParser.parse(Seq("""i,  have, no=idea,  what="I'm, doing""""))
       val badSequence = Seq(
         CacheDirectiveExtension("i", None),
         CacheDirectiveExtension("have", None),

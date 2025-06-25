@@ -173,10 +173,10 @@ class ResponseCachingCalculatorSpec extends AnyWordSpec {
     "with qualified private and qualified no-cache response directives" should {
       "return DoCache with only no-cache stripped headers when private" in {
         import CacheDirectives._
-        val policy                = new ResponseCachingCalculator(privateCache)
-        val request: CacheRequest = defaultRequest
-        val noCache               = NoCache(Some(List("Set-Cookie")))
-        val privDirective         = Private(Some(List("Some-Header")))
+        val policy                   = new ResponseCachingCalculator(privateCache)
+        val request: CacheRequest    = defaultRequest
+        val noCache                  = NoCache(Some(List("Set-Cookie")))
+        val privDirective            = Private(Some(List("Some-Header")))
         val response: OriginResponse =
           defaultResponse.copy(headers = h(privDirective.toString + "," + noCache.toString))
         val result = policy.isCacheable(request, response)
@@ -185,10 +185,10 @@ class ResponseCachingCalculatorSpec extends AnyWordSpec {
 
       "return DoCache with both stripped headers when shared cache" in {
         import CacheDirectives._
-        val policy                = new ResponseCachingCalculator(sharedCache)
-        val request: CacheRequest = defaultRequest
-        val noCache               = NoCache(Some(List("Set-Cookie")))
-        val privDirective         = Private(Some(List("Some-Header")))
+        val policy                   = new ResponseCachingCalculator(sharedCache)
+        val request: CacheRequest    = defaultRequest
+        val noCache                  = NoCache(Some(List("Set-Cookie")))
+        val privDirective            = Private(Some(List("Some-Header")))
         val response: OriginResponse =
           defaultResponse.copy(headers = h(privDirective.toString + "," + noCache.toString))
         val result = policy.isCacheable(request, response)
@@ -241,7 +241,7 @@ class ResponseCachingCalculatorSpec extends AnyWordSpec {
 
     "with a containsCachableExtension" should {
       "return DoCacheResponse" in {
-        var called = false
+        var called              = false
         val cacheWithExtensions = new StubCache(shared = false) {
           override def isCacheableExtension(extension: CacheDirectives.CacheDirectiveExtension): Boolean = {
             called = extension.name == "public-on-tuesday"
