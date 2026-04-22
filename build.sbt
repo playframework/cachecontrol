@@ -10,6 +10,8 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
   s
 }
 
+ThisBuild / javafmtFormatterCompatibleJavaVersion := 11
+
 val previousVersion: Option[String] = Some("2.3.0")
 
 lazy val cachecontrol = (project in file("."))
