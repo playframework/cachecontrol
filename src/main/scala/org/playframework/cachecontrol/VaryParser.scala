@@ -12,7 +12,7 @@ object VaryParser {
     if (fieldValue.startsWith("*")) {
       List(HeaderName("*"))
     } else {
-      val headerNames = fieldValue.split(",\\s*").map(HeaderName)
+      val headerNames = fieldValue.split(",\\s*").map(HeaderName.apply)
       headerNames.toList
     }
   }
