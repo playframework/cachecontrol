@@ -33,11 +33,11 @@ object WarningParser {
 
     val warnAgent = regex("\\S+".r) <~ space
 
-    val warnText = stringLiteral ^^ { s => s.replaceAllLiterally('"'.toString, "") }
+    val warnText = stringLiteral ^^ { s => s.replace('"'.toString, "") }
 
     val warnDate = opt(space ~> stringLiteral) ^^ { maybeString =>
       maybeString.map { s =>
-        val chomp = s.replaceAllLiterally('"'.toString, "")
+        val chomp = s.replace('"'.toString, "")
         HttpDate.parse(chomp)
       }
     }
