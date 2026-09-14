@@ -16,7 +16,7 @@ object Dependencies {
     "org.scala-lang.modules" %% "scala-parser-combinators" % {
       CrossVersion.partialVersion(scalaVersion) match {
         case Some((2, 12)) => "1.1.2"
-        case _             => "2.4.0"
+        case _             => "2.5.0"
       }
     }
 
