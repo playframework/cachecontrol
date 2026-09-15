@@ -39,8 +39,8 @@ object Common extends AutoPlugin {
       organizationHomepage := Some(uri("https://playframework.com/")),
       homepage             := Some(uri(s"https://github.com/playframework/${repoName}")),
       licenses             := Seq(License("Apache-2.0", uri("https://www.apache.org/licenses/LICENSE-2.0.html"))),
-      scalaVersion         := Scala212,
-      crossScalaVersions   := ScalaVersions,
+      scalaVersion         := resolveScalaVersion(sys.props.getOrElse("scala.version", scala213Version)),
+      crossScalaVersions   := publishedScalaVersions,
       scalacOptions ++= scalacParameters,
       javacOptions ++= javacParameters,
       developers += Developer(
@@ -50,6 +50,13 @@ object Common extends AutoPlugin {
         uri("https://github.com/playframework")
       ),
       description := "Cachecontrol - Minimal HTTP cache management library in Scala"
+    )
+
+  override def projectSettings =
+    Seq(
+      scalacOptions ++= {
+        if (scalaVersion.value.startsWith("3.3.")) Seq("-Yfuture-lazy-vals") else Seq.empty
+      }
     )
 
 }
